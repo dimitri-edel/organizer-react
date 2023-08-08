@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import "bootstrap/dist/css/bootstrap.min.css";
 // Router from react-router-dom
 // In order for the Router to work you need to wrap the <App /> inside it
 import { BrowserRouter as Router } from "react-router-dom";

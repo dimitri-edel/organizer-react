@@ -36,14 +36,15 @@ const NavBar = () => {
     </NavLink>
   );
   const loggedInIcons = (
-    <>    
-            <NavLink className={styles.NavLink} to="/" onClick={handleSignOut}>
+    <>
+    <p>{currentUser?.username}</p>
+      <NavLink className={styles.NavLink} to="/" onClick={handleSignOut}>
         <i className="fas fa-sign-out-alt"></i>Sign out
       </NavLink>
       <NavLink
         className={styles.NavLink}
         to={`/profiles/${currentUser?.username}`}
-      >       
+      >
       </NavLink>
     </>
   );

@@ -7,6 +7,8 @@ import SignUpForm from "./pages/auth/SignUpForm";
 import SignInForm from "./pages/auth/SignInForm";
 import { useCurrentUser } from "./context/CurrentUserContext";
 import NavBar from "./components/NavBar";
+import TaskList from './pages/task/TaskList';
+import CreateTaskForm from './pages/task/CreateTaskForm';
 
 function App() {
   const currentUser = useCurrentUser();
@@ -20,12 +22,12 @@ function App() {
             exact
             path="/"
             render={() => (
-              <p>Tasks</p>
+              <TaskList />
             )}
           />   
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
-          <Route exact path="/task/create" render={() => <p>Create task</p>} />         
+          <Route exact path="/task/create" render={() => <CreateTaskForm />}/>      
           
           <Route render={() => <p>Page not found!</p>} />
         </Switch>
