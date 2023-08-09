@@ -15,7 +15,8 @@ import Task from "./Task";
 
 function TaskList() {
   const [tasks, setTasks] = useState({ results: [] });
-  const [hasLoaded, setHasLoaded] = useState(false);
+  const [updateTaskList, setUpdateTaskList] = useState(true);
+  const [hasLoaded, setHasLoaded] = useState(true);
   const { pathname } = useLocation();
   const [query, setQuery] = useState("");
 
@@ -31,6 +32,7 @@ function TaskList() {
     };
 
     setHasLoaded(false);
+    setUpdateTaskList(false);
     // After the mounting it will wait a second before the user stops typing into the search
     // field , so the page does not get refreshed after every key stroke
     const timer = setTimeout(() => {
@@ -41,7 +43,7 @@ function TaskList() {
     return () => {
       clearTimeout(timer);
     };
-  }, [query, pathname]);
+  }, [query, pathname, updateTaskList]);
 
   return (
     <Row className="h-100">
@@ -66,7 +68,7 @@ function TaskList() {
             {tasks.results.length ? (
               <InfiniteScroll
                 children={tasks.results.map((task) => (
-                  <Task key={task.title} {...task} />
+                  <Task key={task.title} {...task} setUpdateTaskList={setUpdateTaskList}/>
                 ))}
                 dataLength={tasks.results.length}
                 loader={<Asset spinner />}

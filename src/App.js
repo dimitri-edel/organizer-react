@@ -9,6 +9,7 @@ import { useCurrentUser } from "./context/CurrentUserContext";
 import NavBar from "./components/NavBar";
 import TaskList from './pages/task/TaskList';
 import CreateTaskForm from './pages/task/CreateTaskForm';
+import EditTaskForm from './pages/task/EditTaskForm';
 
 function App() {
   const currentUser = useCurrentUser();
@@ -28,7 +29,7 @@ function App() {
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
           <Route exact path="/task/create" render={() => <CreateTaskForm />}/>      
-          
+          <Route exact path="/task/:id/edit" render={() => <EditTaskForm />}/>
           <Route render={() => <p>Page not found!</p>} />
         </Switch>
       </Container>

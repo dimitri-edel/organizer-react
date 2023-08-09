@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -15,8 +15,10 @@ import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import Asset from "../../components/Asset";
 import { axiosReq } from "../../api/axiosDefaults";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
+import { useCurrentUser } from "../../context/CurrentUserContext";
 import { FormLabel } from "react-bootstrap";
+import { convertDateFormat } from "../../utils/utils";
 
 function CreateTaskForm() {
     const [errors, setErrors] = useState({});
@@ -34,14 +36,16 @@ function CreateTaskForm() {
         file: "",
     });
 
-    const { id, owner, asigned_to, title, comment, due_date, category, priority, status, file } = taskData;
+    const { owner, is_owner, asigned_to, title, comment, due_date, category, priority, status, file } = taskData;
+    const currentUser = useCurrentUser();
+
 
 
     const handleChange = (event) => {
         setTaskData({
             ...taskData,
             [event.target.name]: event.target.value,
-        });        
+        });
     };
 
     const handleChangeImage = (event) => {
@@ -57,6 +61,30 @@ function CreateTaskForm() {
     // Reference to the component with a image file : Form.File
     const imageInput = useRef(null);
     const history = useHistory();
+    const { id } = useParams();
+    // The datepicker expect a different date format than the one that comes 
+    // back from the API. Thus, it is neccessary to convert it to the expected 
+    // format in the useEffect()-Hook.
+    const [datePickerValue, setDatePickerValue] = useState("");
+
+    useEffect(() => {
+        const handleMount = async () => {
+            try {
+                const { data } = await axiosReq.get(`/task/${id}`);
+                const { owner, is_owner, asigned_to, title, comment, due_date, category, priority, status, file } = data; 
+                // Convert the due_date to datePickerValue               
+                setDatePickerValue(convertDateFormat(due_date));
+                // If it is the owner requesting the task, then copy the retrieved data to the corresponding fields, else
+                // redirect the user to the root URL
+                is_owner ? setTaskData({ is_owner, title, comment, due_date, category, priority, status, file }) : history.push("/");
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        handleMount();
+        console.log(datePickerValue);
+    }, [history, id]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -67,17 +95,20 @@ function CreateTaskForm() {
         formData.append("title", title);
         formData.append("comment", comment);
         formData.append("due_date", due_date);
-        formData.append("file", imageInput.current.files[0]);
+        // If there is a file in the buffer it means that a new file
+        // has been submitted. If there is a new file, then append it to the form
+        // otherwise do not
+        if (imageInput?.current?.files[0]) {
+            formData.append("file", imageInput.current.files[0]);
+        }
         formData.append("category", category);
         formData.append("priority", priority);
         formData.append("status", status);
         console.log(taskData);
 
         try {
-            const { data } = await axiosReq.post("tasks/", formData);
-            // history.push(`/task/${data.id}`);
-
-            history.push("/");
+            const { data } = await axiosReq.put(`task/${id}`, formData);
+            history.push(`/task/${data.id}/edit`);
         } catch (err) {
             console.log(err);
             if (err.response?.status !== 401) {
@@ -126,7 +157,7 @@ function CreateTaskForm() {
                                     type="datetime-local"
                                     id="due_date"
                                     name="due_date"
-                                    value={due_date}
+                                    defaultValue={datePickerValue}
                                     onChange={handleChange}
                                 />
                             </Form.Group>
@@ -135,6 +166,7 @@ function CreateTaskForm() {
                                 <Form.Control
                                     as="select"
                                     name="category"
+                                    value={category}
                                     onChange={handleChange}>
                                     <option value="0">Chore</option>
                                     <option value="1">Errand</option>
@@ -146,6 +178,7 @@ function CreateTaskForm() {
                                 <Form.Control
                                     as="select"
                                     name="priority"
+                                    value={priority}
                                     onChange={handleChange}>
                                     <option value="0">High</option>
                                     <option value="1">Middle</option>
@@ -157,6 +190,7 @@ function CreateTaskForm() {
                                 <Form.Control
                                     as="select"
                                     name="status"
+                                    value={status}
                                     onChange={handleChange}>
                                     <option value="0">Open</option>
                                     <option value="1">Progressing</option>
