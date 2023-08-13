@@ -12,6 +12,7 @@ import Asset from "../../components/Asset";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchMoreData } from "../../utils/utils";
 import Task from "./Task";
+import Calendar from "../../components/Calendar";
 
 function TaskList() {
   const [tasks, setTasks] = useState({ results: [] });
@@ -19,6 +20,8 @@ function TaskList() {
   const [hasLoaded, setHasLoaded] = useState(true);
   const { pathname } = useLocation();
   const [query, setQuery] = useState("");
+  const weekday_names = ["", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   useEffect(() => {
     const fetchtasks = async () => {
@@ -46,51 +49,55 @@ function TaskList() {
   }, [query, pathname, updateTaskList]);
 
   return (
-    <Row className="h-100">
-      <Col className="py-2 p-0 p-lg-2" lg={8}>
-        <p>Popular profiles mobile</p>
-        <i className={`fas fa-search ${styles.SearchIcon}`} />
-        <Form
-          className={styles.SearchBar}
-          onSubmit={(event) => event.preventDefault()}
-        >
-          <Form.Control
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            type="text"
-            className="mr-sm-2"
-            placeholder="Search tasks"
-          />
-        </Form>
+    <div>
+      <Calendar weekday_names={weekday_names} month_names={month_names} container={this} format="en" />
 
-        {hasLoaded ? (
-          <>
-            {tasks.results.length ? (
-              <InfiniteScroll
-                children={tasks.results.map((task) => (
-                  <Task key={task.title} {...task} setUpdateTaskList={setUpdateTaskList}/>
-                ))}
-                dataLength={tasks.results.length}
-                loader={<Asset spinner />}
-                hasMore={!!tasks.next}
-                next={() => fetchMoreData(tasks, setTasks)}
-              />
-            ) : (
-              <Container className={appStyles.Content}>
-                <Asset src={NoResults} message={"no results found!e"} />
-              </Container>
-            )}
-          </>
-        ) : (
-          <Container className={appStyles.Content}>
-            <Asset spinner />
-          </Container>
-        )}
-      </Col>
-      <Col md={4} className="d-none d-lg-block p-0 p-lg-2">
-        <p>Popular profiles for desktop</p>
-      </Col>
-    </Row>
+      <Row className="h-100">
+        <Col className="py-2 p-0 p-lg-2" lg={8}>
+          <p>Popular profiles mobile</p>
+          <i className={`fas fa-search ${styles.SearchIcon}`} />
+          <Form
+            className={styles.SearchBar}
+            onSubmit={(event) => event.preventDefault()}
+          >
+            <Form.Control
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              type="text"
+              className="mr-sm-2"
+              placeholder="Search tasks"
+            />
+          </Form>
+
+          {hasLoaded ? (
+            <>
+              {tasks.results.length ? (
+                <InfiniteScroll
+                  children={tasks.results.map((task) => (
+                    <Task key={task.title} {...task} setUpdateTaskList={setUpdateTaskList} />
+                  ))}
+                  dataLength={tasks.results.length}
+                  loader={<Asset spinner />}
+                  hasMore={!!tasks.next}
+                  next={() => fetchMoreData(tasks, setTasks)}
+                />
+              ) : (
+                <Container className={appStyles.Content}>
+                  <Asset src={NoResults} message={"no results found!e"} />
+                </Container>
+              )}
+            </>
+          ) : (
+            <Container className={appStyles.Content}>
+              <Asset spinner />
+            </Container>
+          )}
+        </Col>
+        <Col md={4} className="d-none d-lg-block p-0 p-lg-2">
+          <p>Popular profiles for desktop</p>
+        </Col>
+      </Row>
+    </div>
   );
 }
 

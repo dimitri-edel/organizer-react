@@ -23,11 +23,12 @@ function App() {
             exact
             path="/"
             render={() => (
-              <TaskList />
+              <p>Home page</p>
             )}
           />   
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
+          <Route exact path="/tasks/" render={() => <TaskList />} />
           <Route exact path="/task/create" render={() => <CreateTaskForm />}/>      
           <Route exact path="/task/:id/edit" render={() => <EditTaskForm />}/>
           <Route render={() => <p>Page not found!</p>} />
