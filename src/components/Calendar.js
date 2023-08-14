@@ -7,6 +7,8 @@ class Calendar extends React.Component {
         super(props);
         let current_date = new Date();
         this.setQuery = props.setQuery;
+        this.selectedMonthTaskList = props.monthTaskList;
+        this.setSelectedMonthQuery = props.setSelectedMonthQuery;
         // The first weekday must be blank, so we have natural numbers for weekdays(1,2,3,etc)
         this.weekday_names = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         // Names of months that will be used in the control panel
@@ -25,6 +27,23 @@ class Calendar extends React.Component {
 
     componentDidMount() {
         this.#setMonth(this.state.selected_month, this.state.selected_year);
+        for (let i = 0; i < this.selectedMonthTaskList.results.length; i++) {
+            console.log(this.selectedMonthTaskList.results[i].title);
+        }
+        this.setSelectedMonthQuery(this.getSelectedMonthQuery());
+    }
+
+    getSelectedMonthQuery = () => {
+        const getDateNumberRepresentaion = (num) => {
+            if (num < 10) {
+                return `0${num}`;
+            }
+            return num;
+        }
+        let year = this.state.selected_year;
+        let month = getDateNumberRepresentaion(this.state.selected_month + 1);
+
+        return `${year}-${month}`;
     }
 
     controlPanel = () => {
@@ -38,34 +57,34 @@ class Calendar extends React.Component {
     }
 
     onClickPrevMonth = () => {
-        this.#calculatePrevMonth();        
+        this.#calculatePrevMonth();
     }
 
     onClickNextMonth = () => {
         this.#calculateNextMonth();
     }
 
-    onClickCalendarCell = (cell) => {        
+    onClickCalendarCell = (cell) => {
         // See if the string is a representation of a number
         const isNumeric = (str) => {
             // If not a string then don't bother processing
             if (typeof str != "string") return false;
-            if(cell === "") return false;
+            if (str === "") return false;
             return !isNaN(str);
         }
 
-        const getDateNumberRepresentaion = (num)=>{            
-            if(num < 10){
+        const getDateNumberRepresentaion = (num) => {
+            if (num < 10) {
                 return `0${num}`;
             }
             return num;
         }
 
-        
-        let year = this.state.selected_year;
-        let month = getDateNumberRepresentaion(this.state.selected_month+1);        
 
-        if(isNumeric(cell)){
+        let year = this.state.selected_year;
+        let month = getDateNumberRepresentaion(this.state.selected_month + 1);
+
+        if (isNumeric(cell)) {
             let query = `${year}-${month}-${getDateNumberRepresentaion(cell)}`;
             console.log(`${cell}. ${this.month_names[this.state.selected_month]} ${this.state.selected_year}`);
             this.setQuery(query);
@@ -79,16 +98,12 @@ class Calendar extends React.Component {
                 selected_month: 11,
                 selected_year: prevState.selected_year - 1,
                 selected_month_name: this.month_names[11],
-            }), function(){
-                this.#setMonth(this.state.selected_month, this.state.selected_year);
-            });
+            }), this.#updateStateDependantElements);
         } else {
             this.setState((prevState, props) => ({
                 selected_month: prevState.selected_month - 1,
                 selected_month_name: this.month_names[prevState.selected_month - 1]
-            }), function(){
-                this.#setMonth(this.state.selected_month, this.state.selected_year);
-            });
+            }), this.#updateStateDependantElements);
         }
     }
 
@@ -99,39 +114,41 @@ class Calendar extends React.Component {
                 selected_month: 0,
                 selected_year: prevState.selected_year + 1,
                 selected_month_name: this.month_names[0]
-            }), function(){
-                this.#setMonth(this.state.selected_month, this.state.selected_year);
-            });
+            }), this.#updateStateDependantElements);
         } else {
             this.setState((prevState, props) => ({
                 selected_month: prevState.selected_month + 1,
                 selected_month_name: this.month_names[prevState.selected_month + 1],
-            }), function(){
-                this.#setMonth(this.state.selected_month, this.state.selected_year);
-            });
+            }), this.#updateStateDependantElements);
         }
     }
 
+    #updateStateDependantElements = () => {
+        this.#setMonth(this.state.selected_month, this.state.selected_year);
+        this.setSelectedMonthQuery(this.getSelectedMonthQuery());
+    }
     // Returns true if the year parameter is a leap year
     #isLeapYear(year) {
         return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
     }
 
     #setMonth = (month, year) => {
-        console.log(`setMonth(${month} , ${year})`);
         // Determine which weekday is the first day of the month
         let first_day = new Date(year, month, 1);
         // Weekdays are numbered 0-6, 0:Sunday, 1:monday, 2:tuesday, etc.
         let first_week_day = first_day.getDay();
         // Find out how many days in the month
         let last_day_of_month = this.#getLastDayOfMonth(month, year);
+        // Create an array representation of calendar cells
         const create_calendar_cells = () => {
             let cells = [];
 
             for (let row = 1; row < 7; row++) {
                 cells[row] = [];
                 for (let column = 1; column <= 7; column++) {
-                    cells[row][column] = "";
+                    cells[row][column] = [];
+                    cells[row][column][0] = "";
+                    cells[row][column][1] = [];
                 }
             }
 
@@ -142,17 +159,15 @@ class Calendar extends React.Component {
 
         let day_number = 1;
 
-        console.log(`setMonth(${month}, ${year})`);
-
         // the rows and columns are numbered 1-7
         for (let row = 1; row < 7; row++) {
             for (let column = 1; column <= 7; column++) {
 
                 // If its the first week(first row) and the first_week_day is not in the 
                 // corresponding column(day of week) skip the column
-                // If the calendar_format is not 'eu' then the english format is used
+                // Tthe english format is used
                 // which means that the weekday slides one column to the left, hence column-1
-                if (row === 1 && (column - 1) < first_week_day) {
+                if (row === 1 && (column - 1) < first_week_day) {                    
                     continue;
                 }
 
@@ -161,28 +176,24 @@ class Calendar extends React.Component {
                 if (day_number > last_day_of_month) {
                     break;
                 }
-                // Plot the day number into the calendar cell(span id='calendar-<row>-<column>')
-                // let cell = document.getElementById(`calendar-${row}-${column}`);
-                // let label = cell.getElementsByClassName('calendar-cell-day-label');
-                // let item_list = cell.getElementsByClassName('calendar-cell-item-list');
-                // let list_len = this.calendarCellItemLists[day_number].length;
-
-                // If there are any items for this day add them to the list in this cell
-                // if (list_len > 0) {
-                //     for (let item = 0; item < list_len; item++) {
-                //         let li = document.createElement("li");
-                //         li.innerHTML = this.calendarCellItemLists[day_number][item];
-                //         item_list[0].appendChild(li);
-                //     }
-                // }
-                // Plot the day number in the cell
-                cal_cells[row][column] = day_number.toString();
+                // Plot the day number in the cell as the first element of the array                
+                cal_cells[row][column][0] = day_number.toString();
+                cal_cells[row][column][1] = this.#getDaysTaskList(day_number, month, year);
                 // Proceed to the next day
                 day_number++;
             }
         }
         console.log(cal_cells);
         this.setState({ calendar_cells: cal_cells });
+    }
+
+    // If there is a list of tasks for this day then return an array with tasks, else return an empty array
+    #getDaysTaskList = (day, month, year) => {
+        let arr = [];
+        for (let i = 0; i < this.selectedMonthTaskList.results.length; i++) {
+            arr[i] = this.selectedMonthTaskList.results[i].title;
+        }
+        return arr;
     }
 
     #getLastDayOfMonth = (month, year) => {
@@ -225,21 +236,31 @@ class Calendar extends React.Component {
             return `${key1}_${Math.random()}_${new Date().getMilliseconds()}`;
         }
 
-        
+
         return (
             <div className={styles.calendarContainer}>
                 <span className={styles.calendarRow}>
                     {
-                        this.weekday_names.map(day=>{
+                        this.weekday_names.map(day => {
                             return (<span key={generateKey(day)}>{day}</span>
-                                )
+                            )
                         })
                     }
                 </span>
                 {this.state.calendar_cells.map(row => {
                     return (
                         <div key={generateKey(row)} className={styles.calendarRow}>{row.map(col => {
-                            return (<span key={generateKey(col)} onClick={(e)=> this.onClickCalendarCell(col)}>{col}</span>)
+                            return (
+                                <span key={generateKey(col[0])} onClick={(e) => this.onClickCalendarCell(col[0])}>
+                                    {col[0]}
+                                    <ul key={generateKey(col[1])} className={styles.calendarCellItemList}>
+                                        {
+                                            col[1].map(item=>{
+                                                return (<li>{item}</li>)
+                                            })
+                                        }
+                                    </ul>
+                                </span>)
                         })}</div>
                     );
                 })}
