@@ -1,6 +1,7 @@
 import React, { createElement, createRef, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "../styles/Calendar.module.css";
+import TaskListItem from "./TaskListItem";
 
 class Calendar extends React.Component {
     constructor(props) {
@@ -167,7 +168,7 @@ class Calendar extends React.Component {
                 // corresponding column(day of week) skip the column
                 // Tthe english format is used
                 // which means that the weekday slides one column to the left, hence column-1
-                if (row === 1 && (column - 1) < first_week_day) {                    
+                if (row === 1 && (column - 1) < first_week_day) {
                     continue;
                 }
 
@@ -178,7 +179,9 @@ class Calendar extends React.Component {
                 }
                 // Plot the day number in the cell as the first element of the array                
                 cal_cells[row][column][0] = day_number.toString();
-                cal_cells[row][column][1] = this.#getDaysTaskList(day_number, month, year);
+                // Get the list of tasks for the day and append it to the array
+                // month number needs correction, because they start with 0
+                cal_cells[row][column][1] = this.#getDaysTaskList(day_number, month+1, year);
                 // Proceed to the next day
                 day_number++;
             }
@@ -190,9 +193,42 @@ class Calendar extends React.Component {
     // If there is a list of tasks for this day then return an array with tasks, else return an empty array
     #getDaysTaskList = (day, month, year) => {
         let arr = [];
-        for (let i = 0; i < this.selectedMonthTaskList.results.length; i++) {
-            arr[i] = this.selectedMonthTaskList.results[i].title;
+        
+        // Check if the due_date is the same as the date specified in the parameter list passed to this method
+        const isSameDate = (due_date) => {
+            console.log(due_date);
+            const split = due_date.split(" ");
+            const strMonnths = ["Jan", "Feb", "Mar", "Apr", "Jun", "Jul", "May", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const monthNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            const strDay = split[0];
+            const strMonth = split[1];
+            const strYear = split[2];
+            
+            let month_number = 0;
+            let year_number = parseInt(strYear);
+            let day_number = parseInt(strDay);
+
+            for (let i = 0; i < strMonnths.length; i++) {
+                if (strMonnths[i].toLowerCase() === strMonth.toLowerCase()) {
+                    month_number = monthNumbers[i];
+                }
+            }
+            
+            if((day === day_number) && (month === month_number) && (year === year_number)){
+                return true;
+            }
+            return false;
         }
+
+        const getList = () => {
+            for (let i = 0; i < this.selectedMonthTaskList.results.length; i++) {
+                if(isSameDate(this.selectedMonthTaskList.results[i].due_date)){
+                    arr[i] = this.selectedMonthTaskList.results[i];
+                }
+            }
+        }
+
+        getList();
         return arr;
     }
 
@@ -255,8 +291,8 @@ class Calendar extends React.Component {
                                     {col[0]}
                                     <ul key={generateKey(col[1])} className={styles.calendarCellItemList}>
                                         {
-                                            col[1].map(item=>{
-                                                return (<li>{item}</li>)
+                                            col[1].map(item => {
+                                                return (<li key={item.title + generateKey(item.title)}>{<TaskListItem key={item.title + generateKey(item.status)} status={item.status} priority={item.priority} title={item.title} />}</li>)
                                             })
                                         }
                                     </ul>

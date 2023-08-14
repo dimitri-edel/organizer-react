@@ -1,0 +1,27 @@
+.TaskListItem {
+    font-size: 7px;
+}
+
+.HighPriorityItem {
+    color: rgb(113, 2, 2);
+}
+
+.MidiumPriorityItem {
+    color: rgb(0, 66, 9);
+}
+
+.LowPriorityItem {
+    color: rgb(2, 2, 88);
+}
+
+.StatusOpen {
+    background-color: white;
+}
+
+.StatusProgressing {
+    background-color: rgb(226, 253, 226);
+}
+
+.StatusDone {
+    background-color: rgba(211, 211, 211, 0.442);
+}
