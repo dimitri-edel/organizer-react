@@ -45,9 +45,23 @@ class Calendar extends React.Component {
         this.#calculateNextMonth();
     }
 
+    onClickCalendarCell = (cell) => {        
+        // See if the string is a representation of a number
+        const isNumeric = (str) => {
+            // If not a string then don't bother processing
+            if (typeof str != "string") return false;
+            if(cell === "") return false;
+            return !isNaN(str);
+        }
+
+        if(isNumeric(cell)){
+            console.log(`${cell}. ${this.month_names[this.state.selected_month]} ${this.state.selected_year}`);
+        }
+    }
+
     #calculatePrevMonth = () => {
         let current_month = this.state.selected_month;
-        if (current_month == 0) {
+        if (current_month === 0) {
             this.setState((prevState, props) => ({
                 selected_month: 11,
                 selected_year: prevState.selected_year - 1,
@@ -67,7 +81,7 @@ class Calendar extends React.Component {
 
     #calculateNextMonth = () => {
         let current_month = this.state.selected_month;
-        if (current_month == 11) {
+        if (current_month === 11) {
             this.setState((prevState, props) => ({
                 selected_month: 0,
                 selected_year: prevState.selected_year + 1,
@@ -87,7 +101,7 @@ class Calendar extends React.Component {
 
     // Returns true if the year parameter is a leap year
     #isLeapYear(year) {
-        return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
+        return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
     }
 
     #setMonth = (month, year) => {
@@ -125,7 +139,7 @@ class Calendar extends React.Component {
                 // corresponding column(day of week) skip the column
                 // If the calendar_format is not 'eu' then the english format is used
                 // which means that the weekday slides one column to the left, hence column-1
-                if (row == 1 && (column - 1) < first_week_day) {
+                if (row === 1 && (column - 1) < first_week_day) {
                     continue;
                 }
 
@@ -161,7 +175,7 @@ class Calendar extends React.Component {
     #getLastDayOfMonth = (month, year) => {
         // Since months are numbered 0-11, the number of days in each month can
         // be stored in the array, where the index corresponds to the month number
-        let days_in_month = new Array();
+        let days_in_month = [];
         days_in_month[0] = 31; // January
         days_in_month[1] = this.#isLeapYear(year) ? 29 : 28; // February
         days_in_month[2] = 31; // March
@@ -212,7 +226,7 @@ class Calendar extends React.Component {
                 {this.state.calendar_cells.map(row => {
                     return (
                         <div key={generateKey(row)} className={styles.calendarRow}>{row.map(col => {
-                            return (<span key={generateKey(col)} xs="auto">{col}</span>)
+                            return (<span key={generateKey(col)} onClick={(e)=> this.onClickCalendarCell(col)}>{col}</span>)
                         })}</div>
                     );
                 })}
