@@ -50,7 +50,7 @@ function TaskList() {
 
   return (
     <div>
-      <Calendar weekday_names={weekday_names} month_names={month_names} container={this} format="en" />
+      <Calendar setQuery={setQuery} />
 
       <Row className="h-100">
         <Col className="py-2 p-0 p-lg-2" lg={8}>

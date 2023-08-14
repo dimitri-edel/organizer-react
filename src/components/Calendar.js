@@ -6,7 +6,7 @@ class Calendar extends React.Component {
     constructor(props) {
         super(props);
         let current_date = new Date();
-
+        this.setQuery = props.setQuery;
         // The first weekday must be blank, so we have natural numbers for weekdays(1,2,3,etc)
         this.weekday_names = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         // Names of months that will be used in the control panel
@@ -54,8 +54,21 @@ class Calendar extends React.Component {
             return !isNaN(str);
         }
 
+        const getDateNumberRepresentaion = (num)=>{            
+            if(num < 10){
+                return `0${num}`;
+            }
+            return num;
+        }
+
+        
+        let year = this.state.selected_year;
+        let month = getDateNumberRepresentaion(this.state.selected_month+1);        
+
         if(isNumeric(cell)){
+            let query = `${year}-${month}-${getDateNumberRepresentaion(cell)}`;
             console.log(`${cell}. ${this.month_names[this.state.selected_month]} ${this.state.selected_year}`);
+            this.setQuery(query);
         }
     }
 
