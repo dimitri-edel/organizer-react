@@ -20,11 +20,11 @@ import { useCurrentUser } from "../../context/CurrentUserContext";
 import { FormLabel } from "react-bootstrap";
 import { convertDateFormat } from "../../utils/utils";
 
-function CreateTaskForm() {
+function EditTaskForm() {
     const [errors, setErrors] = useState({});
 
     const [taskData, setTaskData] = useState({
-        id: "",
+        // id: "",
         owner: "",
         asigned_to: "",
         title: "",
@@ -87,14 +87,15 @@ function CreateTaskForm() {
     }, [history, id]);
 
     const handleSubmit = async (event) => {
+        console.log(`submitting task id:${id}`);
         event.preventDefault();
         const formData = new FormData();
 
 
-
+        // formData.append("id", id);
         formData.append("title", title);
         formData.append("comment", comment);
-        formData.append("due_date", due_date);
+        formData.append("due_date", datePickerValue);
         // If there is a file in the buffer it means that a new file
         // has been submitted. If there is a new file, then append it to the form
         // otherwise do not
@@ -104,10 +105,12 @@ function CreateTaskForm() {
         formData.append("category", category);
         formData.append("priority", priority);
         formData.append("status", status);
-        console.log(taskData);
+        
+        console.log(`${id} : ${title}`);
 
         try {
-            const { data } = await axiosReq.put(`task/${id}`, formData);
+            console.log(formData.has("du_date"));
+            const { data } = await axiosReq.put(`/task/${id}`, formData);
             history.push(`/task/${data.id}/edit`);
         } catch (err) {
             console.log(err);
@@ -130,7 +133,7 @@ function CreateTaskForm() {
                 cancel
             </Button>
             <Button className={`${btnStyles.Button} ${btnStyles.Blue}`} type="submit">
-                create
+                save
             </Button>
         </div>
     );
@@ -274,4 +277,4 @@ function CreateTaskForm() {
     );
 }
 
-export default CreateTaskForm;
+export default EditTaskForm;

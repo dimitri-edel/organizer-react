@@ -2,14 +2,18 @@ import React, { createElement, createRef, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "../styles/Calendar.module.css";
 import TaskListItem from "./TaskListItem";
+import { axiosReq } from "../api/axiosDefaults";
+import Asset from "../components/Asset";
+import appStyles from "../App.module.css";
 
 class Calendar extends React.Component {
     constructor(props) {
         super(props);
         let current_date = new Date();
         this.setQuery = props.setQuery;
-        this.selectedMonthTaskList = props.monthTaskList;
-        this.setSelectedMonthQuery = props.setSelectedMonthQuery;
+        // this.setSelectedMonthLoaded = props.setSelectedMonthLoaded;
+        // this.selectedMonthTaskList = [];
+        // this.setSelectedMonthQuery = "";
         // The first weekday must be blank, so we have natural numbers for weekdays(1,2,3,etc)
         this.weekday_names = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         // Names of months that will be used in the control panel
@@ -23,16 +27,43 @@ class Calendar extends React.Component {
             selected_year: current_date.getFullYear(),
             selected_month_name: this.month_names[current_date.getMonth()],
             calendar_cells: [],
+            selectedMonthTaskList: { results: [] },
+            selectedMonthQuery: "",
+            hasLoaded: false,
         };
     }
 
     componentDidMount() {
-        this.#setMonth(this.state.selected_month, this.state.selected_year);
-        for (let i = 0; i < this.selectedMonthTaskList.results.length; i++) {
-            console.log(this.selectedMonthTaskList.results[i].title);
-        }
-        this.setSelectedMonthQuery(this.getSelectedMonthQuery());
+
+        this.state.selectedMonthQuery = this.getSelectedMonthQuery();
+        this.#fetchSelectedMonth();
+        // this.setSelectedMonthQuery(this.getSelectedMonthQuery());
     }
+
+    initMonth = () => {
+        console.log("Datas been fetched!!!!!!!!!!!!");
+        console.log(this.state.selectedMonthTaskList);
+        this.#setMonth(this.state.selected_month, this.state.selected_year);
+        for (let i = 0; i < this.state.selectedMonthTaskList.results.length; i++) {
+            console.log(this.state.selectedMonthTaskList.results[i].title);
+        }
+    }
+    // Fetch all tasks in the given month. The selected month will be passed to this object
+    // by the instance of the Calendar
+    #fetchSelectedMonth = async () => {
+        try {
+            const { data } = await axiosReq.get(`/tasks/?search=${this.state.selectedMonthQuery}&limit=100&offset=0`);
+            console.log(`SELECTED MONTH QUERY = ${this.state.selectedMonthQuery} `);
+            this.setState({
+                selectedMonthTaskList: data,
+                hasLoaded: true,
+            }, this.initMonth);
+
+            // this.setSelectedMonthLoaded(true);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     getSelectedMonthQuery = () => {
         const getDateNumberRepresentaion = (num) => {
@@ -48,21 +79,36 @@ class Calendar extends React.Component {
     }
 
     controlPanel = () => {
+        const left_icon = "fa-solid fa-angle-left";
+        const right_icon = "fa-solid fa-angle-right";
         return (
             <>
-                <input type="button" value="<<<<" onClick={this.onClickPrevMonth} />
-                <p>{this.state.selected_month_name} {this.state.selected_year}</p>
-                <input type="button" value=">>>>>" onClick={this.onClickNextMonth} />
+                <div className={styles.calendarControlPanel}>
+                    <button onClick={this.onClickPrevMonth}>
+                        <i className={left_icon}></i>
+                    </button>
+                    <p>{this.state.selected_month_name} {this.state.selected_year}</p>
+                    <button onClick={this.onClickNextMonth}>
+                        <i className={right_icon}></i>
+                    </button>
+                </div>
             </>
-        );
+        )
     }
 
     onClickPrevMonth = () => {
-        this.#calculatePrevMonth();
+        // Display the loading spinner, and call the calculate previous month method (#calculatePrevMonth)
+        this.setState({
+            hasLoaded: false,
+        }, this.#calculatePrevMonth);
+
     }
 
     onClickNextMonth = () => {
-        this.#calculateNextMonth();
+        // Display the loading spinner, and call the calculate next month method (#calculateNextMonth)
+        this.setState({
+            hasLoaded: false,
+        }, this.#calculateNextMonth);
     }
 
     onClickCalendarCell = (cell) => {
@@ -125,8 +171,11 @@ class Calendar extends React.Component {
     }
 
     #updateStateDependantElements = () => {
-        this.#setMonth(this.state.selected_month, this.state.selected_year);
-        this.setSelectedMonthQuery(this.getSelectedMonthQuery());
+        // this.#setMonth(this.state.selected_month, this.state.selected_year);
+        this.setState({
+            selectedMonthQuery: this.getSelectedMonthQuery(),
+        }, this.#fetchSelectedMonth);
+
     }
     // Returns true if the year parameter is a leap year
     #isLeapYear(year) {
@@ -181,7 +230,7 @@ class Calendar extends React.Component {
                 cal_cells[row][column][0] = day_number.toString();
                 // Get the list of tasks for the day and append it to the array
                 // month number needs correction, because they start with 0
-                cal_cells[row][column][1] = this.#getDaysTaskList(day_number, month+1, year);
+                cal_cells[row][column][1] = this.#getDaysTaskList(day_number, month + 1, year);
                 // Proceed to the next day
                 day_number++;
             }
@@ -193,7 +242,7 @@ class Calendar extends React.Component {
     // If there is a list of tasks for this day then return an array with tasks, else return an empty array
     #getDaysTaskList = (day, month, year) => {
         let arr = [];
-        
+
         // Check if the due_date is the same as the date specified in the parameter list passed to this method
         const isSameDate = (due_date) => {
             console.log(due_date);
@@ -203,7 +252,7 @@ class Calendar extends React.Component {
             const strDay = split[0];
             const strMonth = split[1];
             const strYear = split[2];
-            
+
             let month_number = 0;
             let year_number = parseInt(strYear);
             let day_number = parseInt(strDay);
@@ -213,17 +262,17 @@ class Calendar extends React.Component {
                     month_number = monthNumbers[i];
                 }
             }
-            
-            if((day === day_number) && (month === month_number) && (year === year_number)){
+
+            if ((day === day_number) && (month === month_number) && (year === year_number)) {
                 return true;
             }
             return false;
         }
 
         const getList = () => {
-            for (let i = 0; i < this.selectedMonthTaskList.results.length; i++) {
-                if(isSameDate(this.selectedMonthTaskList.results[i].due_date)){
-                    arr[i] = this.selectedMonthTaskList.results[i];
+            for (let i = 0; i < this.state.selectedMonthTaskList.results.length; i++) {
+                if (isSameDate(this.state.selectedMonthTaskList.results[i].due_date)) {
+                    arr[i] = this.state.selectedMonthTaskList.results[i];
                 }
             }
         }
@@ -283,29 +332,37 @@ class Calendar extends React.Component {
                         })
                     }
                 </span>
-                {this.state.calendar_cells.map(row => {
-                    return (
-                        <div key={generateKey(row)} className={styles.calendarRow}>{row.map(col => {
-                            return (
-                                <span key={generateKey(col[0])} onClick={(e) => this.onClickCalendarCell(col[0])}>
-                                    {col[0]}
-                                    <ul key={generateKey(col[1])} className={styles.calendarCellItemList}>
-                                        {
-                                            col[1].map(item => {
-                                                return (<li key={item.title + generateKey(item.title)}>{<TaskListItem key={item.title + generateKey(item.status)} status={item.status} priority={item.priority} title={item.title} />}</li>)
-                                            })
-                                        }
-                                    </ul>
-                                </span>)
-                        })}</div>
-                    );
-                })}
+                {this.state.hasLoaded ? (
+                    this.state.calendar_cells.map(row => {
+                        return (
+                            <div key={generateKey(row)} className={styles.calendarRow}>{row.map(col => {
+                                return (
+                                    <span key={generateKey(col[0])} onClick={(e) => this.onClickCalendarCell(col[0])}>
+                                        {col[0]}
+                                        <ul key={generateKey(col[1])} className={styles.calendarCellItemList}>
+                                            {
+                                                col[1].map(item => {
+                                                    return (<li key={item.title + generateKey(item.title)}>{<TaskListItem key={item.title + generateKey(item.status)} status={item.status} priority={item.priority} title={item.title} />}</li>)
+                                                })
+                                            }
+                                        </ul>
+                                    </span>)
+                            })}</div>
+                        );
+                    })
+
+                ) : (
+                    <Container className={appStyles.Content}>
+                        <Asset spinner />
+                    </Container>
+                )
+                }
             </div>
         );
     }
     render() {
         return <>
-            {this.controlPanel()};
+            {this.controlPanel()}
             {this.displayCells()}
         </>
     }

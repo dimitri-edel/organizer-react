@@ -20,9 +20,6 @@ function TaskList() {
   const [hasLoaded, setHasLoaded] = useState(true);
   const { pathname } = useLocation();
   const [query, setQuery] = useState("");
-  const [selectedMonthTaskList, setSelectedMonthTaskList] = useState({ results: [] });
-  const [selectedMonthQuery, setSelectedMonthQuery] = useState("");
-  const [selectedMonthLoaded, setSelectedMonthLoaded] = useState(false);
 
   useEffect(() => {
     // Fetch all tasks objects corresponding to the query, if the query is empty
@@ -30,22 +27,9 @@ function TaskList() {
     const fetchtasks = async () => {
       try {
         const { data } = await axiosReq.get(`/tasks/?search=${query}`);
-
-        const { selectedMonthData } = await axiosReq.get(`/tasks/`);
-        setSelectedMonthTaskList(selectedMonthData);
+        // const { data } = await axiosReq.get(`/tasks/?search=${query}`);            
         setTasks(data);
         setHasLoaded(true);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    // Fetch all tasks in the given month. The selected month will be passed to this object
-    // by the instance of the Calendar
-    const fetchSelectedMonth = async () => {
-      try {
-        const { data } = await axiosReq.get(`/tasks/?search=${selectedMonthQuery}`);
-        setSelectedMonthTaskList(data);
-        setSelectedMonthLoaded(true);
       } catch (err) {
         console.log(err);
       }
@@ -53,31 +37,19 @@ function TaskList() {
 
     setHasLoaded(false);
     setUpdateTaskList(false);
-    // After the mounting it will wait a second before the user stops typing into the search
-    // field , so the page does not get refreshed after every key stroke
-    // const timer = setTimeout(() => {
-    //   fetchSelectedMonth();
-    //   fetchtasks();
-    // }, 1000);
-      fetchSelectedMonth();
-      fetchtasks();
+
+    fetchtasks();
 
     // clear the timer when unmounting
     return () => {
       // clearTimeout(timer);
     };
-  }, [query, pathname, updateTaskList, selectedMonthQuery]);
+  }, [query, pathname, updateTaskList]);
 
   return (
     <div>
       {
-        selectedMonthLoaded ? (
-          <Calendar setQuery={setQuery} monthTaskList={selectedMonthTaskList} setSelectedMonthQuery={setSelectedMonthQuery}/>
-        ) : (
-          <Container className={appStyles.Content}>
-            <Asset spinner />
-          </Container>
-        )
+        <Calendar setQuery={setQuery} />
       }
 
 

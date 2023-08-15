@@ -32,7 +32,7 @@ const NavBar = () => {
       activeClassName={styles.Active}
       to="/task/create"
     >
-      <i className="far fa-plus-square"></i>Add post
+      <i className="far fa-plus-square"></i>Create Task
     </NavLink>
   );
   const loggedInIcons = (
@@ -42,7 +42,7 @@ const NavBar = () => {
         className={styles.NavLink}
         to={`/tasks/`}
       >
-        Task List
+        <i class="fa-solid fa-list"></i>Task List
       </NavLink>
       <NavLink className={styles.NavLink} to="/" onClick={handleSignOut}>
         <i className="fas fa-sign-out-alt"></i>Sign out
