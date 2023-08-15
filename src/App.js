@@ -30,7 +30,7 @@ function App() {
           <Route exact path="/signup" render={() => <SignUpForm />} />
           <Route exact path="/tasks/" render={() => <TaskList />} />
           <Route exact path="/task/create" render={() => <CreateTaskForm />}/>      
-          <Route exact path="/task/:id/edit" render={() => <EditTaskForm />}/>
+          <Route exact path="/tasks/:id/edit" render={() => <EditTaskForm />}/>
           <Route render={() => <p>Page not found!</p>} />
         </Switch>
       </Container>

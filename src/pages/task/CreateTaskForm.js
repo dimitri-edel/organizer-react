@@ -67,7 +67,12 @@ function CreateTaskForm() {
         formData.append("title", title);
         formData.append("comment", comment);
         formData.append("due_date", due_date);
-        formData.append("file", imageInput.current.files[0]);
+        // If there is a file in the buffer it means that a new file
+        // has been submitted. If there is a new file, then append it to the form
+        // otherwise do not
+        if (imageInput?.current?.files[0]) {
+            formData.append("file", imageInput.current.files[0]);
+        }
         formData.append("category", category);
         formData.append("priority", priority);
         formData.append("status", status);
