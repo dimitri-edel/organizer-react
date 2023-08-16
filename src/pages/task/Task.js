@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import styles from "../../styles/Task.module.css";
 import { useCurrentUser } from "../../context/CurrentUserContext";
-import { Card, Media, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Card, Media, OverlayTrigger, Tooltip, Modal, Button } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { axiosRes } from "../../api/axiosDefaults";
 import { MoreDropdown } from "../../components/MoreDropdown";
@@ -24,21 +24,36 @@ const Task = (props) => {
     const currentUser = useCurrentUser();
     const is_owner = currentUser?.username === owner;
     const history = useHistory();
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+
+    const handleShowConfirmDialog = () =>{
+        setShowConfirmDialog(true);
+    }
+
+    const handleCloseConfirmDialog = () => {
+        setShowConfirmDialog(false);
+    }
+
+    const handleConfirmDialogDeleteClicked = () => {
+        const handleDelete = async () => {
+            try {
+                await axiosRes.delete(`/task/${id}`);
+                // Set the flag to true for TaskList.js, so the useEffectHook is executed
+                setUpdateTaskList(true);
+                history.push("/");
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        handleDelete();
+        setShowConfirmDialog(false);
+    }
     
     const handleEdit = () => {
-        history.push(`${id}/edit`);        
+        history.push(`${id}/edit`);
     };
 
-    const handleDelete = async () => {
-        try {
-            await axiosRes.delete(`/task/${id}`);
-            // Set the flag to true for TaskList.js, so the useEffectHook is executed
-            setUpdateTaskList(true);            
-            history.push("/");
-        } catch (err) {
-            console.log(err);
-        }
-    };
 
     // Category comes in as an integer 0 - 2 (chore, errand, work)
     // The integer needs to be convertad into an actuall name
@@ -88,7 +103,7 @@ const Task = (props) => {
                         {is_owner && (
                             <MoreDropdown
                                 handleEdit={handleEdit}
-                                handleDelete={handleDelete}
+                                handleDelete={handleShowConfirmDialog}
                             />
                         )}
                     </div>
@@ -103,7 +118,22 @@ const Task = (props) => {
                 <p>ID: {id} </p>
                 <Card.Img src={file} alt={title} />
             </Card.Body>
+            <Modal show={showConfirmDialog} onHide={handleCloseConfirmDialog} animation={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Please confirm delete</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to delete this task?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseConfirmDialog}>
+                        Cancel
+                    </Button>
+                    <Button variant="primary" onClick={handleConfirmDialogDeleteClicked}>
+                        Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Card>
+
     );
 };
 
