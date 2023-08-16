@@ -6,6 +6,10 @@
     text-align: center;
   }
   
+  .Title {
+    font-size: large;
+    font-weight: bold;
+  }
   .Task figure,
   h5 {
     margin: 0 0;

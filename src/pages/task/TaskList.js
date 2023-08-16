@@ -26,7 +26,7 @@ function TaskList() {
     // then all tasks belonging to the user will be fetched
     const fetchtasks = async () => {
       try {
-        const { data } = await axiosReq.get(`/tasks/?search=${query}`);
+        const { data } = await axiosReq.get(`/tasks/?search=${query}&ordering=due_date`);
         // const { data } = await axiosReq.get(`/tasks/?search=${query}`);            
         setTasks(data);
         setHasLoaded(true);

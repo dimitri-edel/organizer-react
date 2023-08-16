@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styles from "../../styles/Task.module.css";
 import { useCurrentUser } from "../../context/CurrentUserContext";
-import { Card, Media, OverlayTrigger, Tooltip, Modal, Button } from "react-bootstrap";
+import { Card, Media, OverlayTrigger, Tooltip, Modal, Button, Container, Row, Col, ListGroup } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { axiosRes } from "../../api/axiosDefaults";
 import { MoreDropdown } from "../../components/MoreDropdown";
@@ -26,7 +26,7 @@ const Task = (props) => {
     const history = useHistory();
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
-    const handleShowConfirmDialog = () =>{
+    const handleShowConfirmDialog = () => {
         setShowConfirmDialog(true);
     }
 
@@ -49,7 +49,7 @@ const Task = (props) => {
         handleDelete();
         setShowConfirmDialog(false);
     }
-    
+
     const handleEdit = () => {
         history.push(`${id}/edit`);
     };
@@ -97,41 +97,71 @@ const Task = (props) => {
     return (
         <Card className={styles.Task}>
             <Card.Body>
-                <Media className="align-items-center justify-content-between">
-                    <div className="d-flex align-items-center">
-                        <span>{due_date}</span>
-                        {is_owner && (
-                            <MoreDropdown
-                                handleEdit={handleEdit}
-                                handleDelete={handleShowConfirmDialog}
-                            />
-                        )}
-                    </div>
-                </Media>
+                <Card.Header>
+                    {
+                        /* Show the part of the date that contains the time*/
+                        due_date.split(" ")[3]
+                    }
+                </Card.Header>
+                <Card.Title>
+                    {title}
+                </Card.Title>
+                <ListGroup className="list-group-flush">
+                    <ListGroup.Item>
+                        <Container>
+                            <Row>
+                                <Col>
+                                    Category: {getCategoryName(category)}
+                                </Col>
+                                <Col>
+                                    Priority: {getPriorityName(priority)}
+                                </Col>
+                                <Col>
+                                    Status: {getStatusName(status)}
+                                </Col>
+                            </Row>
+                        </Container>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                        {comment && <Card.Subtitle>{comment}</Card.Subtitle>}
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                        {/* If there is a file attached to the task then provide a link to open it */}
+                        {file && <Card.Link href={file} target="_blank">Show file</Card.Link>}
+                    </ListGroup.Item>
+                </ListGroup>
+                {/* If the user is the owner of the task then provide edit and delete buttons*/}
+                <Card.Footer>
+                    {is_owner && (<Container>
+                        <Row>
+                            <Col>
+                                <Button variant="primary" onClick={handleEdit} size="sm">
+                                    <i className="fas fa-edit"></i>Edit
+                                </Button>
+                            </Col>
+                            <Col>
+                                <Button variant="danger" onClick={handleShowConfirmDialog} size="sm">
+                                    <i className="fas fa-edit"></i>Delete
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Container>)}
+                </Card.Footer>
+                <Modal show={showConfirmDialog} onHide={handleCloseConfirmDialog} animation={false}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Please confirm delete</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Are you sure you want to delete this task?</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseConfirmDialog}>
+                            Cancel
+                        </Button>
+                        <Button variant="primary" onClick={handleConfirmDialogDeleteClicked}>
+                            Delete
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </Card.Body>
-            <Card.Body>
-                {title && <Card.Title className="text-center">{title}</Card.Title>}
-                {comment && <Card.Text>{comment}</Card.Text>}
-                <p>Category: {getCategoryName(category)}</p>
-                <p>Priority: {getPriorityName(priority)}</p>
-                <p>Status: {getStatusName(status)}</p>
-                <p>ID: {id} </p>
-                <Card.Img src={file} alt={title} />
-            </Card.Body>
-            <Modal show={showConfirmDialog} onHide={handleCloseConfirmDialog} animation={false}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Please confirm delete</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Are you sure you want to delete this task?</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseConfirmDialog}>
-                        Cancel
-                    </Button>
-                    <Button variant="primary" onClick={handleConfirmDialogDeleteClicked}>
-                        Delete
-                    </Button>
-                </Modal.Footer>
-            </Modal>
         </Card>
 
     );
