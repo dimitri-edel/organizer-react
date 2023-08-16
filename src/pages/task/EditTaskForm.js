@@ -27,6 +27,7 @@ function EditTaskForm() {
         // id: "",
         owner: "",
         asigned_to: "",
+        asigned_to_username: "",
         title: "",
         comment: "",
         due_date: new Date().toJSON(),
@@ -36,7 +37,9 @@ function EditTaskForm() {
         file: "",
     });
 
-    const { owner, is_owner, asigned_to, title, comment, due_date, category, priority, status, file } = taskData;
+    const [teamMembers, setTeamMembers] = useState({ results: [], });
+
+    const { owner, is_owner, asigned_to, asigned_to_username, title, comment, due_date, category, priority, status, file } = taskData;
     const currentUser = useCurrentUser();
 
 
@@ -70,13 +73,19 @@ function EditTaskForm() {
     useEffect(() => {
         const handleMount = async () => {
             try {
-                const { data } = await axiosReq.get(`/task/${id}`);
-                const { owner, is_owner, asigned_to, title, comment, due_date, category, priority, status, file } = data; 
+                const [{ data: task }, { data: teammates }] = await Promise.all([
+                    axiosReq.get(`/task/${id}`),
+                    axiosReq.get(`/teammates/`),
+                ]);
+
+                const { owner, is_owner, asigned_to, asigned_to_username, title, comment, due_date, category, priority, status, file } = task;
+
                 // Convert the due_date to datePickerValue               
                 setDatePickerValue(convertDateFormat(due_date));
                 // If it is the owner requesting the task, then copy the retrieved data to the corresponding fields, else
                 // redirect the user to the root URL
-                is_owner ? setTaskData({ is_owner, title, comment, due_date, category, priority, status, file }) : history.push("/");
+                is_owner ? setTaskData({ is_owner, asigned_to, asigned_to_username, title, comment, due_date, category, priority, status, file }) : history.push("/");
+                setTeamMembers(teammates);
             } catch (err) {
                 console.log(err);
             }
@@ -91,8 +100,14 @@ function EditTaskForm() {
         event.preventDefault();
         const formData = new FormData();
 
-
-        // formData.append("id", id);
+        console.log(`asigned_to: ${asigned_to}`);
+        // if the asigned_to value is numberic and is not 0. append it to the form
+        if ((!isNaN(asigned_to)) && (parseInt(asigned_to) > 0)) {
+            formData.append("asigned_to", asigned_to);
+        }else if(asigned_to === "0"){
+            // if the user selected 'Not asigned', then send empty string, which is equivalent to null
+            formData.append("asigned_to", "");
+        }
         formData.append("title", title);
         formData.append("comment", comment);
         formData.append("due_date", datePickerValue);
@@ -105,7 +120,7 @@ function EditTaskForm() {
         formData.append("category", category);
         formData.append("priority", priority);
         formData.append("status", status);
-        
+
         console.log(`${id} : ${title}`);
 
         try {
@@ -140,6 +155,7 @@ function EditTaskForm() {
 
     return (
         <Form onSubmit={handleSubmit}>
+            {asigned_to_username}
             <Row>
                 <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
                     <Container
@@ -163,6 +179,23 @@ function EditTaskForm() {
                                     defaultValue={datePickerValue}
                                     onChange={handleChange}
                                 />
+                            </Form.Group>
+                            <Form.Group>
+                                <FormLabel>Asign to:</FormLabel>
+                                {
+                                    <Form.Control
+                                        as="select"
+                                        name="asigned_to"
+                                        value={asigned_to}
+                                        onChange={handleChange}>   
+                                        <option value="0">Not asigned</option>                                     
+                                        {
+                                            teamMembers.results.map(teammate => {
+                                                 return <option value={teammate.user_id}>{teammate.member}</option> 
+                                            })
+                                        }
+                                    </Form.Control>
+                                }
                             </Form.Group>
                             <Form.Group>
                                 <FormLabel>Category</FormLabel>

@@ -41,7 +41,7 @@ function CreateTaskForm() {
         setTaskData({
             ...taskData,
             [event.target.name]: event.target.value,
-        });        
+        });
     };
 
     const handleChangeImage = (event) => {
@@ -91,7 +91,7 @@ function CreateTaskForm() {
         }
     };
 
-    const textFields = (
+    const buttonPanel = (
         <div className="text-center">
             {/* Add your form fields here */}
 
@@ -234,11 +234,15 @@ function CreateTaskForm() {
                                 </Alert>
                             ))}
                         </Form.Group>
-                        <div className="d-md-none">{textFields}</div>
+                        {/* <div className="d-md-none">{buttonPanel}</div> */}
                     </Container>
                 </Col>
                 <Col md={5} lg={4} className="d-none d-md-block p-0 p-md-2">
-                    <Container className={appStyles.Content}>{textFields}</Container>
+                </Col>
+            </Row>
+            <Row>
+                <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
+                    <Container className={appStyles.Content}>{buttonPanel}</Container>
                 </Col>
             </Row>
         </Form>
