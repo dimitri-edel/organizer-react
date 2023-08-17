@@ -34,8 +34,9 @@ const TaskListItem = ({ title, priority, status }) => {
     getClassNames();
 
     return (
+        /* render only the first word in the title */
         <span className={classNames.join(" ")}>
-            {title}
+            {title.split(" ")[0]}
         </span>
     );
 };

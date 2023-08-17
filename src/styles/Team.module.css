@@ -1,0 +1,16 @@
+.Team {
+    background-color: #ffffff;
+    border: 1px solid #dadadf;
+    border-radius: 2px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  .Title {
+    font-size: large;
+    font-weight: bold;
+  }
+  
+  h5 {
+    margin: 0 0;
+  }

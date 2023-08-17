@@ -16,6 +16,9 @@ import Calendar from "../../components/Calendar";
 
 function TaskList() {
   const [tasks, setTasks] = useState({ results: [] });
+  // updateTaskList flag is needed for signaling that the task list 
+  // has been changed. For example when a task has been added or deleted
+  // by another component
   const [updateTaskList, setUpdateTaskList] = useState(true);
   const [hasLoaded, setHasLoaded] = useState(true);
   const { pathname } = useLocation();
@@ -54,8 +57,7 @@ function TaskList() {
 
 
       <Row className="h-100">
-        <Col className="py-2 p-0 p-lg-2" lg={8}>
-          <p>Popular profiles mobile</p>
+        <Col className="py-2 p-0 p-lg-2" lg={8}>          
           <i className={`fas fa-search ${styles.SearchIcon}`} />
           <Form
             className={styles.SearchBar}
@@ -93,10 +95,7 @@ function TaskList() {
               <Asset spinner />
             </Container>
           )}
-        </Col>
-        <Col md={4} className="d-none d-lg-block p-0 p-lg-2">
-          <p>Popular profiles for desktop</p>
-        </Col>
+        </Col>        
       </Row>
     </div>
   );

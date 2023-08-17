@@ -132,8 +132,7 @@ function EditTaskForm() {
         try {
             console.log(formData.has("du_date"));
             const { data } = await axiosReq.put(`/task/${id}`, formData);
-            setMessage("The task has been saved!");
-            history.push(`/tasks/${data.id}/edit`);
+            setMessage("The task has been saved!");           
         } catch (err) {
             console.log(err);
             if (err.response?.status !== 401) {

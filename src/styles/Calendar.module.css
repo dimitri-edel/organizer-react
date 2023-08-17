@@ -22,6 +22,14 @@
     grid-template-columns: 14% 14% 14% 14% 14% 14% 14%;
 }
 
+.calendarCell {
+    border: 1px solid gray;
+    padding: 5px;
+    margin: 2px;
+    overflow: hidden;
+    height: 60px;
+}
+
 .calendarCellItemList {
     font-size: 9px;
     list-style-type: none;

@@ -32,23 +32,40 @@ const NavBar = () => {
       activeClassName={styles.Active}
       to="/task/create"
     >
-      <i className="far fa-plus-square"></i>Create Task
+      <i className="far fa-plus-square"></i>Task
     </NavLink>
   );
+
+  const addTeamIcon = (
+    <NavLink
+      className={styles.NavLink}
+      activeClassName={styles.Active}
+      to="/team/create"
+    >
+      <i className="far fa-plus-square"></i>Team
+    </NavLink>
+  );
+
   const loggedInIcons = (
-    <>
-    {/* <p>{currentUser?.username}</p> */}
+    <>    
       <NavLink
         className={styles.NavLink}
         to={`/tasks/`}
       >
-        <i class="fa-solid fa-list"></i>Task List
+        <i class="fa-solid fa-list"></i>Tasks
+      </NavLink>
+      <NavLink
+        className={styles.NavLink}
+        to={`/teams/`}
+      >
+        <i class="fa-solid fa-list"></i>Teams
       </NavLink>
       <NavLink className={styles.NavLink} to="/" onClick={handleSignOut}>
         <i className="fas fa-sign-out-alt"></i>Sign out
       </NavLink>
     </>
   );
+
   const loggedOutIcons = (
     <>
       <NavLink
@@ -77,6 +94,7 @@ const NavBar = () => {
           </Navbar.Brand>
         </NavLink>
         {currentUser && addTaskIcon}
+        {currentUser && addTeamIcon}
         <Navbar.Toggle
           ref={ref}
           onClick={() => setExpanded(!expanded)}

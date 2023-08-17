@@ -36,12 +36,10 @@ class Calendar extends React.Component {
     componentDidMount() {
 
         this.state.selectedMonthQuery = this.getSelectedMonthQuery();
-        this.#fetchSelectedMonth();        
+        this.#fetchSelectedMonth();
     }
 
     initMonth = () => {
-        console.log("Datas been fetched!!!!!!!!!!!!");
-        console.log(this.state.selectedMonthTaskList);
         this.#setMonth(this.state.selected_month, this.state.selected_year);
         for (let i = 0; i < this.state.selectedMonthTaskList.results.length; i++) {
             console.log(this.state.selectedMonthTaskList.results[i].title);
@@ -52,7 +50,6 @@ class Calendar extends React.Component {
     #fetchSelectedMonth = async () => {
         try {
             const { data } = await axiosReq.get(`/tasks/?search=${this.state.selectedMonthQuery}&limit=100&offset=0`);
-            console.log(`SELECTED MONTH QUERY = ${this.state.selectedMonthQuery} `);
             this.setState({
                 selectedMonthTaskList: data,
                 hasLoaded: true,
@@ -334,12 +331,16 @@ class Calendar extends React.Component {
                         return (
                             <div key={generateKey(row)} className={styles.calendarRow}>{row.map(col => {
                                 return (
-                                    <span key={generateKey(col[0])} onClick={(e) => this.onClickCalendarCell(col[0])}>
+                                    <span key={generateKey(col[0])} onClick={(e) => this.onClickCalendarCell(col[0])} className={styles.calendarCell}>
                                         {col[0]}
                                         <ul key={generateKey(col[1])} className={styles.calendarCellItemList}>
                                             {
                                                 col[1].map(item => {
-                                                    return (<li key={item.title + generateKey(item.title)}>{<TaskListItem key={item.title + generateKey(item.status)} status={item.status} priority={item.priority} title={item.title} />}</li>)
+                                                    return (
+                                                        <li key={item.title + generateKey(item.title)}>
+                                                            {<TaskListItem key={item.title + generateKey(item.status)} status={item.status} priority={item.priority} title={item.title} />}
+                                                        </li>
+                                                    )
                                                 })
                                             }
                                         </ul>

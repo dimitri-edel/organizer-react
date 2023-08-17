@@ -10,6 +10,8 @@ import NavBar from "./components/NavBar";
 import TaskList from './pages/task/TaskList';
 import CreateTaskForm from './pages/task/CreateTaskForm';
 import EditTaskForm from './pages/task/EditTaskForm';
+import TeamList from './pages/team/TeamList';
+import CreateTeamForm from './pages/team/CreateTeamForm';
 
 function App() {
   const currentUser = useCurrentUser();
@@ -29,6 +31,8 @@ function App() {
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
           <Route exact path="/tasks/" render={() => <TaskList />} />
+          <Route exact path="/teams/" render={() => <TeamList />} />
+          <Route exact path="/team/create" render={() => <CreateTeamForm />}/>  
           <Route exact path="/task/create" render={() => <CreateTaskForm />}/>      
           <Route exact path="/tasks/:id/edit" render={() => <EditTaskForm />}/>
           <Route render={() => <p>Page not found!</p>} />
