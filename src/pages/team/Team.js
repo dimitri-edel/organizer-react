@@ -63,7 +63,7 @@ const Team = (props) => {
 
     const handleLeaveTeam = async () => {
         try {
-            await axiosRes.delete(`membership/${id}`);
+            await axiosRes.delete(`leave/team/${id}`);
             // Set the flag to true for TaskList.js, so the useEffectHook is executed
             setUpdateTeamList(true);
             history.goBack();

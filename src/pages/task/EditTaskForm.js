@@ -91,7 +91,7 @@ function EditTaskForm() {
                 // If it is the owner requesting the task, then copy the retrieved data to the corresponding fields, else
                 // redirect the user to the root URL
                 is_owner ? setTaskData({ is_owner, asigned_to, asigned_to_username, title, comment, due_date, category, priority, status, file }) : history.push("/");
-                setTeamMembers(teammates);
+                setTeamMembers(teammates);                
             } catch (err) {
                 console.log(err);
             }
@@ -197,7 +197,7 @@ function EditTaskForm() {
                                         <option value="0">Not asigned</option>                                     
                                         {
                                             teamMembers.results.map(teammate => {
-                                                 return <option value={teammate.user_id}>{teammate.member}</option> 
+                                                 return <option value={teammate.user_id}>{teammate.team_name} : {teammate.member}</option> 
                                             })
                                         }
                                     </Form.Control>

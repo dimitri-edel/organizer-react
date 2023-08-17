@@ -165,7 +165,7 @@ function CreateTaskForm() {
                                         <option value="0">Not asigned</option>                                     
                                         {
                                             teamMembers.results.map(teammate => {
-                                                 return <option value={teammate.user_id}>{teammate.member}</option> 
+                                                 return <option value={teammate.user_id}>{teammate.team_name} : {teammate.member}</option> 
                                             })
                                         }
                                     </Form.Control>
