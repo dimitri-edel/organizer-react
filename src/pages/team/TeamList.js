@@ -30,7 +30,7 @@ function TeamList() {
         // then all Teams belonging to the user will be fetched
         const fetchTeams = async () => {
             try {
-                const { data } = await axiosReq.get(`/team/?search=${query}`);
+                const { data } = await axiosReq.get(`/team/?search=${query}&limit=7&offset=0`);
                 // const { data } = await axiosReq.get(`/Teams/?search=${query}`);            
                 setTeams(data);
                 setHasLoaded(true);

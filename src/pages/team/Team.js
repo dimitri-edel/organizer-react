@@ -3,13 +3,14 @@ import styles from "../../styles/Team.module.css";
 import { useCurrentUser } from "../../context/CurrentUserContext";
 import { Card, Media, OverlayTrigger, Tooltip, Modal, Button, Container, Row, Col, ListGroup } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
-import { axiosRes } from "../../api/axiosDefaults";
+import { axiosReq, axiosRes } from "../../api/axiosDefaults";
 
 const Team = (props) => {
     const {
         id,
         owner,
         name,
+        is_member,
         setUpdateTeamList,
     } = props;
 
@@ -46,12 +47,36 @@ const Team = (props) => {
         history.push(`${id}/edit`);
     };
 
+    const handleJoinTeam = async () => {
+        const formData = new FormData();
+
+        formData.append("team", id);
+        formData.append("member", currentUser.id)
+
+        try {
+            await axiosReq.post("membership/", formData);
+            history.goBack();
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const handleLeaveTeam = async () => {
+        try {
+            await axiosRes.delete(`membership/${id}`);
+            // Set the flag to true for TaskList.js, so the useEffectHook is executed
+            setUpdateTeamList(true);
+            history.goBack();
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     return (
         <Card className={styles.Team}>
             <Card.Body>
                 <Card.Header>
-                    { name  }
+                    {name}
                 </Card.Header>
                 <Card.Title>
                     {owner}
@@ -59,7 +84,7 @@ const Team = (props) => {
 
                 {/* If the user is the owner of the task then provide edit and delete buttons*/}
                 <Card.Footer>
-                    {is_owner && (<Container>
+                    {is_owner ? (<Container>
                         <Row>
                             <Col>
                                 <Button variant="primary" onClick={handleEdit} size="sm">
@@ -72,7 +97,17 @@ const Team = (props) => {
                                 </Button>
                             </Col>
                         </Row>
-                    </Container>)}
+                    </Container>) : (
+                        is_member ? (
+                            <Button variant="danger" onClick={handleLeaveTeam}>
+                                Leave
+                            </Button>
+                        ) : (
+                            <Button variant="secondary" onClick={handleJoinTeam}>
+                                Join
+                            </Button>
+                        )
+                    )}
                 </Card.Footer>
                 <Modal show={showConfirmDialog} onHide={handleCloseConfirmDialog} animation={false}>
                     <Modal.Header closeButton>
