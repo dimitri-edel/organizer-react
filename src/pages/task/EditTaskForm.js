@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
+import {Modal} from "react-bootstrap";
 
 import Upload from "../../assets/upload.png";
 
@@ -20,11 +21,16 @@ import { useCurrentUser } from "../../context/CurrentUserContext";
 import { FormLabel } from "react-bootstrap";
 import { convertDateFormat } from "../../utils/utils";
 
+
 function EditTaskForm() {
     const [errors, setErrors] = useState({});
-
+    // The messages for the Task Editor
+    const [message, setMessage] = useState("");
+    // The modal 
+    const handleCloseConfirmDialog = () =>{
+        setMessage("");
+    }
     const [taskData, setTaskData] = useState({
-        // id: "",
         owner: "",
         asigned_to: "",
         asigned_to_username: "",
@@ -126,7 +132,8 @@ function EditTaskForm() {
         try {
             console.log(formData.has("du_date"));
             const { data } = await axiosReq.put(`/task/${id}`, formData);
-            history.push(`/task/${data.id}/edit`);
+            setMessage("The task has been saved!");
+            history.push(`/tasks/${data.id}/edit`);
         } catch (err) {
             console.log(err);
             if (err.response?.status !== 401) {
@@ -135,7 +142,7 @@ function EditTaskForm() {
         }
     };
 
-    const textFields = (
+    const buttonPanel = (
         <div className="text-center">
             {/* Add your form fields here */}
 
@@ -298,14 +305,26 @@ function EditTaskForm() {
                                     {message}
                                 </Alert>
                             ))}
-                        </Form.Group>
-                        <div className="d-md-none">{textFields}</div>
+                        </Form.Group>                       
                     </Container>
-                </Col>
-                <Col md={5} lg={4} className="d-none d-md-block p-0 p-md-2">
-                    <Container className={appStyles.Content}>{textFields}</Container>
+                </Col>               
+            </Row>
+            <Row>
+                <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
+                    <Container className={appStyles.Content}>{buttonPanel}</Container>
                 </Col>
             </Row>
+            <Modal show={(message !== "")} onHide={handleCloseConfirmDialog} animation={false}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Task Editor</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>{message}</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseConfirmDialog}>
+                            OK
+                        </Button>                        
+                    </Modal.Footer>
+                </Modal>
         </Form>
     );
 }

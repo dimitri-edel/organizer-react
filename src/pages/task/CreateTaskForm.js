@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -35,15 +35,16 @@ function CreateTaskForm() {
     });
 
     const { id, owner, asigned_to, title, comment, due_date, category, priority, status, file } = taskData;
+    const [teamMembers, setTeamMembers] = useState({ results: [], });
 
-
+    
     const handleChange = (event) => {
         setTaskData({
             ...taskData,
             [event.target.name]: event.target.value,
         });
     };
-
+    
     const handleChangeImage = (event) => {
         if (event.target.files.length) {
             URL.revokeObjectURL(file);
@@ -53,10 +54,23 @@ function CreateTaskForm() {
             });
         }
     };
-
+    
     // Reference to the component with a image file : Form.File
     const imageInput = useRef(null);
     const history = useHistory();
+    
+    useEffect(() => {
+        const handleMount = async () => {
+            try {
+                const { data } = await axiosReq.get(`/teammates/`);
+                setTeamMembers(data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        handleMount();       
+    }, [history, id]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -64,6 +78,13 @@ function CreateTaskForm() {
 
 
 
+        // if the asigned_to value is numberic and is not 0. append it to the form
+        if ((!isNaN(asigned_to)) && (parseInt(asigned_to) > 0)) {
+            formData.append("asigned_to", asigned_to);
+        }else if(asigned_to === "0"){
+            // if the user selected 'Not asigned', then send empty string, which is equivalent to null
+            formData.append("asigned_to", "");
+        }
         formData.append("title", title);
         formData.append("comment", comment);
         formData.append("due_date", due_date);
@@ -80,9 +101,7 @@ function CreateTaskForm() {
 
         try {
             const { data } = await axiosReq.post("tasks/", formData);
-            // history.push(`/task/${data.id}`);
-
-            history.push("/");
+            history.goBack();
         } catch (err) {
             console.log(err);
             if (err.response?.status !== 401) {
@@ -134,6 +153,23 @@ function CreateTaskForm() {
                                     value={due_date}
                                     onChange={handleChange}
                                 />
+                            </Form.Group>
+                            <Form.Group>
+                                <FormLabel>Asign to:</FormLabel>
+                                {
+                                    <Form.Control
+                                        as="select"
+                                        name="asigned_to"
+                                        value={asigned_to}
+                                        onChange={handleChange}>   
+                                        <option value="0">Not asigned</option>                                     
+                                        {
+                                            teamMembers.results.map(teammate => {
+                                                 return <option value={teammate.user_id}>{teammate.member}</option> 
+                                            })
+                                        }
+                                    </Form.Control>
+                                }
                             </Form.Group>
                             <Form.Group>
                                 <FormLabel>Category</FormLabel>

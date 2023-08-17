@@ -36,8 +36,7 @@ class Calendar extends React.Component {
     componentDidMount() {
 
         this.state.selectedMonthQuery = this.getSelectedMonthQuery();
-        this.#fetchSelectedMonth();
-        // this.setSelectedMonthQuery(this.getSelectedMonthQuery());
+        this.#fetchSelectedMonth();        
     }
 
     initMonth = () => {
@@ -58,8 +57,6 @@ class Calendar extends React.Component {
                 selectedMonthTaskList: data,
                 hasLoaded: true,
             }, this.initMonth);
-
-            // this.setSelectedMonthLoaded(true);
         } catch (err) {
             console.log(err);
         }
