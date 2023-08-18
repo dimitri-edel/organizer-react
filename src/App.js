@@ -10,9 +10,10 @@ import CreateTaskForm from './pages/task/CreateTaskForm';
 import EditTaskForm from './pages/task/EditTaskForm';
 import TeamList from './pages/team/TeamList';
 import CreateTeamForm from './pages/team/CreateTeamForm';
+import { useCurrentUser } from './context/CurrentUserContext';
 
 function App() {
-  // const currentUser = useCurrentUser();
+  const currentUser = useCurrentUser();
   
   return (
     <div className={styles.App}>
