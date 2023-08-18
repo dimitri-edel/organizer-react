@@ -17,7 +17,7 @@ import btnStyles from "../../styles/Button.module.css";
 import Asset from "../../components/Asset";
 import { axiosReq } from "../../api/axiosDefaults";
 import { useHistory, useParams } from "react-router";
-import { useCurrentUser } from "../../context/CurrentUserContext";
+// import { useCurrentUser } from "../../context/CurrentUserContext";
 import { FormLabel } from "react-bootstrap";
 import { convertDateFormat } from "../../utils/utils";
 
@@ -45,8 +45,8 @@ function EditTaskForm() {
 
     const [teamMembers, setTeamMembers] = useState({ results: [], });
 
-    const { owner, is_owner, asigned_to, asigned_to_username, title, comment, due_date, category, priority, status, file } = taskData;
-    const currentUser = useCurrentUser();
+    const { asigned_to, asigned_to_username, title, comment, category, priority, status, file } = taskData;
+    // const currentUser = useCurrentUser();
 
 
 
@@ -84,7 +84,7 @@ function EditTaskForm() {
                     axiosReq.get(`/teammates/`),
                 ]);
 
-                const { owner, is_owner, asigned_to, asigned_to_username, title, comment, due_date, category, priority, status, file } = task;
+                const { is_owner, asigned_to, asigned_to_username, title, comment, due_date, category, priority, status, file } = task;
 
                 // Convert the due_date to datePickerValue               
                 setDatePickerValue(convertDateFormat(due_date));
@@ -97,8 +97,7 @@ function EditTaskForm() {
             }
         };
 
-        handleMount();
-        console.log(datePickerValue);
+        handleMount();        
     }, [history, id]);
 
     const handleSubmit = async (event) => {
@@ -131,7 +130,7 @@ function EditTaskForm() {
 
         try {
             console.log(formData.has("du_date"));
-            const { data } = await axiosReq.put(`/task/${id}`, formData);
+            await axiosReq.put(`/task/${id}`, formData);
             setMessage("The task has been saved!");           
         } catch (err) {
             console.log(err);

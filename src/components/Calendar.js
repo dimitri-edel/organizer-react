@@ -1,5 +1,5 @@
-import React, { createElement, createRef, useRef } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import React from "react";
+import { Container} from "react-bootstrap";
 import styles from "../styles/Calendar.module.css";
 import TaskListItem from "./TaskListItem";
 import { axiosReq } from "../api/axiosDefaults";
@@ -35,15 +35,12 @@ class Calendar extends React.Component {
 
     componentDidMount() {
 
-        this.state.selectedMonthQuery = this.getSelectedMonthQuery();
+        this.setState({selectedMonthQuery:  this.getSelectedMonthQuery()});
         this.#fetchSelectedMonth();
     }
 
     initMonth = () => {
-        this.#setMonth(this.state.selected_month, this.state.selected_year);
-        for (let i = 0; i < this.state.selectedMonthTaskList.results.length; i++) {
-            console.log(this.state.selectedMonthTaskList.results[i].title);
-        }
+        this.#setMonth(this.state.selected_month, this.state.selected_year);        
     }
     // Fetch all tasks in the given month. The selected month will be passed to this object
     // by the instance of the Calendar
@@ -126,8 +123,7 @@ class Calendar extends React.Component {
         let month = getDateNumberRepresentaion(this.state.selected_month + 1);
 
         if (isNumeric(cell)) {
-            let query = `${year}-${month}-${getDateNumberRepresentaion(cell)}`;
-            console.log(`${cell}. ${this.month_names[this.state.selected_month]} ${this.state.selected_year}`);
+            let query = `${year}-${month}-${getDateNumberRepresentaion(cell)}`;            
             this.setQuery(query);
         }
     }
@@ -229,7 +225,7 @@ class Calendar extends React.Component {
                 day_number++;
             }
         }
-        console.log(cal_cells);
+        
         this.setState({ calendar_cells: cal_cells });
     }
 
@@ -238,8 +234,7 @@ class Calendar extends React.Component {
         let arr = [];
 
         // Check if the due_date is the same as the date specified in the parameter list passed to this method
-        const isSameDate = (due_date) => {
-            console.log(due_date);
+        const isSameDate = (due_date) => {            
             const split = due_date.split(" ");
             const strMonnths = ["Jan", "Feb", "Mar", "Apr", "Jun", "Jul", "May", "Aug", "Sep", "Oct", "Nov", "Dec"];
             const monthNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];

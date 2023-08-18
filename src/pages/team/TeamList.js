@@ -11,7 +11,6 @@ import { useLocation } from "react-router-dom";
 import Asset from "../../components/Asset";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchMoreData } from "../../utils/utils";
-import { MoreDropdown } from "../../components/MoreDropdown";
 import Team from "./Team";
 
 

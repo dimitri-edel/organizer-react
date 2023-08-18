@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styles from "../../styles/Team.module.css";
 import { useCurrentUser } from "../../context/CurrentUserContext";
-import { Card, Media, OverlayTrigger, Tooltip, Modal, Button, Container, Row, Col, ListGroup } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Card, Modal, Button, Container, Row, Col, } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import { axiosReq, axiosRes } from "../../api/axiosDefaults";
 
 const Team = (props) => {

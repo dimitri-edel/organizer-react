@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -6,17 +6,11 @@ import Alert from "react-bootstrap/Alert";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import Image from "react-bootstrap/Image";
-
-import Upload from "../../assets/upload.png";
-
 import styles from "../../styles/TaskCreateEditForm..module.css";
 import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
-import Asset from "../../components/Asset";
 import { axiosReq } from "../../api/axiosDefaults";
 import { useHistory } from "react-router";
-import { FormLabel } from "react-bootstrap";
 
 function CreateTaskForm() {
     const [errors, setErrors] = useState({});
@@ -26,8 +20,6 @@ function CreateTaskForm() {
     });
 
     const { name } = teamData;
-    const [teamMembers, setTeamMembers] = useState({ results: [], });
-
 
     const handleChange = (event) => {
         setTeamData({
@@ -36,8 +28,7 @@ function CreateTaskForm() {
         });
     };
 
-    // Reference to the component with a image file : Form.File
-    const imageInput = useRef(null);
+    
     const history = useHistory();
 
 
@@ -48,7 +39,7 @@ function CreateTaskForm() {
         formData.append("name", name);
 
         try {
-            const { data } = await axiosReq.post("team/", formData);
+            await axiosReq.post("team/", formData);
             history.goBack();
         } catch (err) {
             console.log(err);

@@ -34,7 +34,7 @@ function CreateTaskForm() {
         file: "",
     });
 
-    const { id, owner, asigned_to, title, comment, due_date, category, priority, status, file } = taskData;
+    const { id, asigned_to, title, comment, due_date, category, priority, status, file } = taskData;
     const [teamMembers, setTeamMembers] = useState({ results: [], });
 
     
@@ -57,8 +57,8 @@ function CreateTaskForm() {
     
     // Reference to the component with a image file : Form.File
     const imageInput = useRef(null);
-    const history = useHistory();
-    
+    const history = useHistory();    
+
     useEffect(() => {
         const handleMount = async () => {
             try {
@@ -100,7 +100,7 @@ function CreateTaskForm() {
         console.log(taskData);
 
         try {
-            const { data } = await axiosReq.post("tasks/", formData);
+            await axiosReq.post("tasks/", formData);
             history.goBack();
         } catch (err) {
             console.log(err);
@@ -165,7 +165,7 @@ function CreateTaskForm() {
                                         <option value="0">Not asigned</option>                                     
                                         {
                                             teamMembers.results.map(teammate => {
-                                                 return <option value={teammate.user_id}>{teammate.team_name} : {teammate.member}</option> 
+                                                 return <option key={`asigned_${teammate.team_name}${teammate.member}`} value={teammate.user_id}>{teammate.team_name} : {teammate.member}</option> 
                                             })
                                         }
                                     </Form.Control>

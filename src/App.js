@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import styles from './App.module.css';
 import { Container } from "react-bootstrap";
 import { Route, Switch } from "react-router-dom";
@@ -14,7 +13,7 @@ import TeamList from './pages/team/TeamList';
 import CreateTeamForm from './pages/team/CreateTeamForm';
 
 function App() {
-  const currentUser = useCurrentUser();
+  // const currentUser = useCurrentUser();
   
   return (
     <div className={styles.App}>

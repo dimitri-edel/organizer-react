@@ -52,13 +52,13 @@ const NavBar = () => {
         className={styles.NavLink}
         to={`/tasks/`}
       >
-        <i class="fa-solid fa-list"></i>Tasks
+        <i className="fa-solid fa-list"></i>Tasks
       </NavLink>
       <NavLink
         className={styles.NavLink}
         to={`/teams/`}
       >
-        <i class="fa-solid fa-list"></i>Teams
+        <i className="fa-solid fa-list"></i>Teams
       </NavLink>
       <NavLink className={styles.NavLink} to="/" onClick={handleSignOut}>
         <i className="fas fa-sign-out-alt"></i>Sign out
