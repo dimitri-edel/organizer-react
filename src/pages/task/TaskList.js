@@ -12,7 +12,7 @@ import Asset from "../../components/Asset";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchMoreData } from "../../utils/utils";
 import Task from "./Task";
-// import Calendar from "../../components/Calendar";
+import Calendar from "../../components/Calendar";
 
 function TaskList() {
   const [tasks, setTasks] = useState({ results: [] });
@@ -52,7 +52,7 @@ function TaskList() {
   return (
     <div>
       {
-        // <Calendar setQuery={setQuery} />
+        <Calendar setQuery={setQuery} />
       }
 
 
