@@ -179,11 +179,25 @@ class Calendar extends React.Component {
         let first_week_day = first_day.getDay();
         // Find out how many days in the month
         let last_day_of_month = this.#getLastDayOfMonth(month, year);
+        // calculate the number of rows required for the month
+        const get_number_of_rows = () =>{
+            // If the month begins with a friday and more than 30 days long
+            if((first_week_day === 5) && (last_day_of_month > 30)){
+                return 6;
+            } // if a month begins with a saturday and is more than 29 days long
+            else if((first_week_day === 6) && (last_day_of_month > 29)){
+                return 6;
+            }
+            return 5;
+        }
+        // number of rows in the calendar
+        let number_of_rows = get_number_of_rows();
+
         // Create an array representation of calendar cells
         const create_calendar_cells = () => {
             let cells = [];
 
-            for (let row = 1; row < 7; row++) {
+            for (let row = 1; row <= number_of_rows; row++) {
                 cells[row] = [];
                 for (let column = 1; column <= 7; column++) {
                     cells[row][column] = [];
@@ -200,7 +214,7 @@ class Calendar extends React.Component {
         let day_number = 1;
 
         // the rows and columns are numbered 1-7
-        for (let row = 1; row < 7; row++) {
+        for (let row = 1; row <= number_of_rows; row++) {
             for (let column = 1; column <= 7; column++) {
 
                 // If its the first week(first row) and the first_week_day is not in the 
