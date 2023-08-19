@@ -15,7 +15,7 @@ import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import Asset from "../../components/Asset";
 import { axiosReq } from "../../api/axiosDefaults";
-import { useHistory } from "react-router";
+import { useHistory} from "react-router";
 import { FormLabel } from "react-bootstrap";
 
 function CreateTaskForm() {
@@ -57,7 +57,7 @@ function CreateTaskForm() {
     
     // Reference to the component with a image file : Form.File
     const imageInput = useRef(null);
-    const history = useHistory();    
+    const history = useHistory();
 
     useEffect(() => {
         const handleMount = async () => {

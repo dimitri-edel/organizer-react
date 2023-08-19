@@ -1,5 +1,5 @@
 import React from "react";
-import { Container} from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import styles from "../styles/Calendar.module.css";
 import TaskListItem from "./TaskListItem";
 import { axiosReq } from "../api/axiosDefaults";
@@ -7,14 +7,31 @@ import Asset from "../components/Asset";
 import appStyles from "../App.module.css";
 
 class Calendar extends React.Component {
+    /* 
+        @property IS_DAY_SSELECTED_INDEX is used for as an index in the array calendar_cells,
+        which is stored in the state. It is the index in the attachments for the cell,
+        at which a boolean value will be stored. True if the day is marked as selected,
+        False if the day is not selected by user. The day will be marked as selected 
+        if the user clicks on that date
+    */
+    static IS_DAY_SSELECTED_INDEX = 1;
+    /* 
+        @property DAY_NUMBER_INDEX is used for as an index in the array calendar_cells,
+        which is stored in the state. It is the index in the attachments for the cell.
+        At this index lives the number of the day  (1- 31)
+    */
+    static DAY_NUMBER_INDEX = 0;
+    /*
+        @ITEM_LIST_INDEX is used for as an index in the array calendar_cells,
+        which is stored in the state. It is the index in the attachments for the cell. 
+        At this index lives an array with tasks, that belong to that day
+    */
+    static ITEM_LIST_INDEX = 2;
+
     constructor(props) {
         super(props);
         let current_date = new Date();
         this.setQuery = props.setQuery;
-        // this.setSelectedMonthLoaded = props.setSelectedMonthLoaded;
-        // this.selectedMonthTaskList = [];
-        // this.setSelectedMonthQuery = "";
-        // The first weekday must be blank, so we have natural numbers for weekdays(1,2,3,etc)
         this.weekday_names = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         // Names of months that will be used in the control panel
         this.month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -22,11 +39,11 @@ class Calendar extends React.Component {
             // Set the current date
             current_date: current_date,
             // Set the selected date, year and month to the current date
-            selected_date: current_date,
+            selected_date: current_date.getDay(),
             selected_month: current_date.getMonth(),
             selected_year: current_date.getFullYear(),
             selected_month_name: this.month_names[current_date.getMonth()],
-            calendar_cells: [],
+            calendar_cells: [], // contain calendar_cells[row][column][attachments]
             selectedMonthTaskList: { results: [] },
             selectedMonthQuery: "",
             hasLoaded: false,
@@ -34,13 +51,13 @@ class Calendar extends React.Component {
     }
 
     componentDidMount() {
-
-        this.setState({selectedMonthQuery:  this.getSelectedMonthQuery()});
+        this.setState({ selectedMonthQuery: this.getSelectedMonthQuery() });
         this.#fetchSelectedMonth();
     }
 
     initMonth = () => {
-        this.#setMonth(this.state.selected_month, this.state.selected_year);        
+        this.setQuery(this.state.selectedMonthQuery);
+        this.#setMonth(this.state.selected_month, this.state.selected_year);
     }
     // Fetch all tasks in the given month. The selected month will be passed to this object
     // by the instance of the Calendar
@@ -102,7 +119,7 @@ class Calendar extends React.Component {
         }, this.#calculateNextMonth);
     }
 
-    onClickCalendarCell = (cell) => {
+    onClickCalendarCell = (cell, row, col) => {
         // See if the string is a representation of a number
         const isNumeric = (str) => {
             // If not a string then don't bother processing
@@ -117,13 +134,29 @@ class Calendar extends React.Component {
             }
             return num;
         }
-
+        let new_cells = this.state.calendar_cells;
+        // unselect all the cells
+        for (let row_index = 1; row_index < new_cells.length; row_index++) {
+            let current_row = new_cells[row_index];
+            console.log(current_row);
+            for (let col_index = 1; col_index < current_row.length; col_index++) {
+                current_row[col_index][Calendar.IS_DAY_SSELECTED_INDEX] = false;
+            }
+        }
+        // mark the cell, that has been clicked on, as selected
+        new_cells[row][col][Calendar.IS_DAY_SSELECTED_INDEX] = true;
 
         let year = this.state.selected_year;
         let month = getDateNumberRepresentaion(this.state.selected_month + 1);
+        let day = cell[Calendar.DAY_NUMBER_INDEX];
+        // update the state
+        this.setState({
+            calendar_cells: new_cells,
+        });
 
-        if (isNumeric(cell)) {
-            let query = `${year}-${month}-${getDateNumberRepresentaion(cell)}`;            
+        if (isNumeric(day)) {
+            // Generate a query for this day and pass it to TaskList(parent element)
+            let query = `${year}-${month}-${getDateNumberRepresentaion(day)}`;
             this.setQuery(query);
         }
     }
@@ -180,12 +213,12 @@ class Calendar extends React.Component {
         // Find out how many days in the month
         let last_day_of_month = this.#getLastDayOfMonth(month, year);
         // calculate the number of rows required for the month
-        const get_number_of_rows = () =>{
+        const get_number_of_rows = () => {
             // If the month begins with a friday and more than 30 days long
-            if((first_week_day === 5) && (last_day_of_month > 30)){
+            if ((first_week_day === 5) && (last_day_of_month > 30)) {
                 return 6;
             } // if a month begins with a saturday and is more than 29 days long
-            else if((first_week_day === 6) && (last_day_of_month > 29)){
+            else if ((first_week_day === 6) && (last_day_of_month > 29)) {
                 return 6;
             }
             return 5;
@@ -201,8 +234,9 @@ class Calendar extends React.Component {
                 cells[row] = [];
                 for (let column = 1; column <= 7; column++) {
                     cells[row][column] = [];
-                    cells[row][column][0] = "";
-                    cells[row][column][1] = [];
+                    cells[row][column][Calendar.DAY_NUMBER_INDEX] = "";
+                    cells[row][column][Calendar.IS_DAY_SSELECTED_INDEX] = false;
+                    cells[row][column][Calendar.ITEM_LIST_INDEX] = [];
                 }
             }
 
@@ -231,15 +265,15 @@ class Calendar extends React.Component {
                     break;
                 }
                 // Plot the day number in the cell as the first element of the array                
-                cal_cells[row][column][0] = day_number.toString();
+                cal_cells[row][column][Calendar.DAY_NUMBER_INDEX] = day_number.toString();
                 // Get the list of tasks for the day and append it to the array
                 // month number needs correction, because they start with 0
-                cal_cells[row][column][1] = this.#getDaysTaskList(day_number, month + 1, year);
+                cal_cells[row][column][Calendar.ITEM_LIST_INDEX] = this.#getDaysTaskList(day_number, month + 1, year);
                 // Proceed to the next day
                 day_number++;
             }
         }
-        
+
         this.setState({ calendar_cells: cal_cells });
     }
 
@@ -248,7 +282,7 @@ class Calendar extends React.Component {
         let arr = [];
 
         // Check if the due_date is the same as the date specified in the parameter list passed to this method
-        const isSameDate = (due_date) => {            
+        const isSameDate = (due_date) => {
             const split = due_date.split(" ");
             const strMonnths = ["Jan", "Feb", "Mar", "Apr", "Jun", "Jul", "May", "Aug", "Sep", "Oct", "Nov", "Dec"];
             const monthNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -336,15 +370,17 @@ class Calendar extends React.Component {
                     }
                 </span>
                 {this.state.hasLoaded ? (
-                    this.state.calendar_cells.map(row => {
+                    this.state.calendar_cells.map((row, row_index) => {
                         return (
-                            <div key={generateKey(row)} className={styles.calendarRow}>{row.map(col => {
+                            <div key={generateKey(row)} className={styles.calendarRow}>{row.map((col, col_index) => {
                                 return (
-                                    <span key={generateKey(col[0])} onClick={(e) => this.onClickCalendarCell(col[0])} className={styles.calendarCell}>
-                                        {col[0]}
-                                        <ul key={generateKey(col[1])} className={styles.calendarCellItemList}>
+                                    <span key={generateKey(col[Calendar.DAY_NUMBER_INDEX])}
+                                        onClick={(e) => this.onClickCalendarCell(col, row_index, col_index)}
+                                        className={col[Calendar.IS_DAY_SSELECTED_INDEX] ? styles.selectedCell : styles.calendarCell}>
+                                        {col[Calendar.DAY_NUMBER_INDEX]}
+                                        <ul key={generateKey(col[Calendar.ITEM_LIST_INDEX])} className={styles.calendarCellItemList}>
                                             {
-                                                col[1].map(item => {
+                                                col[Calendar.ITEM_LIST_INDEX].map(item => {
                                                     return (
                                                         <li key={item.title + generateKey(item.title)}>
                                                             {<TaskListItem key={item.title + generateKey(item.status)} status={item.status} priority={item.priority} title={item.title} />}
