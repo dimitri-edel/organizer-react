@@ -57,8 +57,10 @@ function TaskList() {
 
 
       <Row className="h-100">
-        <Col className="py-2 p-0 p-lg-2" lg={8}>          
+        <Col xs={1}>
           <i className={`fas fa-search ${styles.SearchIcon}`} />
+        </Col>
+        <Col xs={11}>
           <Form
             className={styles.SearchBar}
             onSubmit={(event) => event.preventDefault()}
@@ -71,7 +73,10 @@ function TaskList() {
               placeholder="Search tasks"
             />
           </Form>
-
+        </Col>
+      </Row>
+      <Row className="h-100">
+        <Col className="py-2 p-0 p-lg-2" xs={12}>
           {hasLoaded ? (
             <>
               {tasks.results.length ? (
@@ -95,9 +100,9 @@ function TaskList() {
               <Asset spinner />
             </Container>
           )}
-        </Col>        
-      </Row>
-    </div>
+        </Col>
+      </Row >
+    </div >
   );
 }
 

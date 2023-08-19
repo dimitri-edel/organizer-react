@@ -39,7 +39,7 @@ class Calendar extends React.Component {
             // Set the current date
             current_date: current_date,
             // Set the selected date, year and month to the current date
-            selected_date: current_date.getDay(),
+            selected_date: current_date.getDate(),
             selected_month: current_date.getMonth(),
             selected_year: current_date.getFullYear(),
             selected_month_name: this.month_names[current_date.getMonth()],
@@ -82,7 +82,14 @@ class Calendar extends React.Component {
         }
         let year = this.state.selected_year;
         let month = getDateNumberRepresentaion(this.state.selected_month + 1);
-
+        
+        // If the current_date and selected_date coinside, it means that the calendar
+        // is beeing initialized, then set the Query in TaskList(parent element) to 
+        // show tasks for the current day
+        if(this.state.current_date.getDate() === this.state.selected_date){            
+            return `${year}-${month}-${this.state.selected_date}`;
+        }
+        // Set the Query for the TaskList(parent element) to show the tasks for the selected month
         return `${year}-${month}`;
     }
 
@@ -149,15 +156,16 @@ class Calendar extends React.Component {
         let year = this.state.selected_year;
         let month = getDateNumberRepresentaion(this.state.selected_month + 1);
         let day = cell[Calendar.DAY_NUMBER_INDEX];
-        // update the state
-        this.setState({
-            calendar_cells: new_cells,
-        });
-
+        
         if (isNumeric(day)) {
             // Generate a query for this day and pass it to TaskList(parent element)
             let query = `${year}-${month}-${getDateNumberRepresentaion(day)}`;
             this.setQuery(query);
+            // update the state
+            this.setState({
+                calendar_cells: new_cells,
+                selected_date : day,
+            });
         }
     }
 
@@ -266,6 +274,11 @@ class Calendar extends React.Component {
                 }
                 // Plot the day number in the cell as the first element of the array                
                 cal_cells[row][column][Calendar.DAY_NUMBER_INDEX] = day_number.toString();
+                
+                // If the selected day and current_date coincide, then mark the cell as selected
+                if((day_number === this.state.current_date.getDate()) && (day_number === this.state.selected_date)){
+                    cal_cells[row][column][Calendar.IS_DAY_SSELECTED_INDEX] = true;
+                }
                 // Get the list of tasks for the day and append it to the array
                 // month number needs correction, because they start with 0
                 cal_cells[row][column][Calendar.ITEM_LIST_INDEX] = this.#getDaysTaskList(day_number, month + 1, year);
