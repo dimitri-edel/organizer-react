@@ -77,6 +77,7 @@ function EditTaskForm() {
     const [datePickerValue, setDatePickerValue] = useState("");
 
     useEffect(() => {
+        document.title = "Edit Task";
         const handleMount = async () => {
             try {
                 const [{ data: task }, { data: teammates }] = await Promise.all([
@@ -100,12 +101,10 @@ function EditTaskForm() {
         handleMount();        
     }, [history, id]);
 
-    const handleSubmit = async (event) => {
-        console.log(`submitting task id:${id}`);
+    const handleSubmit = async (event) => {       
         event.preventDefault();
         const formData = new FormData();
-
-        console.log(`asigned_to: ${asigned_to}`);
+        
         // if the asigned_to value is numberic and is not 0. append it to the form
         if ((!isNaN(asigned_to)) && (parseInt(asigned_to) > 0)) {
             formData.append("asigned_to", asigned_to);
@@ -160,7 +159,7 @@ function EditTaskForm() {
 
     return (
         <Form onSubmit={handleSubmit}>
-            {asigned_to_username}
+            <h1 className={styles.Title}>Edit Task</h1>
             <Row>
                 <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
                     <Container

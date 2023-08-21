@@ -11,6 +11,7 @@ import EditTaskForm from './pages/task/EditTaskForm';
 import TeamList from './pages/team/TeamList';
 import CreateTeamForm from './pages/team/CreateTeamForm';
 import { useCurrentUser } from './context/CurrentUserContext';
+import Home from "./pages/home";
 
 function App() {
   const currentUser = useCurrentUser();
@@ -24,7 +25,7 @@ function App() {
             exact
             path="/"
             render={() => (
-              <p>Home page</p>
+              <Home />
             )}
           />   
           <Route exact path="/signin" render={() => <SignInForm />} />

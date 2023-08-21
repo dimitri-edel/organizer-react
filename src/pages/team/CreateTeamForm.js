@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -13,6 +13,10 @@ import { axiosReq } from "../../api/axiosDefaults";
 import { useHistory } from "react-router";
 
 function CreateTaskForm() {
+    useEffect(() => {
+        document.title = 'Create Team';
+      }, []);
+
     const [errors, setErrors] = useState({});
 
     const [teamData, setTeamData] = useState({
@@ -67,8 +71,9 @@ function CreateTaskForm() {
         </div>
     );
 
-    return (
+    return (        
         <Form onSubmit={handleSubmit}>
+           <h1 className={styles.Title}>Create Team</h1>
             <Row>
                 <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
                     <Container

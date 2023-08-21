@@ -47,6 +47,7 @@ class Calendar extends React.Component {
             selectedMonthTaskList: { results: [] },
             selectedMonthQuery: "",
             hasLoaded: false,
+            select_current_date: true,
         };
     }
 
@@ -55,7 +56,7 @@ class Calendar extends React.Component {
         this.#fetchSelectedMonth();
     }
 
-    initMonth = () => {
+    initMonth = () => {        
         this.setQuery(this.state.selectedMonthQuery);
         this.#setMonth(this.state.selected_month, this.state.selected_year);
     }
@@ -65,7 +66,7 @@ class Calendar extends React.Component {
         try {
             const { data } = await axiosReq.get(`/tasks/?search=${this.state.selectedMonthQuery}&limit=100&offset=0`);
             this.setState({
-                selectedMonthTaskList: data,
+                selectedMonthTaskList: data,                
                 hasLoaded: true,
             }, this.initMonth);
         } catch (err) {
@@ -82,11 +83,11 @@ class Calendar extends React.Component {
         }
         let year = this.state.selected_year;
         let month = getDateNumberRepresentaion(this.state.selected_month + 1);
-        
-        // If the current_date and selected_date coinside, it means that the calendar
-        // is beeing initialized, then set the Query in TaskList(parent element) to 
-        // show tasks for the current day
-        if(this.state.current_date.getDate() === this.state.selected_date){            
+        // When the calendar has mounted select the current date
+        if (this.state.select_current_date) {
+            this.setState({
+                select_current_date: false
+            })
             return `${year}-${month}-${this.state.selected_date}`;
         }
         // Set the Query for the TaskList(parent element) to show the tasks for the selected month
@@ -156,7 +157,7 @@ class Calendar extends React.Component {
         let year = this.state.selected_year;
         let month = getDateNumberRepresentaion(this.state.selected_month + 1);
         let day = cell[Calendar.DAY_NUMBER_INDEX];
-        
+
         if (isNumeric(day)) {
             // Generate a query for this day and pass it to TaskList(parent element)
             let query = `${year}-${month}-${getDateNumberRepresentaion(day)}`;
@@ -164,7 +165,7 @@ class Calendar extends React.Component {
             // update the state
             this.setState({
                 calendar_cells: new_cells,
-                selected_date : day,
+                selected_date: day,
             });
         }
     }
@@ -213,7 +214,7 @@ class Calendar extends React.Component {
         return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
     }
 
-    #setMonth = (month, year) => {
+    #setMonth = (month, year) => {        
         // Determine which weekday is the first day of the month
         let first_day = new Date(year, month, 1);
         // Weekdays are numbered 0-6, 0:Sunday, 1:monday, 2:tuesday, etc.
@@ -274,9 +275,11 @@ class Calendar extends React.Component {
                 }
                 // Plot the day number in the cell as the first element of the array                
                 cal_cells[row][column][Calendar.DAY_NUMBER_INDEX] = day_number.toString();
-                
-                // If the selected day and current_date coincide, then mark the cell as selected
-                if((day_number === this.state.current_date.getDate()) && (day_number === this.state.selected_date)){
+
+                // If the selected date and current date coincide, then mark the cell as selected
+                if ((day_number === this.state.current_date.getDate()) &&
+                    (day_number === this.state.selected_date) &&
+                    (this.state.current_date.getMonth() + 1 === this.state.selected_month + 1)) {
                     cal_cells[row][column][Calendar.IS_DAY_SSELECTED_INDEX] = true;
                 }
                 // Get the list of tasks for the day and append it to the array
@@ -285,8 +288,7 @@ class Calendar extends React.Component {
                 // Proceed to the next day
                 day_number++;
             }
-        }
-
+        }       
         this.setState({ calendar_cells: cal_cells });
     }
 
@@ -297,7 +299,7 @@ class Calendar extends React.Component {
         // Check if the due_date is the same as the date specified in the parameter list passed to this method
         const isSameDate = (due_date) => {
             const split = due_date.split(" ");
-            const strMonnths = ["Jan", "Feb", "Mar", "Apr", "Jun", "Jul", "May", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const strMonnths = ["Jan", "Feb", "Mar", "Apr", "May",  "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
             const monthNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
             const strDay = split[0];
             const strMonth = split[1];
@@ -306,7 +308,7 @@ class Calendar extends React.Component {
             let month_number = 0;
             let year_number = parseInt(strYear);
             let day_number = parseInt(strDay);
-
+            
             for (let i = 0; i < strMonnths.length; i++) {
                 if (strMonnths[i].toLowerCase() === strMonth.toLowerCase()) {
                     month_number = monthNumbers[i];
@@ -321,7 +323,7 @@ class Calendar extends React.Component {
 
         const getList = () => {
             for (let i = 0; i < this.state.selectedMonthTaskList.results.length; i++) {
-                if (isSameDate(this.state.selectedMonthTaskList.results[i].due_date)) {
+                if (isSameDate(this.state.selectedMonthTaskList.results[i].due_date)) {                    
                     arr[i] = this.state.selectedMonthTaskList.results[i];
                 }
             }

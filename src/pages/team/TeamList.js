@@ -25,6 +25,7 @@ function TeamList() {
     const [query, setQuery] = useState("");
 
     useEffect(() => {
+        document.title = "Teams";
         // Fetch all Teams objects corresponding to the query, if the query is empty
         // then all Teams belonging to the user will be fetched
         const fetchTeams = async () => {

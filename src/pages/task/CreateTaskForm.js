@@ -61,8 +61,9 @@ function CreateTaskForm() {
     const imageInput = useRef(null);
     const history = useHistory();
 
-
     useEffect(() => {
+        document.title = 'Create Task';
+
         const handleMount = async () => {
             try {
                 const { data } = await axiosReq.get(`/teammates/`);
@@ -134,6 +135,7 @@ function CreateTaskForm() {
 
     return (
         <Form onSubmit={handleSubmit}>
+            <h1 className={styles.Title}>Create Task</h1>
             <Row>
                 <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
                     <Container
