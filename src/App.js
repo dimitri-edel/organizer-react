@@ -31,8 +31,8 @@ function App() {
           <Route exact path="/signup" render={() => <SignUpForm />} />
           <Route exact path="/tasks/" render={() => <TaskList />} />
           <Route exact path="/teams/" render={() => <TeamList />} />
-          <Route exact path="/team/create" render={() => <CreateTeamForm />}/>  
-          <Route exact path="/task/create" render={() => <CreateTaskForm />}/>      
+          <Route exact path="/teams/create" render={() => <CreateTeamForm />}/>  
+          <Route exact path="/tasks/create" render={() => <CreateTaskForm />}/>      
           <Route exact path="/tasks/:id/edit" render={() => <EditTaskForm />}/>
           <Route render={() => <p>Page not found!</p>} />
         </Switch>

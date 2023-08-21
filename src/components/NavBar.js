@@ -30,7 +30,7 @@ const NavBar = () => {
     <NavLink
       className={styles.NavLink}
       activeClassName={styles.Active}
-      to="/task/create"
+      to="/tasks/create"
     >
       <i className="far fa-plus-square"></i>Task
     </NavLink>
@@ -40,7 +40,7 @@ const NavBar = () => {
     <NavLink
       className={styles.NavLink}
       activeClassName={styles.Active}
-      to="/team/create"
+      to="/teams/create"
     >
       <i className="far fa-plus-square"></i>Team
     </NavLink>

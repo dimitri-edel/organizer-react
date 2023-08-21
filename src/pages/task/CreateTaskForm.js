@@ -15,8 +15,10 @@ import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import Asset from "../../components/Asset";
 import { axiosReq } from "../../api/axiosDefaults";
-import { useHistory} from "react-router";
+import { useHistory} from "react-router-dom";
+
 import { FormLabel } from "react-bootstrap";
+import { convertDateToReactString } from "../../utils/utils";
 
 function CreateTaskForm() {
     const [errors, setErrors] = useState({});
@@ -27,7 +29,7 @@ function CreateTaskForm() {
         asigned_to: "",
         title: "",
         comment: "",
-        due_date: new Date().toJSON(),
+        due_date: convertDateToReactString(new Date()),
         category: "",
         priority: "",
         status: "",
@@ -58,6 +60,7 @@ function CreateTaskForm() {
     // Reference to the component with a image file : Form.File
     const imageInput = useRef(null);
     const history = useHistory();
+    
 
     useEffect(() => {
         const handleMount = async () => {
@@ -97,11 +100,10 @@ function CreateTaskForm() {
         formData.append("category", category);
         formData.append("priority", priority);
         formData.append("status", status);
-        console.log(taskData);
-
+       
         try {
             await axiosReq.post("tasks/", formData);
-            history.goBack();
+            history.push("/");
         } catch (err) {
             console.log(err);
             if (err.response?.status !== 401) {
@@ -150,7 +152,7 @@ function CreateTaskForm() {
                                     type="datetime-local"
                                     id="due_date"
                                     name="due_date"
-                                    value={due_date}
+                                    defaultValue={due_date}
                                     onChange={handleChange}
                                 />
                             </Form.Group>

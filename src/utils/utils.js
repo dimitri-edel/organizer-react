@@ -38,3 +38,27 @@ export const convertDateFormat = (dateString) => {
 
   return ""+year+"-"+month+"-"+day+" "+time;  
 }
+
+/*
+  Convert Date object to String Expected by react datepicker
+*/
+export const convertDateToReactString = (date) => {
+  let day = date.getDate();
+  // Since the months in Date are numbered 0-11, need to add 1
+  let month = date.getMonth()+1;
+  let year = date.getFullYear();
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  const getFormat = (num) => {
+    if(num < 10){
+      return "0"+num;
+    }
+    return num;
+  }
+  day = getFormat(day);
+  month = getFormat(month);
+  hours = getFormat(hours);
+  minutes = getFormat(minutes);
+  
+  return ""+year+"-"+month+"-"+day+" "+hours+":"+minutes;
+}
