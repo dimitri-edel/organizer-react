@@ -176,6 +176,11 @@ function EditTaskForm() {
                                     onChange={handleChange}
                                 />
                             </Form.Group>
+                            {errors?.title?.map((message, idx) => (
+                                <Alert key={idx} variant="warning">
+                                    {message}
+                                </Alert>
+                            ))}
                             <Form.Group>
                                 <Form.Control
                                     type="datetime-local"
@@ -185,6 +190,11 @@ function EditTaskForm() {
                                     onChange={handleChange}
                                 />
                             </Form.Group>
+                            {errors?.du_date?.map((message, idx) => (
+                                <Alert key={idx} variant="warning">
+                                    {message}
+                                </Alert>
+                            ))}
                             <Form.Group>
                                 <FormLabel>Asign to:</FormLabel>
                                 {
@@ -238,11 +248,7 @@ function EditTaskForm() {
                                     <option value="2">Done</option>
                                 </Form.Control>
                             </Form.Group>
-                            {errors?.name?.map((message, idx) => (
-                                <Alert key={idx} variant="warning">
-                                    {message}
-                                </Alert>
-                            ))}
+                            
                             <Form.Group>
                                 {/* NOTE : the Lables below have the htmlFor attribute that is assigned
                     to "image-upload". Meaning, if those components get clicked on

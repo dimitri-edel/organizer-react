@@ -15,7 +15,7 @@ import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import Asset from "../../components/Asset";
 import { axiosReq } from "../../api/axiosDefaults";
-import { useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import { FormLabel } from "react-bootstrap";
 import { convertDateToReactString } from "../../utils/utils";
@@ -39,14 +39,14 @@ function CreateTaskForm() {
     const { id, asigned_to, title, comment, due_date, category, priority, status, file } = taskData;
     const [teamMembers, setTeamMembers] = useState({ results: [], });
 
-    
+
     const handleChange = (event) => {
         setTaskData({
             ...taskData,
             [event.target.name]: event.target.value,
         });
     };
-    
+
     const handleChangeImage = (event) => {
         if (event.target.files.length) {
             URL.revokeObjectURL(file);
@@ -56,11 +56,11 @@ function CreateTaskForm() {
             });
         }
     };
-    
+
     // Reference to the component with a image file : Form.File
     const imageInput = useRef(null);
     const history = useHistory();
-    
+
 
     useEffect(() => {
         const handleMount = async () => {
@@ -72,7 +72,7 @@ function CreateTaskForm() {
             }
         };
 
-        handleMount();       
+        handleMount();
     }, [history, id]);
 
     const handleSubmit = async (event) => {
@@ -84,7 +84,7 @@ function CreateTaskForm() {
         // if the asigned_to value is numberic and is not 0. append it to the form
         if ((!isNaN(asigned_to)) && (parseInt(asigned_to) > 0)) {
             formData.append("asigned_to", asigned_to);
-        }else if(asigned_to === "0"){
+        } else if (asigned_to === "0") {
             // if the user selected 'Not asigned', then send empty string, which is equivalent to null
             formData.append("asigned_to", "");
         }
@@ -100,14 +100,16 @@ function CreateTaskForm() {
         formData.append("category", category);
         formData.append("priority", priority);
         formData.append("status", status);
-       
+
         try {
-            await axiosReq.post("tasks/", formData);
-            history.push("/");
+            const { data } = await axiosReq.post("tasks/", formData);
+            const { id, asigned_to, title, comment, due_date, category, priority, status, file }  = data;
+            console.log(`created id ${id}`);
+            history.replace(`/tasks/${id}/edit`);
         } catch (err) {
             console.log(err);
             if (err.response?.status !== 401) {
-                setErrors(err.response?.data);
+                setErrors(err.response?.data);                
             }
         }
     };
@@ -147,6 +149,11 @@ function CreateTaskForm() {
                                     onChange={handleChange}
                                 />
                             </Form.Group>
+                            {errors?.title?.map((message, idx) => (
+                                <Alert variant="warning" key={idx}>
+                                    {message}
+                                </Alert>
+                            ))}
                             <Form.Group>
                                 <Form.Control
                                     type="datetime-local"
@@ -156,6 +163,11 @@ function CreateTaskForm() {
                                     onChange={handleChange}
                                 />
                             </Form.Group>
+                            {errors?.du_date?.map((message, idx) => (
+                                <Alert variant="warning" key={idx}>
+                                    {message}
+                                </Alert>
+                            ))}
                             <Form.Group>
                                 <FormLabel>Asign to:</FormLabel>
                                 {
@@ -163,11 +175,11 @@ function CreateTaskForm() {
                                         as="select"
                                         name="asigned_to"
                                         value={asigned_to}
-                                        onChange={handleChange}>   
-                                        <option value="0">Not asigned</option>                                     
+                                        onChange={handleChange}>
+                                        <option value="0">Not asigned</option>
                                         {
                                             teamMembers.results.map(teammate => {
-                                                 return <option key={`asigned_${teammate.team_name}${teammate.member}`} value={teammate.user_id}>{teammate.team_name} : {teammate.member}</option> 
+                                                return <option key={`asigned_${teammate.team_name}${teammate.member}`} value={teammate.user_id}>{teammate.team_name} : {teammate.member}</option>
                                             })
                                         }
                                     </Form.Control>
@@ -206,11 +218,7 @@ function CreateTaskForm() {
                                     <option value="2">Done</option>
                                 </Form.Control>
                             </Form.Group>
-                            {errors?.name?.map((message, idx) => (
-                                <Alert key={idx} variant="warning">
-                                    {message}
-                                </Alert>
-                            ))}
+                            
                             <Form.Group>
                                 {/* NOTE : the Lables below have the htmlFor attribute that is assigned
                     to "image-upload". Meaning, if those components get clicked on

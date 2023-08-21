@@ -40,7 +40,7 @@ function CreateTaskForm() {
 
         try {
             await axiosReq.post("team/", formData);
-            history.goBack();
+            history.replace("/teams/");
         } catch (err) {
             console.log(err);
             if (err.response?.status !== 401) {
