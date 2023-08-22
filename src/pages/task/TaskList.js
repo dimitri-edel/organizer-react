@@ -14,9 +14,12 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchMoreData } from "../../utils/utils";
 import Task from "./Task";
 import Calendar from "../../components/Calendar";
+import { useCurrentUser } from "../../context/CurrentUserContext";
 
 
 function TaskList() {
+  // See if the user is logged in
+  const currentUser = useCurrentUser();
   const [tasks, setTasks] = useState({ results: [] });
   // updateTaskList flag is needed for signaling that the task list 
   // has been changed. For example when a task has been added or deleted
@@ -68,99 +71,104 @@ function TaskList() {
   }, [query, pathname, updateTaskList, filters]);
 
   return (
-    <div>
+    <>
       {
-        <Calendar setQuery={setQuery} />
-      }
+        currentUser === null ? (
+          <h1>Please Log in first</h1>
+        ) : (<div>
+          {
+            <Calendar setQuery={setQuery} />
+          }
 
 
-      <Row className="h-100">
-        <Col xs={1}>
-          <i className={`fas fa-search ${styles.SearchIcon}`} />
-        </Col>
-        <Col xs={11}>
-          <Form
-            className={styles.SearchBar}
-            onSubmit={(event) => event.preventDefault()}
-          >
-            <Form.Control
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              type="text"
-              className="mr-sm-2"
-              placeholder="Search tasks"
-            />
-          </Form>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <FormLabel>Category</FormLabel>
-          <Form.Control
-            as="select"
-            name="category"
-            onChange={filterSelected}>
-            <option value="">All</option>
-            <option value="0">Chore</option>
-            <option value="1">Errand</option>
-            <option value="2">Work</option>
-          </Form.Control>
-        </Col>
-        <Col>
-          <FormLabel>Priority</FormLabel>
-          <Form.Control
-            as="select"
-            name="priority"
-            onChange={filterSelected}>
-            <option value="">All</option>
-            <option value="0">High</option>
-            <option value="1">Middle</option>
-            <option value="2">Low</option>
-          </Form.Control>
-        </Col>
-        <Col>
-          <FormLabel>Status</FormLabel>
-          <Form.Control
-            as="select"
-            name="status"
-            onChange={filterSelected}>
-            <option value="">All</option>
-            <option value="0">Open</option>
-            <option value="1">Progressing</option>
-            <option value="2">Done</option>
-          </Form.Control>
-        </Col>
-      </Row>
-
-      <Row className="h-100">
-        <Col className="py-2 p-0 p-lg-2" xs={12}>
-          {hasLoaded ? (
-            <>
-              {tasks.results.length ? (
-                <InfiniteScroll
-                  children={tasks.results.map((task) => (
-                    <Task key={task.title} {...task} setUpdateTaskList={setUpdateTaskList} />
-                  ))}
-                  dataLength={tasks.results.length}
-                  loader={<Asset spinner />}
-                  hasMore={!!tasks.next}
-                  next={() => fetchMoreData(tasks, setTasks)}
+          <Row className="h-100">
+            <Col xs={1}>
+              <i className={`fas fa-search ${styles.SearchIcon}`} />
+            </Col>
+            <Col xs={11}>
+              <Form
+                className={styles.SearchBar}
+                onSubmit={(event) => event.preventDefault()}
+              >
+                <Form.Control
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  type="text"
+                  className="mr-sm-2"
+                  placeholder="Search tasks"
                 />
+              </Form>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <FormLabel>Category</FormLabel>
+              <Form.Control
+                as="select"
+                name="category"
+                onChange={filterSelected}>
+                <option value="">All</option>
+                <option value="0">Chore</option>
+                <option value="1">Errand</option>
+                <option value="2">Work</option>
+              </Form.Control>
+            </Col>
+            <Col>
+              <FormLabel>Priority</FormLabel>
+              <Form.Control
+                as="select"
+                name="priority"
+                onChange={filterSelected}>
+                <option value="">All</option>
+                <option value="0">High</option>
+                <option value="1">Middle</option>
+                <option value="2">Low</option>
+              </Form.Control>
+            </Col>
+            <Col>
+              <FormLabel>Status</FormLabel>
+              <Form.Control
+                as="select"
+                name="status"
+                onChange={filterSelected}>
+                <option value="">All</option>
+                <option value="0">Open</option>
+                <option value="1">Progressing</option>
+                <option value="2">Done</option>
+              </Form.Control>
+            </Col>
+          </Row>
+
+          <Row className="h-100">
+            <Col className="py-2 p-0 p-lg-2" xs={12}>
+              {hasLoaded ? (
+                <>
+                  {tasks.results.length ? (
+                    <InfiniteScroll
+                      children={tasks.results.map((task) => (
+                        <Task key={task.title} {...task} setUpdateTaskList={setUpdateTaskList} />
+                      ))}
+                      dataLength={tasks.results.length}
+                      loader={<Asset spinner />}
+                      hasMore={!!tasks.next}
+                      next={() => fetchMoreData(tasks, setTasks)}
+                    />
+                  ) : (
+                    <Container className={appStyles.Content}>
+                      <Asset src={NoResults} message={"no results found!e"} />
+                    </Container>
+                  )}
+                </>
               ) : (
                 <Container className={appStyles.Content}>
-                  <Asset src={NoResults} message={"no results found!e"} />
+                  <Asset spinner />
                 </Container>
               )}
-            </>
-          ) : (
-            <Container className={appStyles.Content}>
-              <Asset spinner />
-            </Container>
-          )}
-        </Col>
-      </Row >
-    </div >
-  );
+            </Col>
+          </Row >
+        </div >)
+      }
+    </>);
 }
 
 export default TaskList;

@@ -11,11 +11,12 @@ import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import { axiosReq } from "../../api/axiosDefaults";
 import { useHistory } from "react-router";
+import { useCurrentUser } from "../../context/CurrentUserContext";
 
 function CreateTaskForm() {
     useEffect(() => {
         document.title = 'Create Team';
-      }, []);
+    }, []);
 
     const [errors, setErrors] = useState({});
 
@@ -32,7 +33,8 @@ function CreateTaskForm() {
         });
     };
 
-    
+    // See if the user is logged in
+    const currentUser = useCurrentUser();
     const history = useHistory();
 
 
@@ -71,39 +73,45 @@ function CreateTaskForm() {
         </div>
     );
 
-    return (        
-        <Form onSubmit={handleSubmit}>
-           <h1 className={styles.Title}>Create Team</h1>
-            <Row>
-                <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
-                    <Container
-                        className={`${appStyles.Content} ${styles.Container} d-flex flex-column justify-content-center`}
-                    >
-                        <Form.Group className="text-center">
-                            <Form.Group>
-                                <Form.Label>Name of Task</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="name"
-                                    value={name}
-                                    onChange={handleChange}
-                                />
-                            </Form.Group>
-                            {errors?.name?.map((message, idx) => (
-                                <Alert key={idx} variant="warning">
-                                    {message}
-                                </Alert>
-                            ))}
-                        </Form.Group>
-                    </Container>
-                </Col>
-            </Row>
-            <Row>
-                <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
-                    <Container className={appStyles.Content}>{buttonPanel}</Container>
-                </Col>
-            </Row>
-        </Form>
+    return (
+        <>
+            {(currentUser === null) ? (
+                <h1>Please log in first</h1>
+            ) : (
+                <Form onSubmit={handleSubmit}>
+                    <h1 className={styles.Title}>Create Team</h1>
+                    <Row>
+                        <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
+                            <Container
+                                className={`${appStyles.Content} ${styles.Container} d-flex flex-column justify-content-center`}
+                            >
+                                <Form.Group className="text-center">
+                                    <Form.Group>
+                                        <Form.Label>Name of Task</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="name"
+                                            value={name}
+                                            onChange={handleChange}
+                                        />
+                                    </Form.Group>
+                                    {errors?.name?.map((message, idx) => (
+                                        <Alert key={idx} variant="warning">
+                                            {message}
+                                        </Alert>
+                                    ))}
+                                </Form.Group>
+                            </Container>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
+                            <Container className={appStyles.Content}>{buttonPanel}</Container>
+                        </Col>
+                    </Row>
+                </Form>
+            )}
+        </>
     );
 }
 

@@ -23,7 +23,7 @@ export const fetchMoreData = async (resource, setResource) => {
 */
 export const convertDateFormat = (dateString) => {
   const split = dateString.split(" ");
-  const incomingMonths = ["Jan", "Feb", "Mar", "Apr", "Jun", "Jul", "May", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const incomingMonths = ["Jan", "Feb", "Mar", "Apr","May", "Jun", "Jul",  "Aug", "Sep", "Oct", "Nov", "Dec"];
   const outgoingMonths = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
   const day = split[0];
   let month = split[1];

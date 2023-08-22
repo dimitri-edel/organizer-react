@@ -20,9 +20,11 @@ import { useHistory, useParams } from "react-router";
 // import { useCurrentUser } from "../../context/CurrentUserContext";
 import { FormLabel } from "react-bootstrap";
 import { convertDateFormat } from "../../utils/utils";
-
+import { useCurrentUser } from "../../context/CurrentUserContext";
 
 function EditTaskForm() {
+    // See if the user is loggged in
+    const currentUser = useCurrentUser();
     const [errors, setErrors] = useState({});
     // The messages for the Task Editor
     const [message, setMessage] = useState("");
@@ -45,7 +47,7 @@ function EditTaskForm() {
 
     const [teamMembers, setTeamMembers] = useState({ results: [], });
 
-    const { asigned_to, asigned_to_username, title, comment, category, priority, status, file } = taskData;
+    const { asigned_to, asigned_to_username, title, due_date, comment, category, priority, status, file } = taskData;
     // const currentUser = useCurrentUser();
 
 
@@ -85,7 +87,7 @@ function EditTaskForm() {
                     axiosReq.get(`/teammates/`),
                 ]);
 
-                const { is_owner, asigned_to, asigned_to_username, title, comment, due_date, category, priority, status, file } = task;
+                const { is_owner, asigned_to, asigned_to_username, title, due_date, comment,category, priority, status, file } = task;
 
                 // Convert the due_date to datePickerValue               
                 setDatePickerValue(convertDateFormat(due_date));
@@ -113,8 +115,8 @@ function EditTaskForm() {
             formData.append("asigned_to", "");
         }
         formData.append("title", title);
-        formData.append("comment", comment);
-        formData.append("due_date", datePickerValue);
+        formData.append("comment", comment);        
+        formData.append("due_date", convertDateFormat(due_date));
         // If there is a file in the buffer it means that a new file
         // has been submitted. If there is a new file, then append it to the form
         // otherwise do not
@@ -125,10 +127,7 @@ function EditTaskForm() {
         formData.append("priority", priority);
         formData.append("status", status);
 
-        console.log(`${id} : ${title}`);
-
-        try {
-            console.log(formData.has("du_date"));
+        try {            
             await axiosReq.put(`/task/${id}`, formData);
             setMessage("The task has been saved!");           
         } catch (err) {
@@ -158,6 +157,10 @@ function EditTaskForm() {
     );
 
     return (
+        <>
+        {(currentUser === null)?(
+            <h1>Please log in first</h1>
+        ) :(
         <Form onSubmit={handleSubmit}>
             <h1 className={styles.Title}>Edit Task</h1>
             <Row>
@@ -205,7 +208,7 @@ function EditTaskForm() {
                                         <option value="0">Not asigned</option>                                     
                                         {
                                             teamMembers.results.map(teammate => {
-                                                 return <option value={teammate.user_id}>{teammate.team_name} : {teammate.member}</option> 
+                                                 return <option key={`${teammate.team_name} : ${teammate.member}`} value={teammate.user_id}>{teammate.team_name} : {teammate.member}</option> 
                                             })
                                         }
                                     </Form.Control>
@@ -236,7 +239,7 @@ function EditTaskForm() {
                                 </Form.Control>
                             </Form.Group>
                             <Form.Group>
-                                <FormLabel>Category</FormLabel>
+                                <FormLabel>Status</FormLabel>
                                 <Form.Control
                                     as="select"
                                     name="status"
@@ -329,7 +332,8 @@ function EditTaskForm() {
                     </Modal.Footer>
                 </Modal>
         </Form>
-    );
+        )}
+        </>);
 }
 
 export default EditTaskForm;

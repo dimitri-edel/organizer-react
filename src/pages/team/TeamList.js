@@ -12,9 +12,11 @@ import Asset from "../../components/Asset";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchMoreData } from "../../utils/utils";
 import Team from "./Team";
-
+import { useCurrentUser } from "../../context/CurrentUserContext";
 
 function TeamList() {
+    // See if the user is logged in
+    const currentUser = useCurrentUser();
     const [teams, setTeams] = useState({ results: [] });
     // updateTaskList flag is needed for signaling that the task list 
     // has been changed. For example when a task has been added or deleted
@@ -52,50 +54,57 @@ function TeamList() {
 
 
     return (
-        <div>
-            <Row className="h-100">
-                <Col className="py-2 p-0 p-lg-2" lg={8}>
-                    <i className={`fas fa-search ${styles.SearchIcon}`} />
-                    <Form
-                        className={styles.SearchBar}
-                        onSubmit={(event) => event.preventDefault()}
-                    >
-                        <Form.Control
-                            value={query}
-                            onChange={(event) => setQuery(event.target.value)}
-                            type="text"
-                            className="mr-sm-2"
-                            placeholder="Search Teams"
-                        />
-                    </Form>
-                </Col>
-            </Row>
-            {hasLoaded ? (
-                <>
-                    {teams.results.length ? (
-                        <InfiniteScroll
-                            children={teams.results.map(team => {
-                                return (
-                                    <Team key={team.name + "" + team.owner} {...team} setUpdateTeamList={setUpdateTeamList} />
-                                )
-                            })}
-                            dataLength={teams.results.length}
-                            loader={<Asset spinner />}
-                            hasMore={!!teams.next}
-                            next={() => fetchMoreData(teams, setTeams)}
-                        />
-                    ) : (
-                        <Container className={appStyles.Content}>
-                            <Asset src={NoResults} message="No results!" />
-                        </Container>
-                    )}
-                </>
-            ) : (
-                <Container className={appStyles.Content}>
-                    <Asset spinner />
-                </Container>
-            )}
-        </div>
+        <>
+            {
+                (currentUser === null) ? (
+                    <h1>Please log in first</h1>
+                ) : (
+                    <div>
+                        <Row className="h-100">
+                            <Col className="py-2 p-0 p-lg-2" lg={8}>
+                                <i className={`fas fa-search ${styles.SearchIcon}`} />
+                                <Form
+                                    className={styles.SearchBar}
+                                    onSubmit={(event) => event.preventDefault()}
+                                >
+                                    <Form.Control
+                                        value={query}
+                                        onChange={(event) => setQuery(event.target.value)}
+                                        type="text"
+                                        className="mr-sm-2"
+                                        placeholder="Search Teams"
+                                    />
+                                </Form>
+                            </Col>
+                        </Row>
+                        {hasLoaded ? (
+                            <>
+                                {teams.results.length ? (
+                                    <InfiniteScroll
+                                        children={teams.results.map(team => {
+                                            return (
+                                                <Team key={team.name + "" + team.owner} {...team} setUpdateTeamList={setUpdateTeamList} />
+                                            )
+                                        })}
+                                        dataLength={teams.results.length}
+                                        loader={<Asset spinner />}
+                                        hasMore={!!teams.next}
+                                        next={() => fetchMoreData(teams, setTeams)}
+                                    />
+                                ) : (
+                                    <Container className={appStyles.Content}>
+                                        <Asset src={NoResults} message="No results!" />
+                                    </Container>
+                                )}
+                            </>
+                        ) : (
+                            <Container className={appStyles.Content}>
+                                <Asset spinner />
+                            </Container>
+                        )}
+                    </div>
+                )}
+        </>
     )
 }
 
