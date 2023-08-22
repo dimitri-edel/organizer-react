@@ -103,13 +103,24 @@ class Calendar extends React.Component {
                     <button onClick={this.onClickPrevMonth}>
                         <i className={left_icon}></i>
                     </button>
-                    <p>{this.state.selected_month_name} {this.state.selected_year}</p>
+                    <button onClick={this.onClickSelectedMonthButton}>{this.state.selected_month_name} {this.state.selected_year}</button>
                     <button onClick={this.onClickNextMonth}>
                         <i className={right_icon}></i>
                     </button>
                 </div>
             </>
         )
+    }
+
+    onClickSelectedMonthButton = () =>{
+        const adjustQuery = () =>{
+            this.setState({
+                selectedMonthQuery: this.getSelectedMonthQuery(),
+            }, this.initMonth);
+        }
+        this.setState({
+            selected_date: 0,
+        }, adjustQuery);
     }
 
     onClickPrevMonth = () => {
