@@ -8,7 +8,7 @@ import appStyles from "../App.module.css";
 
 class Calendar extends React.Component {
     /* 
-        @property IS_DAY_SSELECTED_INDEX is used for as an index in the array calendar_cells,
+        @property IS_DAY_SSELECTED_INDEX is us as an index in the array calendar_cells,
         which is stored in the state. It is the index in the attachments for the cell,
         at which a boolean value will be stored. True if the day is marked as selected,
         False if the day is not selected by user. The day will be marked as selected 
@@ -16,13 +16,13 @@ class Calendar extends React.Component {
     */
     static IS_DAY_SSELECTED_INDEX = 1;
     /* 
-        @property DAY_NUMBER_INDEX is used for as an index in the array calendar_cells,
+        @property DAY_NUMBER_INDEX is used as an index in the array calendar_cells,
         which is stored in the state. It is the index in the attachments for the cell.
         At this index lives the number of the day  (1- 31)
     */
     static DAY_NUMBER_INDEX = 0;
     /*
-        @ITEM_LIST_INDEX is used for as an index in the array calendar_cells,
+        @ITEM_LIST_INDEX is used as an index in the array calendar_cells,
         which is stored in the state. It is the index in the attachments for the cell. 
         At this index lives an array with tasks, that belong to that day
     */
@@ -31,7 +31,8 @@ class Calendar extends React.Component {
     constructor(props) {
         super(props);
         let current_date = new Date();
-        this.setQuery = props.setQuery;
+        // The search query that will be attached to the URL in TaskList.js        
+        this.setQuery = props.setQuery;        
         this.weekday_names = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         // Names of months that will be used in the control panel
         this.month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -56,8 +57,10 @@ class Calendar extends React.Component {
         this.#fetchSelectedMonth();
     }
 
-    initMonth = () => {        
+    initMonth = () => {          
+        // Set the query for the URL (&search=)
         this.setQuery(this.state.selectedMonthQuery);
+        // Render the calendar cells according to the selected month and year
         this.#setMonth(this.state.selected_month, this.state.selected_year);
     }
     // Fetch all tasks in the given month. The selected month will be passed to this object
@@ -157,7 +160,7 @@ class Calendar extends React.Component {
         // unselect all the cells
         for (let row_index = 1; row_index < new_cells.length; row_index++) {
             let current_row = new_cells[row_index];
-            console.log(current_row);
+            
             for (let col_index = 1; col_index < current_row.length; col_index++) {
                 current_row[col_index][Calendar.IS_DAY_SSELECTED_INDEX] = false;
             }

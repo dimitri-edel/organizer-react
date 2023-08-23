@@ -10,19 +10,12 @@
     font-size: large;
     font-weight: bold;
   }
-  .Task figure,
-  h5 {
-    margin: 0 0;
+
+  .TaskButton {
+    width: 100%;
+    color: white;
+    font-size: large;
   }
-  
-  .Heart {
-    color: #f85032;
-  }
-  
-  .Heart:hover {
-    color: #2142b2;
-  }
-  
-  .HeartOutline:hover {
-    color: #f85032;
+  .TaskButton i{
+    color: white;
   }

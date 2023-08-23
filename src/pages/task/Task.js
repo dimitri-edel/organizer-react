@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styles from "../../styles/Task.module.css";
 import { useCurrentUser } from "../../context/CurrentUserContext";
-import { Card, Media, OverlayTrigger, Tooltip, Modal, Button, Container, Row, Col, ListGroup } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Card,Modal, Button, Container, Row, Col, ListGroup } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import { axiosRes } from "../../api/axiosDefaults";
-import { MoreDropdown } from "../../components/MoreDropdown";
+
 
 const Task = (props) => {
     const {
@@ -98,10 +98,21 @@ const Task = (props) => {
         <Card className={styles.Task}>
             <Card.Body>
                 <Card.Header>
-                    {
-                        /* Show the part of the date that contains the time*/
-                        due_date.split(" ")[3]
-                    }
+                    <Container>
+                        <Row>
+                            <Col>
+                                {
+                                    /* Show the part of the date that contains the time*/
+                                    due_date.split(" ")[3]
+                                }
+                            </Col>
+                            <Col>
+                                { /* the part with the date without year */
+                                    due_date.split(" ")[0] + " " + due_date.split(" ")[1]
+                                }
+                            </Col>
+                        </Row>
+                    </Container>
                 </Card.Header>
                 <Card.Title>
                     {title}
@@ -135,12 +146,12 @@ const Task = (props) => {
                     {is_owner && (<Container>
                         <Row>
                             <Col>
-                                <Button variant="primary" onClick={handleEdit} size="sm">
+                                <Button variant="primary" onClick={handleEdit} size="sm" className={styles.TaskButton}>
                                     <i className="fas fa-edit"></i>Edit
                                 </Button>
                             </Col>
                             <Col>
-                                <Button variant="danger" onClick={handleShowConfirmDialog} size="sm">
+                                <Button variant="danger" onClick={handleShowConfirmDialog} size="sm" className={styles.TaskButton}>
                                     <i className="fas fa-edit"></i>Delete
                                 </Button>
                             </Col>
@@ -153,10 +164,10 @@ const Task = (props) => {
                     </Modal.Header>
                     <Modal.Body>Are you sure you want to delete this task?</Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseConfirmDialog}>
+                        <Button variant="secondary" onClick={handleCloseConfirmDialog} >
                             Cancel
                         </Button>
-                        <Button variant="primary" onClick={handleConfirmDialogDeleteClicked}>
+                        <Button variant="primary" onClick={handleConfirmDialogDeleteClicked} >
                             Delete
                         </Button>
                     </Modal.Footer>

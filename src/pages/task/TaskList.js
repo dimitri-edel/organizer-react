@@ -28,12 +28,12 @@ function TaskList() {
   const [hasLoaded, setHasLoaded] = useState(true);
   const { pathname } = useLocation();
   const [query, setQuery] = useState("");
-  const [filters, setFilters] = useState({
+    const [filters, setFilters] = useState({
     priority: "",
     status: "",
     category: ""
   });
-
+  
   // If any of the filters are selected, then handle this here
   const filterSelected = (event) => {
     setFilters((prev) => {
@@ -54,8 +54,7 @@ function TaskList() {
     const fetchtasks = async () => {
       try {
         // I want the tasks to be ordered by their due date at all times
-        const { data } = await axiosReq.get(`/tasks/?search=${query}&ordering=due_date${filterQuery}`);
-        console.log(filterQuery);
+        const { data } = await axiosReq.get(`/tasks/?search=${query}&ordering=due_date${filterQuery}`);        
         setTasks(data);
         // Signal that the content has been loaded
         setHasLoaded(true);
@@ -101,6 +100,9 @@ function TaskList() {
             </Col>
           </Row>
           <Row>
+            <Col xs={1}>              
+              <i className="fa-solid fa-filter"></i>
+            </Col>
             <Col>
               <FormLabel>Category</FormLabel>
               <Form.Control
