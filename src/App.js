@@ -10,6 +10,7 @@ import CreateTaskForm from './pages/task/CreateTaskForm';
 import EditTaskForm from './pages/task/EditTaskForm';
 import TeamList from './pages/team/TeamList';
 import CreateTeamForm from './pages/team/CreateTeamForm';
+import EditTeamForm from './pages/team/EditTeamForm';
 import { useCurrentUser } from './context/CurrentUserContext';
 import Home from "./pages/home";
 
@@ -33,6 +34,7 @@ function App() {
           <Route exact path="/tasks/" render={() => <TaskList />} />
           <Route exact path="/teams/" render={() => <TeamList />} />
           <Route exact path="/teams/create" render={() => <CreateTeamForm />}/>  
+          <Route exact path="/teams/:id/edit" render={() => <EditTeamForm />}/>
           <Route exact path="/tasks/create" render={() => <CreateTaskForm />}/>      
           <Route exact path="/tasks/:id/edit" render={() => <EditTaskForm />}/>
           <Route render={() => <p>Page not found!</p>} />
