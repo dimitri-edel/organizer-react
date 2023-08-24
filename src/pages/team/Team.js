@@ -30,10 +30,10 @@ const Team = (props) => {
     const handleConfirmDialogDeleteClicked = () => {
         const handleDelete = async () => {
             try {
-                await axiosRes.delete(`/task/${id}`);
-                // Set the flag to true for TaskList.js, so the useEffectHook is executed
+                await axiosRes.delete(`/team/${id}`);
+                // Set the flag to true for TeamList.js, so the useEffectHook is executed
                 setUpdateTeamList(true);
-                history.push("/");
+                history.replace("/teams/");
             } catch (err) {
                 console.log(err);
             }
