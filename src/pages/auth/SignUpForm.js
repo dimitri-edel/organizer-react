@@ -1,3 +1,7 @@
+/*
+  Sign-in form for dj-rest-auth access point in the API
+  Standard dj-rest-auth URLs and fieldnames are used
+*/
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 
@@ -17,34 +21,41 @@ import {
 import axios from "axios";
 
 const SignUpForm = () => {
+  // Initialize when mounted 
   useEffect(() => {
+    // Set the title in the browser tab
     document.title = "Registration";
-  }, []
-  );
+  }, []);
+  // Intitialize signUpData with empty values
   const [signUpData, setSignUpData] = useState({
     username: "",
     password1: "",
     password2: "",
   });
+  // Destruct signUpData
   const { username, password1, password2 } = signUpData;
-
+  // assign a state to errors that can be retrieved from the response object
   const [errors, setErrors] = useState({});
-
+  // Access browsers history object
   const history = useHistory();
-
+  // Apply user's input to the state object
   const handleChange = (event) => {
     setSignUpData({
       ...signUpData,
       [event.target.name]: event.target.value,
     });
   };
-
+  // Submit the form
   const handleSubmit = async (event) => {
+    // Prevent the browser from submitting the form in the default fashion
     event.preventDefault();
     try {
+      // POST the data to the API
       await axios.post("/dj-rest-auth/registration/", signUpData);
+      // If successful redirect the user to the sign-in page
       history.push("/signin");
     } catch (err) {
+      // Copy validation errors from the response
       setErrors(err.response?.data);
     }
   };
@@ -127,8 +138,8 @@ const SignUpForm = () => {
             Already have an account? <span>Sign in</span>
           </Link>
         </Container>
-      </Col>  
-      <Col></Col>    
+      </Col>
+      <Col></Col>
     </Row>
   );
 };

@@ -7,7 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
-import {Modal} from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
 import Upload from "../../assets/upload.png";
 
@@ -29,7 +29,7 @@ function EditTaskForm() {
     // The messages for the Task Editor
     const [message, setMessage] = useState("");
     // The modal 
-    const handleCloseConfirmDialog = () =>{
+    const handleCloseConfirmDialog = () => {
         setMessage("");
     }
     const [taskData, setTaskData] = useState({
@@ -87,35 +87,35 @@ function EditTaskForm() {
                     axiosReq.get(`/teammates/`),
                 ]);
 
-                const { is_owner, asigned_to, asigned_to_username, title, due_date, comment,category, priority, status, file } = task;
+                const { is_owner, asigned_to, asigned_to_username, title, due_date, comment, category, priority, status, file } = task;
 
                 // Convert the due_date to datePickerValue               
                 setDatePickerValue(convertDateFormat(due_date));
                 // If it is the owner requesting the task, then copy the retrieved data to the corresponding fields, else
                 // redirect the user to the root URL
                 is_owner ? setTaskData({ is_owner, asigned_to, asigned_to_username, title, comment, due_date, category, priority, status, file }) : history.push("/");
-                setTeamMembers(teammates);                
+                setTeamMembers(teammates);
             } catch (err) {
                 console.log(err);
             }
         };
 
-        handleMount();        
+        handleMount();
     }, [history, id]);
 
-    const handleSubmit = async (event) => {       
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData();
-        
+
         // if the asigned_to value is numberic and is not 0. append it to the form
         if ((!isNaN(asigned_to)) && (parseInt(asigned_to) > 0)) {
             formData.append("asigned_to", asigned_to);
-        }else if(asigned_to === "0"){
+        } else if (asigned_to === "0") {
             // if the user selected 'Not asigned', then send empty string, which is equivalent to null
             formData.append("asigned_to", "");
         }
         formData.append("title", title);
-        formData.append("comment", comment);        
+        formData.append("comment", comment);
         formData.append("due_date", convertDateFormat(due_date));
         // If there is a file in the buffer it means that a new file
         // has been submitted. If there is a new file, then append it to the form
@@ -127,9 +127,9 @@ function EditTaskForm() {
         formData.append("priority", priority);
         formData.append("status", status);
 
-        try {            
+        try {
             await axiosReq.put(`/task/${id}`, formData);
-            setMessage("The task has been saved!");           
+            setMessage("The task has been saved!");
         } catch (err) {
             console.log(err);
             if (err.response?.status !== 401) {
@@ -158,181 +158,181 @@ function EditTaskForm() {
 
     return (
         <>
-        {(currentUser === null)?(
-            <h1>Please log in first</h1>
-        ) :(
-        <Form onSubmit={handleSubmit}>
-            <h1 className={styles.Title}>Edit Task</h1>
-            <Row>
-                <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
-                    <Container
-                        className={`${appStyles.Content} ${styles.Container} d-flex flex-column justify-content-center`}
-                    >
-                        <Form.Group className="text-center">
-                            <Form.Group>
-                                <Form.Label>Name of Task</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="title"
-                                    value={title}
-                                    onChange={handleChange}
-                                />
-                            </Form.Group>
-                            {errors?.title?.map((message, idx) => (
-                                <Alert key={idx} variant="warning">
-                                    {message}
-                                </Alert>
-                            ))}
-                            <Form.Group>
-                                <Form.Control
-                                    type="datetime-local"
-                                    id="due_date"
-                                    name="due_date"
-                                    defaultValue={datePickerValue}
-                                    onChange={handleChange}
-                                />
-                            </Form.Group>
-                            {errors?.du_date?.map((message, idx) => (
-                                <Alert key={idx} variant="warning">
-                                    {message}
-                                </Alert>
-                            ))}
-                            <Form.Group>
-                                <FormLabel>Asign to:</FormLabel>
-                                {
-                                    <Form.Control
-                                        as="select"
-                                        name="asigned_to"
-                                        value={asigned_to}
-                                        onChange={handleChange}>   
-                                        <option value="0">Not asigned</option>                                     
+            {(currentUser === null) ? (
+                <h1>Please log in first</h1>
+            ) : (
+                <Form onSubmit={handleSubmit}>
+                    <h1 className={styles.Title}>Edit Task</h1>
+                    <Row>
+                        <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
+                            <Container
+                                className={`${appStyles.Content} ${styles.Container} d-flex flex-column justify-content-center`}
+                            >
+                                <Form.Group className="text-center">
+                                    <Form.Group>
+                                        <Form.Label>Name of Task</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="title"
+                                            value={title}
+                                            onChange={handleChange}
+                                        />
+                                    </Form.Group>
+                                    {errors?.title?.map((message, idx) => (
+                                        <Alert key={idx} variant="warning">
+                                            {message}
+                                        </Alert>
+                                    ))}
+                                    <Form.Group>
+                                        <Form.Control
+                                            type="datetime-local"
+                                            id="due_date"
+                                            name="due_date"
+                                            defaultValue={datePickerValue}
+                                            onChange={handleChange}
+                                        />
+                                    </Form.Group>
+                                    {errors?.du_date?.map((message, idx) => (
+                                        <Alert key={idx} variant="warning">
+                                            {message}
+                                        </Alert>
+                                    ))}
+                                    <Form.Group>
+                                        <FormLabel>Asign to:</FormLabel>
                                         {
-                                            teamMembers.results.map(teammate => {
-                                                 return <option key={`${teammate.team_name} : ${teammate.member}`} value={teammate.user_id}>{teammate.team_name} : {teammate.member}</option> 
-                                            })
+                                            <Form.Control
+                                                as="select"
+                                                name="asigned_to"
+                                                value={asigned_to}
+                                                onChange={handleChange}>
+                                                <option value="0">Not asigned</option>
+                                                {
+                                                    teamMembers.results.map(teammate => {
+                                                        return <option key={`${teammate.team_name} : ${teammate.member}`} value={teammate.user_id}>{teammate.team_name} : {teammate.member}</option>
+                                                    })
+                                                }
+                                            </Form.Control>
                                         }
-                                    </Form.Control>
-                                }
-                            </Form.Group>
-                            <Form.Group>
-                                <FormLabel>Category</FormLabel>
-                                <Form.Control
-                                    as="select"
-                                    name="category"
-                                    value={category}
-                                    onChange={handleChange}>
-                                    <option value="0">Chore</option>
-                                    <option value="1">Errand</option>
-                                    <option value="2">Work</option>
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Group>
-                                <FormLabel>Priority</FormLabel>
-                                <Form.Control
-                                    as="select"
-                                    name="priority"
-                                    value={priority}
-                                    onChange={handleChange}>
-                                    <option value="0">High</option>
-                                    <option value="1">Middle</option>
-                                    <option value="2">Low</option>
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Group>
-                                <FormLabel>Status</FormLabel>
-                                <Form.Control
-                                    as="select"
-                                    name="status"
-                                    value={status}
-                                    onChange={handleChange}>
-                                    <option value="0">Open</option>
-                                    <option value="1">Progressing</option>
-                                    <option value="2">Done</option>
-                                </Form.Control>
-                            </Form.Group>
-                            
-                            <Form.Group>
-                                {/* NOTE : the Lables below have the htmlFor attribute that is assigned
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <FormLabel>Category</FormLabel>
+                                        <Form.Control
+                                            as="select"
+                                            name="category"
+                                            value={category}
+                                            onChange={handleChange}>
+                                            <option value="0">Chore</option>
+                                            <option value="1">Errand</option>
+                                            <option value="2">Work</option>
+                                        </Form.Control>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <FormLabel>Priority</FormLabel>
+                                        <Form.Control
+                                            as="select"
+                                            name="priority"
+                                            value={priority}
+                                            onChange={handleChange}>
+                                            <option value="0">High</option>
+                                            <option value="1">Middle</option>
+                                            <option value="2">Low</option>
+                                        </Form.Control>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <FormLabel>Status</FormLabel>
+                                        <Form.Control
+                                            as="select"
+                                            name="status"
+                                            value={status}
+                                            onChange={handleChange}>
+                                            <option value="0">Open</option>
+                                            <option value="1">Progressing</option>
+                                            <option value="2">Done</option>
+                                        </Form.Control>
+                                    </Form.Group>
+
+                                    <Form.Group>
+                                        {/* NOTE : the Lables below have the htmlFor attribute that is assigned
                     to "image-upload". Meaning, if those components get clicked on
                     the onChange - event handler of the Form.File compoenent down below 
                     will be executed. Because the Form.File has the id="image-upload".
                   */}
-                                {file ? (
-                                    <>
-                                        <figure>
-                                            <Image className={appStyles.Image} src={file} rounded />
-                                        </figure>
-                                        <div>
+                                        {file ? (
+                                            <>
+                                                <figure>
+                                                    <Image className={appStyles.Image} src={file} rounded />
+                                                </figure>
+                                                <div>
+                                                    <Form.Label
+                                                        className={`${btnStyles.Button} ${btnStyles.Blue} btn`}
+                                                        htmlFor="image-upload"
+                                                    >
+                                                        Change the image
+                                                    </Form.Label>
+                                                </div>
+                                            </>
+                                        ) : (
                                             <Form.Label
-                                                className={`${btnStyles.Button} ${btnStyles.Blue} btn`}
+                                                className="d-flex justify-content-center"
                                                 htmlFor="image-upload"
                                             >
-                                                Change the image
+                                                <Asset
+                                                    src={Upload}
+                                                    message="Click or tap to uplaod an image"
+                                                />
                                             </Form.Label>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <Form.Label
-                                        className="d-flex justify-content-center"
-                                        htmlFor="image-upload"
-                                    >
-                                        <Asset
-                                            src={Upload}
-                                            message="Click or tap to uplaod an image"
-                                        />
-                                    </Form.Label>
-                                )}
-                                {/* NOTE : the Lables above have the htmlFor attribute that is assigned
+                                        )}
+                                        {/* NOTE : the Lables above have the htmlFor attribute that is assigned
                     to the component below. Meaning, if those components get clicked on
                     the onChange - event handler of this compoenent will be executed.
                   */}
-                                <Form.File
-                                    id="image-upload"
-                                    accept="image/*"
-                                    onChange={handleChangeImage}
-                                    ref={imageInput}
-                                />
-                                {errors?.file?.map((message, idx) => (
-                                    <Alert key={idx} variant="warning">
-                                        {message}
-                                    </Alert>
-                                ))}
-                                <Form.Label>Comment</Form.Label>
-                                <Form.Control
-                                    as="textarea"
-                                    name="comment"
-                                    rows={6}
-                                    value={comment}
-                                    onChange={handleChange}
-                                />
-                            </Form.Group>
-                            {errors?.comment?.map((message, idx) => (
-                                <Alert key={idx} variant="warning">
-                                    {message}
-                                </Alert>
-                            ))}
-                        </Form.Group>                       
-                    </Container>
-                </Col>               
-            </Row>
-            <Row>
-                <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
-                    <Container className={appStyles.Content}>{buttonPanel}</Container>
-                </Col>
-            </Row>
-            <Modal show={(message !== "")} onHide={handleCloseConfirmDialog} animation={false}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Task Editor</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>{message}</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseConfirmDialog}>
-                            OK
-                        </Button>                        
-                    </Modal.Footer>
-                </Modal>
-        </Form>
-        )}
+                                        <Form.File
+                                            id="image-upload"
+                                            accept="image/*"
+                                            onChange={handleChangeImage}
+                                            ref={imageInput}
+                                        />
+                                        {errors?.file?.map((message, idx) => (
+                                            <Alert key={idx} variant="warning">
+                                                {message}
+                                            </Alert>
+                                        ))}
+                                        <Form.Label>Comment</Form.Label>
+                                        <Form.Control
+                                            as="textarea"
+                                            name="comment"
+                                            rows={6}
+                                            value={comment}
+                                            onChange={handleChange}
+                                        />
+                                    </Form.Group>
+                                    {errors?.comment?.map((message, idx) => (
+                                        <Alert key={idx} variant="warning">
+                                            {message}
+                                        </Alert>
+                                    ))}
+                                </Form.Group>
+                            </Container>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
+                            <Container className={appStyles.Content}>{buttonPanel}</Container>
+                        </Col>
+                    </Row>
+                    <Modal show={(message !== "")} onHide={handleCloseConfirmDialog} animation={false}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Task Editor</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>{message}</Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleCloseConfirmDialog}>
+                                OK
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </Form>
+            )}
         </>);
 }
 

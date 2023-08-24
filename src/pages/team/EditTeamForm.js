@@ -17,25 +17,37 @@ import { useCurrentUser } from "../../context/CurrentUserContext";
 function EditTeamForm() {
 
     const [errors, setErrors] = useState({});
+    const [message, setMessage] = useState("");
 
+    // Reset the message for the Dialog to empty to make it hide
+    const handleCloseConfirmDialog = () =>{
+        setMessage("");
+    }
+    // Initialize teamData with en empty data-set
     const [teamData, setTeamData] = useState({
         owner: "",
         name: "",
         is_member: "",
     });
-
+    // Destruct teamData into several constants
     const { owner, name, is_member } = teamData;
+    // Retrieve the parameter passed in the route name(URL)
     const { id } = useParams();
-    // See if the user is logged in
+    // Access the user object in the request header
     const currentUser = useCurrentUser();
+    // Access the history object of the browser
     const history = useHistory();
 
     useEffect(() => {
+        // Set the title in the browser
         document.title = 'Edit Team';
+        // Initialize when mounted to React DOM
         const handleMount = async () => {
             try {
+                // Retrieve team data from the API
                 const { data } = await axiosReq.get(`/team/${id}`);
                 const { owner, name, is_member } = data;
+                // Copy data to the state object
                 setTeamData({
                     owner: owner,
                     name: name,
@@ -43,12 +55,13 @@ function EditTeamForm() {
                 });
 
             } catch (err) {
+                // Log errors in the console
                 console.log(err);
             }
         }
         handleMount();
     }, [history, id]);
-
+    // Handle changes in the state object
     const handleChange = (event) => {
         setTeamData({
             ...teamData,
@@ -56,8 +69,7 @@ function EditTeamForm() {
         });
     };
 
-
-
+    // Submit the form
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData();
@@ -65,10 +77,15 @@ function EditTeamForm() {
         formData.append("name", name);
 
         try {
+            // Submit the form to the API
             await axiosReq.put(`team/${id}`, formData);
-            history.replace("/teams/");
+            // If successful inform the user
+            setMessage("Team has been updated!");
         } catch (err) {
+            // Log error to the console
             console.log(err);
+            // Copy errors to the Errors state object,
+            // so they can see the validation erors
             if (err.response?.status !== 401) {
                 setErrors(err.response?.data);
             }
@@ -129,6 +146,17 @@ function EditTeamForm() {
                             <Container className={appStyles.Content}>{buttonPanel}</Container>
                         </Col>
                     </Row>
+                    <Modal show={(message !== "")} onHide={handleCloseConfirmDialog} animation={false}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Task Editor</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>{message}</Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleCloseConfirmDialog}>
+                                OK
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </Form>
             )}
         </>

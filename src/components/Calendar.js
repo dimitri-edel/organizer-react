@@ -6,35 +6,48 @@ import { axiosReq } from "../api/axiosDefaults";
 import Asset from "../components/Asset";
 import appStyles from "../App.module.css";
 
+/**
+ * Calendar allows the user to select a month or day, which will be used to display tasks
+ * of the selected month or day. It also displays a miniature task list for each day underneath
+ * the day number.
+ */
 class Calendar extends React.Component {
-    /* 
-        @property IS_DAY_SSELECTED_INDEX is us as an index in the array calendar_cells,
-        which is stored in the state. It is the index in the attachments for the cell,
-        at which a boolean value will be stored. True if the day is marked as selected,
-        False if the day is not selected by user. The day will be marked as selected 
-        if the user clicks on that date
+    /**
+    *    @static
+    *    @property
+    *    IS_DAY_SSELECTED_INDEX is us as an index in the array calendar_cells,
+    *    which is stored in the state. It is the index in the attachments for the cell,
+    *    at which a boolean value will be stored. True if the day is marked as selected,
+    *    False if the day is not selected by user. The day will be marked as selected 
+    *    if the user clicks on that date
     */
     static IS_DAY_SSELECTED_INDEX = 1;
-    /* 
-        @property DAY_NUMBER_INDEX is used as an index in the array calendar_cells,
-        which is stored in the state. It is the index in the attachments for the cell.
-        At this index lives the number of the day  (1- 31)
+    /**
+    *   @static
+    *   @property
+    *   DAY_NUMBER_INDEX is used as an index in the array calendar_cells,
+    *   which is stored in the state. It is the index in the attachments for the cell.
+    *   At this index lives the number of the day  (1- 31)
     */
     static DAY_NUMBER_INDEX = 0;
-    /*
-        @ITEM_LIST_INDEX is used as an index in the array calendar_cells,
-        which is stored in the state. It is the index in the attachments for the cell. 
-        At this index lives an array with tasks, that belong to that day
+    /**
+    *   @static
+    *   @property
+    *   ITEM_LIST_INDEX is a static property of this class andis used as an index in 
+    *   the array calendar_cells,
+    *   which is stored in the state. It is the index in the attachments for the cell. 
+    *   At this index lives an array with tasks, that belong to that day
     */
     static ITEM_LIST_INDEX = 2;
 
     constructor(props) {
         super(props);
         let current_date = new Date();
-        // The search query that will be attached to the URL in TaskList.js        
-        this.setQuery = props.setQuery;        
+        /** The search query that will be attached to the URL in TaskList.js         */
+        this.setQuery = props.setQuery; 
+        /** Array that holds the day names that will be diplayed in the row of headings */       
         this.weekday_names = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-        // Names of months that will be used in the control panel
+        /**  Names of months that will be used in the control panel */
         this.month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         this.state = {
             // Set the current date
@@ -51,20 +64,26 @@ class Calendar extends React.Component {
             select_current_date: true,
         };
     }
-
+    /** Component was mounted  */
     componentDidMount() {
+        // Make sure that the query for this month is initialized
         this.setState({ selectedMonthQuery: this.getSelectedMonthQuery() });
+        // Get the task list for the selected month. The miniature task list
+        // that will be displayed underneath the day numbers in the calendar
         this.#fetchSelectedMonth();
     }
 
     initMonth = () => {          
-        // Set the query for the URL (&search=)
+        /** Set the query for the URL (&search=) in the parent component */
         this.setQuery(this.state.selectedMonthQuery);
-        // Render the calendar cells according to the selected month and year
+        /** Render the calendar cells according to the selected month and year  */
         this.#setMonth(this.state.selected_month, this.state.selected_year);
     }
-    // Fetch all tasks in the given month. The selected month will be passed to this object
-    // by the instance of the Calendar
+
+    /**
+     * Fetch all tasks in the given month.The miniature task list that 
+     * will be displayed underneath the day numbers in the calendar
+     */    
     #fetchSelectedMonth = async () => {
         try {
             const { data } = await axiosReq.get(`/tasks/?search=${this.state.selectedMonthQuery}&limit=100&offset=0`);
@@ -76,7 +95,11 @@ class Calendar extends React.Component {
             console.log(err);
         }
     };
-
+    /**
+     * Turn the state properties that show which month was selected by the user into a date string.
+     * @returns String that represents the correct representation of the month, or the current data if the calendar is beeing 
+     * initialized 
+     */
     getSelectedMonthQuery = () => {
         const getDateNumberRepresentaion = (num) => {
             if (num < 10) {
@@ -96,7 +119,11 @@ class Calendar extends React.Component {
         // Set the Query for the TaskList(parent element) to show the tasks for the selected month
         return `${year}-${month}`;
     }
-
+    /**
+     * Get a fragment with the Calendar control panel
+     * @returns JSX That represents the Control panel with buttons for selecting next month, previous month, or a button
+     * with the month name and year, which allows users to unselect a day and select the entire month instead
+     */
     controlPanel = () => {
         const left_icon = "fa-solid fa-angle-left";
         const right_icon = "fa-solid fa-angle-right";
@@ -114,8 +141,17 @@ class Calendar extends React.Component {
             </>
         )
     }
-
+    /**
+     * Event handler for the click on the middle button on the control panel that show the name of month and year.
+     * If the user selected a particular day in the calendar, then the day selection is cleared and the whole month
+     * is selected instead
+     */
     onClickSelectedMonthButton = () =>{
+        /**
+         *  Callback function that is called after the selcted_date is set to 0, which signals that no day is selected.
+         * It selects a new query for this month, and then calls initMonth, which will in turn reinitialize the Month
+         * so it shows no selcted day
+         */
         const adjustQuery = () =>{
             this.setState({
                 selectedMonthQuery: this.getSelectedMonthQuery(),
@@ -125,7 +161,11 @@ class Calendar extends React.Component {
             selected_date: 0,
         }, adjustQuery);
     }
-
+    /**
+     * Event handler for the click on the previous month on the control panel of the calendar.
+     * It sets off a chain of changes in the state object that will make the calendar show the previous Month
+     * and also select it
+     */
     onClickPrevMonth = () => {
         // Display the loading spinner, and call the calculate previous month method (#calculatePrevMonth)
         this.setState({
@@ -133,31 +173,52 @@ class Calendar extends React.Component {
         }, this.#calculatePrevMonth);
 
     }
-
+    /**
+     * Event handler for the click on the next month on the control panel of the calendar.
+     * It sets off a chain of changes in the state object that will make the calendar show the next Month
+     * and also select it
+     */
     onClickNextMonth = () => {
         // Display the loading spinner, and call the calculate next month method (#calculateNextMonth)
         this.setState({
             hasLoaded: false,
         }, this.#calculateNextMonth);
     }
-
+    /**
+     * Event handler for a click on one of the days in the calendar.
+     * @param {Array} cell - Array with the values attached to the cell. 
+     * The indices of the array are declared as static properties of the Calendar class.
+     * Those are DAY_NUMBER_INDEX, IS_DAY_SSELECTED_INDEX and ITEM_LIST_INDEX
+     * @param {Integer} row - number of the row in the calendar_cells
+     * @param {Integer} col - number of the column in the calendar_cells
+     */
     onClickCalendarCell = (cell, row, col) => {
-        // See if the string is a representation of a number
+        /** See if the string is a representation of a number */ 
         const isNumeric = (str) => {
             // If not a string then don't bother processing
             if (typeof str != "string") return false;
             if (str === "") return false;
             return !isNaN(str);
         }
-
+        /**
+         * Turn a number into a two-digit representation
+         * @param {Integer} num 
+         * @returns String of two digits. If num is 1 the return value is "01"
+         */
         const getDateNumberRepresentaion = (num) => {
             if (num < 10) {
                 return `0${num}`;
             }
             return num;
         }
+        /**
+         * Copy of the state property calendar_cells, that is used for rendering each cell
+         * in the calendar. calendar_cells[row][column][cell]
+         */
         let new_cells = this.state.calendar_cells;
-        // unselect all the cells
+        /**
+         * mark all the cells in the copy of calendar_cells as not selected
+         *  */
         for (let row_index = 1; row_index < new_cells.length; row_index++) {
             let current_row = new_cells[row_index];
             
@@ -165,9 +226,12 @@ class Calendar extends React.Component {
                 current_row[col_index][Calendar.IS_DAY_SSELECTED_INDEX] = false;
             }
         }
-        // mark the cell, that has been clicked on, as selected
+        /**
+         * Mark the cell, that has been clicked on, as selected
+         *  */ 
         new_cells[row][col][Calendar.IS_DAY_SSELECTED_INDEX] = true;
-
+        // Prepare variables, whose combination reflects the selected date
+        // for the new query that will be passed to the parent element
         let year = this.state.selected_year;
         let month = getDateNumberRepresentaion(this.state.selected_month + 1);
         let day = cell[Calendar.DAY_NUMBER_INDEX];
@@ -176,14 +240,17 @@ class Calendar extends React.Component {
             // Generate a query for this day and pass it to TaskList(parent element)
             let query = `${year}-${month}-${getDateNumberRepresentaion(day)}`;
             this.setQuery(query);
-            // update the state
+            // Put the new copy of calendar_cells in the state object
             this.setState({
                 calendar_cells: new_cells,
                 selected_date: day,
             });
         }
     }
-
+    /**
+     * First, calculate month and year of the previous month, then
+     * update the elements that use the updated values
+     */
     #calculatePrevMonth = () => {
         let current_month = this.state.selected_month;
         if (current_month === 0) {
@@ -191,15 +258,18 @@ class Calendar extends React.Component {
                 selected_month: 11,
                 selected_year: prevState.selected_year - 1,
                 selected_month_name: this.month_names[11],
-            }), this.#updateStateDependantElements);
+            }), this.#updateSelectedMonthQueryDependantElements);
         } else {
             this.setState((prevState, props) => ({
                 selected_month: prevState.selected_month - 1,
                 selected_month_name: this.month_names[prevState.selected_month - 1]
-            }), this.#updateStateDependantElements);
+            }), this.#updateSelectedMonthQueryDependantElements);
         }
     }
-
+     /**
+     * First, calculate month and year of the next month, then
+     * update the elements that use the updated values
+     */
     #calculateNextMonth = () => {
         let current_month = this.state.selected_month;
         if (current_month === 11) {
@@ -207,27 +277,42 @@ class Calendar extends React.Component {
                 selected_month: 0,
                 selected_year: prevState.selected_year + 1,
                 selected_month_name: this.month_names[0]
-            }), this.#updateStateDependantElements);
+            }), this.#updateSelectedMonthQueryDependantElements);
         } else {
             this.setState((prevState, props) => ({
                 selected_month: prevState.selected_month + 1,
                 selected_month_name: this.month_names[prevState.selected_month + 1],
-            }), this.#updateStateDependantElements);
+            }), this.#updateSelectedMonthQueryDependantElements);
         }
     }
-
-    #updateStateDependantElements = () => {
-        // this.#setMonth(this.state.selected_month, this.state.selected_year);
+    /**
+     * Update all elements that depend on the value of this.state.selectedMonthQuery
+     */
+    #updateSelectedMonthQueryDependantElements = () => {        
         this.setState({
             selectedMonthQuery: this.getSelectedMonthQuery(),
         }, this.#fetchSelectedMonth);
 
     }
-    // Returns true if the year parameter is a leap year
+    /**
+     * Returns true if the year parameter is a leap year
+     *  */ 
     #isLeapYear(year) {
         return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
     }
-
+    /**
+     * Inhabit the sate object callendar_cells with corresponding values.
+     * This.state.calendar_cells holds a multidimensional array with Iformation that is 
+     * relevant for rendering each individual cell in the Calendar.
+     * This.state.calendar_cells[row][column][cell]
+     * At the cell index you have an array of ,currently, three elements: 
+     * 
+     * 1) The day number(1-31),
+     * 2) A boolean value that shows whether or not the day has been selected(clicked on by the user),
+     * 3) An array that harbors a list of taks for the given day
+     * @param {Integer} month 
+     * @param {Integer} year 
+     */
     #setMonth = (month, year) => {        
         // Determine which weekday is the first day of the month
         let first_day = new Date(year, month, 1);
@@ -249,7 +334,11 @@ class Calendar extends React.Component {
         // number of rows in the calendar
         let number_of_rows = get_number_of_rows();
 
-        // Create an array representation of calendar cells
+        /**
+         * Create an array representation of calendar cells as they are
+         * required for this.state.calenbdar_cells 
+         * @returns An array representation of calendar cells
+         */
         const create_calendar_cells = () => {
             let cells = [];
 
@@ -267,7 +356,7 @@ class Calendar extends React.Component {
         }
 
         let cal_cells = create_calendar_cells();
-
+        // The offset for the number of the day that will be plotted in the cell label
         let day_number = 1;
 
         // the rows and columns are numbered 1-7
@@ -306,11 +395,22 @@ class Calendar extends React.Component {
         this.setState({ calendar_cells: cal_cells });
     }
 
-    // If there is a list of tasks for this day then return an array with tasks, else return an empty array
+    /**
+     * If there is a list of tasks for this day then return an array with tasks, else return an empty array.
+     * The list of tasks is stored in this.state.selectedMonthTaskList.results
+     * @param {Integer} day 
+     * @param {Integer} month 
+     * @param {Integer} year 
+     * @returns Array task objects for the day. Each task is a dictionary, which can be accessed like arr[index].property
+     */
     #getDaysTaskList = (day, month, year) => {
         let arr = [];
 
-        // Check if the due_date is the same as the date specified in the parameter list passed to this method
+        /**
+         * Check if the due_date is the same as the date specified in the parameter list passed to this method
+         * @param {due_date String representation of the datetime in the Format coming from the API : like 02. Aug 2023 10:00} due_date 
+         * @returns true if the due_date parameter is equivalent to the day, month and year sent to the parent function
+         */
         const isSameDate = (due_date) => {
             const split = due_date.split(" ");
             const strMonnths = ["Jan", "Feb", "Mar", "Apr", "May",  "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -334,7 +434,9 @@ class Calendar extends React.Component {
             }
             return false;
         }
-
+        /**
+         * Filter out the tasks for the given day and attach them to the array
+         */
         const getList = () => {
             for (let i = 0; i < this.state.selectedMonthTaskList.results.length; i++) {
                 if (isSameDate(this.state.selectedMonthTaskList.results[i].due_date)) {                    
@@ -346,7 +448,12 @@ class Calendar extends React.Component {
         getList();
         return arr;
     }
-
+    /**
+     * Determine the length of a month 
+     * @param {Integer} month 
+     * @param {Integer} year 
+     * @returns The length of the month specified in the parameters
+     */
     #getLastDayOfMonth = (month, year) => {
         // Since months are numbered 0-11, the number of days in each month can
         // be stored in the array, where the index corresponds to the month number
@@ -366,15 +473,26 @@ class Calendar extends React.Component {
 
         return days_in_month[month];
     }
-
+    /**
+     * 
+     * @returns JSX for rendering the Calendar cells 
+     */
     displayCells = () => {
-        // See if the string is a representation of a number
+        /**
+         * See if the string is a representation of a number
+         * @param {String} str 
+         * @returns true if the string represents a number
+         */
         const isNumeric = (str) => {
             // If not a string then don't bother processing
             if (typeof str != "string") return false;
             return !isNaN(str);
         }
-
+        /**
+         * Genearate a unique key
+         * @param {Object} elem 
+         * @returns A genarated key
+         */
         const generateKey = (elem) => {
             let key1 = 0;
             if (Array.isArray(elem)) {
