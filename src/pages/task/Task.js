@@ -5,7 +5,13 @@ import { Card,Modal, Button, Container, Row, Col, ListGroup } from "react-bootst
 import { useHistory } from "react-router-dom";
 import { axiosRes } from "../../api/axiosDefaults";
 
-
+/**
+ * Task is React Component that represents an idividual task
+ * It reders all properties passed in the parameter list
+ * It also facilitates deletion of the task and provides a link for editing the task
+ * @param {proops} props 
+ * @returns JSX of a Task component
+ */
 const Task = (props) => {
     const {
         id,
@@ -20,20 +26,34 @@ const Task = (props) => {
         file,
         setUpdateTaskList,
     } = props;
-
+    /**
+     * Reference to the current user object used in the Request header
+     */
     const currentUser = useCurrentUser();
+    /**
+     * Flag if the current user is the owner of the task
+     */
     const is_owner = currentUser?.username === owner;
+    /**
+     * Access the history in the browser
+     */
     const history = useHistory();
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-
+    /**
+     * Show the Confirm Dialog for deleteing
+     */
     const handleShowConfirmDialog = () => {
         setShowConfirmDialog(true);
     }
-
+    /**
+     * Close the Confirm Dialog for deleteing
+     */
     const handleCloseConfirmDialog = () => {
         setShowConfirmDialog(false);
     }
-
+    /**
+     * Delete the task, because the user confirmed the delete
+     */
     const handleConfirmDialogDeleteClicked = () => {
         const handleDelete = async () => {
             try {
@@ -47,9 +67,12 @@ const Task = (props) => {
         };
 
         handleDelete();
+        // Close the confirm dialog
         setShowConfirmDialog(false);
     }
-
+    /**
+     * Redirect user to the edit page 
+     */
     const handleEdit = () => {
         history.push(`${id}/edit`);
     };

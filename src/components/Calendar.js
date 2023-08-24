@@ -72,7 +72,9 @@ class Calendar extends React.Component {
         // that will be displayed underneath the day numbers in the calendar
         this.#fetchSelectedMonth();
     }
-
+    /**
+     * Reflect the month selection in the Calendar
+     */
     initMonth = () => {          
         /** Set the query for the URL (&search=) in the parent component */
         this.setQuery(this.state.selectedMonthQuery);
