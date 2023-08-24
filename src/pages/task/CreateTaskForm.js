@@ -20,12 +20,18 @@ import { useHistory } from "react-router-dom";
 import { FormLabel } from "react-bootstrap";
 import { convertDateToReactString } from "../../utils/utils";
 import { useCurrentUser } from "../../context/CurrentUserContext";
-
+/**
+ * React Component that allows users to create new Tasks
+ * @returns JSX of a Form for creating a new Task
+ */
 function CreateTaskForm() {
-    // See if the user is logged in
+    /**
+     * Reference to the current user object that is used in the Request headers
+     */
     const currentUser = useCurrentUser();
+    // State attribute that will hold all validation errors
     const [errors, setErrors] = useState({});
-
+    // State attribute that holds all the task fields
     const [taskData, setTaskData] = useState({
         id: "",
         owner: "",
@@ -38,18 +44,26 @@ function CreateTaskForm() {
         status: "",
         file: "",
     });
-
+    // Destruct a single piece of taskData 
     const { id, asigned_to, title, comment, due_date, category, priority, status, file } = taskData;
+    // State for holding the objects with teammates of the current user
     const [teamMembers, setTeamMembers] = useState({ results: [], });
 
-
+    /**
+     * Event handler for user input fields 
+     * @param {Event} event 
+     */
     const handleChange = (event) => {
         setTaskData({
             ...taskData,
             [event.target.name]: event.target.value,
         });
     };
-
+    /**
+     * Event handler for input field for the image file
+     * If the user selects a file it is attached to the taskData as a URL of an object
+     * @param {Event} event 
+     */
     const handleChangeImage = (event) => {
         if (event.target.files.length) {
             URL.revokeObjectURL(file);
@@ -60,16 +74,25 @@ function CreateTaskForm() {
         }
     };
 
-    // Reference to the component with a image file : Form.File
+    
+    /**
+     * Reference to the component with a image file : Form.File
+     */
     const imageInput = useRef(null);
+    /**
+     * Access to the browser's history
+     */
     const history = useHistory();
 
     useEffect(() => {
+        // Set the title in the browsers Tab
         document.title = 'Create Task';
 
         const handleMount = async () => {
             try {
+                // Retrieve a list of teammates from the API
                 const { data } = await axiosReq.get(`/teammates/`);
+                // Store the teammates in the corresonding state object
                 setTeamMembers(data);
             } catch (err) {
                 console.log(err);
@@ -79,12 +102,16 @@ function CreateTaskForm() {
         handleMount();
     }, [history, id]);
 
+    /**
+     * Submit the form
+     * @param {Event} event 
+     */
     const handleSubmit = async (event) => {
         event.preventDefault();
+        /**
+         * The data structure of an HTML form, that is used in the Request object
+         */
         const formData = new FormData();
-
-
-
         // if the asigned_to value is numberic and is not 0. append it to the form
         if ((!isNaN(asigned_to)) && (parseInt(asigned_to) > 0)) {
             formData.append("asigned_to", asigned_to);
@@ -106,18 +133,23 @@ function CreateTaskForm() {
         formData.append("status", status);
 
         try {
+            // Send a POST Request to the API
             const { data } = await axiosReq.post("tasks/", formData);
-            const { id, asigned_to, title, comment, due_date, category, priority, status, file } = data;
-            console.log(`created id ${id}`);
+            // Only one parameter is necessary, but for some reason if I only leave the id it will not work
+            const { id, asigned_to, title, comment, due_date, category, priority, status, file } = data;   
+            // If the Request returned 200(Successful open the created Task in a edit page
             history.replace(`/tasks/${id}/edit`);
         } catch (err) {
             console.log(err);
+            // Copy validation errors to the corresponding state object
             if (err.response?.status !== 401) {
                 setErrors(err.response?.data);
             }
         }
     };
-
+    /**
+     * JSX for the buttons 
+     */
     const buttonPanel = (
         <div className="text-center">
             {/* Add your form fields here */}
@@ -139,6 +171,7 @@ function CreateTaskForm() {
     return (
         <>
             {
+                /* if the user is not authenticated then prompt them to log in first */
                 (currentUser === null) ? (
                     <h1>Please log in first</h1>
                 ) :

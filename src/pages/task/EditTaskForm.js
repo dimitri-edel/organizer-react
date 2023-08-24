@@ -21,14 +21,24 @@ import { useHistory, useParams } from "react-router";
 import { FormLabel } from "react-bootstrap";
 import { convertDateFormat } from "../../utils/utils";
 import { useCurrentUser } from "../../context/CurrentUserContext";
-
+/**
+ * React Component that allows users to edit Tasks
+ * @returns JSX of a Form for editting Tasks
+ */
 function EditTaskForm() {
-    // See if the user is loggged in
+    /**
+     * Reference of the current user, that is used in the Request headers
+     */
     const currentUser = useCurrentUser();
+    /**
+     * State attribute that will hold validation errrors
+     */
     const [errors, setErrors] = useState({});
     // The messages for the Task Editor
     const [message, setMessage] = useState("");
-    // The modal 
+    /**
+     * Close the Dialog that informs the user if the Task has been updated
+     */
     const handleCloseConfirmDialog = () => {
         setMessage("");
     }
@@ -44,21 +54,24 @@ function EditTaskForm() {
         status: "",
         file: "",
     });
-
+    // Set up a state attribute for holding a list of teammates
     const [teamMembers, setTeamMembers] = useState({ results: [], });
-
+    // Destruct the taskData
     const { asigned_to, asigned_to_username, title, due_date, comment, category, priority, status, file } = taskData;
-    // const currentUser = useCurrentUser();
-
-
-
+    /**
+     * Apply user's input to the corresponding state attributes
+     * @param {Event} event 
+     */
     const handleChange = (event) => {
         setTaskData({
             ...taskData,
             [event.target.name]: event.target.value,
         });
     };
-
+    /**
+     * Event handler for the file input field
+     * @param {Event} event 
+     */
     const handleChangeImage = (event) => {
         if (event.target.files.length) {
             URL.revokeObjectURL(file);
@@ -71,7 +84,9 @@ function EditTaskForm() {
 
     // Reference to the component with a image file : Form.File
     const imageInput = useRef(null);
+    // Access browsers history
     const history = useHistory();
+    // Retrieve the parameter from the route
     const { id } = useParams();
     // The datepicker expect a different date format than the one that comes 
     // back from the API. Thus, it is neccessary to convert it to the expected 
@@ -79,14 +94,18 @@ function EditTaskForm() {
     const [datePickerValue, setDatePickerValue] = useState("");
 
     useEffect(() => {
+        // Set the title in the Tab of the browser
         document.title = "Edit Task";
         const handleMount = async () => {
             try {
+                // Send two requests to the API
+                // one requesting the data for the given task
+                // two request a list of teammates of the current user
                 const [{ data: task }, { data: teammates }] = await Promise.all([
                     axiosReq.get(`/task/${id}`),
                     axiosReq.get(`/teammates/`),
                 ]);
-
+                // Destruct the recieved task data into a set of constants
                 const { is_owner, asigned_to, asigned_to_username, title, due_date, comment, category, priority, status, file } = task;
 
                 // Convert the due_date to datePickerValue               
@@ -102,9 +121,14 @@ function EditTaskForm() {
 
         handleMount();
     }, [history, id]);
-
+    /**
+     * Submit the form
+     * @param {Event} event 
+     */
     const handleSubmit = async (event) => {
+        // Prevent the browser from following through with the default submit
         event.preventDefault();
+        // Create a form data element, for the request
         const formData = new FormData();
 
         // if the asigned_to value is numberic and is not 0. append it to the form
@@ -128,10 +152,13 @@ function EditTaskForm() {
         formData.append("status", status);
 
         try {
+            // Send an update request to the API
             await axiosReq.put(`/task/${id}`, formData);
+            // Show the message in a Modal Dialog to the user
             setMessage("The task has been saved!");
         } catch (err) {
             console.log(err);
+            // Copy the validation errors into the corresponding state attribute
             if (err.response?.status !== 401) {
                 setErrors(err.response?.data);
             }
@@ -140,8 +167,6 @@ function EditTaskForm() {
 
     const buttonPanel = (
         <div className="text-center">
-            {/* Add your form fields here */}
-
             <Button
                 className={`${btnStyles.Button} ${btnStyles.Blue}`}
                 onClick={() => {
