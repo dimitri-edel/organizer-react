@@ -14,7 +14,12 @@ export const CurrentUserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const history = useHistory();
 
-  const handleMount = async () => {
+  /**
+   * When the component is mounted, retrieve the user data from the API
+   * and store it in the Context State. It provides children of this component
+   * with access to the user data, by calling the useCurrentUser() function.
+   */
+  const handleMount = async () => {    
     try {
       const { data } = await axiosRes.get("dj-rest-auth/user/");
       setCurrentUser(data);
@@ -28,6 +33,12 @@ export const CurrentUserProvider = ({ children }) => {
   }, []);
 
   useMemo(() => {
+    /*
+      Before every request, refresh access tokens in the browser.
+      If the access tokens have expired and cannot be refreshed
+      anymore, yet there is a user in the context redirect them
+      to login page
+    */
     axiosReq.interceptors.request.use(
       async (config) => {
         try {
@@ -49,6 +60,11 @@ export const CurrentUserProvider = ({ children }) => {
       }
     );
 
+    /*
+      Check every response if the Status Code is 401 Unauthorized.
+      If it is, then refresh access tokens. If tokens have expired,
+      then redirect the user to the login page
+    */
     axiosRes.interceptors.response.use(
       (response) => response,
       async (err) => {
