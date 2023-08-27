@@ -72,16 +72,35 @@ the name of the team or the username whose teams you want to be listed, so it ca
 
 ---
 ### Joining or Leaving Teams
+To see a list of teams click on **Teams** in the navigation menu. Once the List of teams
+appears on screen. Go to the search bar and type in the first sequence of letters in
+the name of the team or the username whose teams you want to be listed, so it can be found more quickly. 
+
+![joining or leaving teams image](images_readme/joining_leaving_teams.png)
+
+Teams that the user has already joined have a **Leave** button.
+Teams that the user is not a member of have a **Join** button.
 
 ---
 #### Search Teams
+To see a list of teams click on **Teams** in the navigation menu. Once the List of teams
+appears on screen. Go to the **search bar** and type in the first sequence of letters in
+the name of the team or the username whose teams you want to be listed, so it can be found more quickly. 
 
 ---
 ### Create Task
-assign task to teammates
+On the **navigation bar** click on the Link that says **+ Task**.
 
----
-#### Validation
+![create task form image](images_readme/create_task_form_1.png)
+
+1. Name the task
+2. Choose date and time on which the task is due
+3. Choose Category
+4. Choose Priority
+5. Choose Status
+7. Choose an image file that you want to upload. This field is optional.
+8. Type in a comment for the task. This field is optional.
+9. Click on Create
 
 ---
 ### Update Task
@@ -94,9 +113,17 @@ assign task to teammates
 
 ---
 ### View List of Tasks
+On the **navigation bar** inside the **navigation menu**  click on **Teams**. A Calendar will appear. Underneath the calendar
+is a list of tasks. At first you will see a list of tasks for the current day, provided that there are any tasks for the day.
+To select the **entire month** simply click on the button that reads the month and year of the current month, which lives in
+the top row of the calendar. Also, you you wish to selct a **particular day** just click on that day in the calendar. Inside, 
+the calendar you can see an abbrivated list of tasks inside each box with the day number, given the fact that there are any 
+tasks planned for that day. Underneath the calendar you will find a **search bar** that will have either the current date inside 
+it like : "2023-08-27" or if you clicked on the monthname in the calendar it will simply read "2023-08". Which means that the task
+list below shows entries for that day or month. However that search-bar also allows you to search tasks by their title as well.
+Furthermore, underneath the search-bar is a set of filters by which you can filter the results as well.
 
-Search field
-Filters
+![task list image](images_readme/task_list_1.png)
 
 ---
 ## Testing

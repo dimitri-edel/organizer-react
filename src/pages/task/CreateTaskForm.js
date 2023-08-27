@@ -252,7 +252,7 @@ function CreateTaskForm() {
                                             </Form.Control>
                                         </Form.Group>
                                         <Form.Group>
-                                            <FormLabel>Category</FormLabel>
+                                            <FormLabel>Status</FormLabel>
                                             <Form.Control
                                                 as="select"
                                                 name="status"
