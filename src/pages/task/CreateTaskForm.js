@@ -74,7 +74,7 @@ function CreateTaskForm() {
         }
     };
 
-    
+
     /**
      * Reference to the component with a image file : Form.File
      */
@@ -136,7 +136,7 @@ function CreateTaskForm() {
             // Send a POST Request to the API
             const { data } = await axiosReq.post("tasks/", formData);
             // Only one parameter is necessary, but for some reason if I only leave the id it will not work
-            const { id, asigned_to, title, comment, due_date, category, priority, status, file } = data;   
+            const { id, asigned_to, title, comment, due_date, category, priority, status, file } = data;
             // If the Request returned 200(Successful open the created Task in a edit page
             history.replace(`/tasks/${id}/edit`);
         } catch (err) {
@@ -178,6 +178,7 @@ function CreateTaskForm() {
                     (<Form onSubmit={handleSubmit}>
                         <h1 className={styles.Title}>Create Task</h1>
                         <Row>
+                            <Col></Col>
                             <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
                                 <Container
                                     className={`${appStyles.Content} ${styles.Container} d-flex flex-column justify-content-center`}
@@ -326,13 +327,14 @@ function CreateTaskForm() {
                                     {/* <div className="d-md-none">{buttonPanel}</div> */}
                                 </Container>
                             </Col>
-                            <Col md={5} lg={4} className="d-none d-md-block p-0 p-md-2">
-                            </Col>
+                            <Col></Col>
                         </Row>
                         <Row>
+                            <Col></Col>
                             <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
                                 <Container className={appStyles.Content}>{buttonPanel}</Container>
                             </Col>
+                            <Col></Col>
                         </Row>
                     </Form>)
             }

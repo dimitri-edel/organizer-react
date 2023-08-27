@@ -6,7 +6,7 @@ import Alert from "react-bootstrap/Alert";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import styles from "../../styles/TaskCreateEditForm..module.css";
+import styles from "../../styles/TeamCreateEditForm.module.css";
 import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import { axiosReq } from "../../api/axiosDefaults";
@@ -81,13 +81,14 @@ function CreateTaskForm() {
                 <Form onSubmit={handleSubmit}>
                     <h1 className={styles.Title}>Create Team</h1>
                     <Row>
+                        <Col></Col>
                         <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
                             <Container
                                 className={`${appStyles.Content} ${styles.Container} d-flex flex-column justify-content-center`}
                             >
                                 <Form.Group className="text-center">
                                     <Form.Group>
-                                        <Form.Label>Name of Task</Form.Label>
+                                        <Form.Label>Name of Team</Form.Label>
                                         <Form.Control
                                             type="text"
                                             name="name"
@@ -103,11 +104,14 @@ function CreateTaskForm() {
                                 </Form.Group>
                             </Container>
                         </Col>
+                        <Col></Col>
                     </Row>
                     <Row>
+                        <Col></Col>
                         <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
                             <Container className={appStyles.Content}>{buttonPanel}</Container>
                         </Col>
+                        <Col></Col>
                     </Row>
                 </Form>
             )}

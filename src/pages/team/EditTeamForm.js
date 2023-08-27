@@ -7,7 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import { Modal } from "react-bootstrap";
-import styles from "../../styles/TaskCreateEditForm..module.css";
+import styles from "../../styles/TeamCreateEditForm.module.css";
 import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import { axiosReq } from "../../api/axiosDefaults";
@@ -21,7 +21,7 @@ function EditTeamForm() {
     const [message, setMessage] = useState("");
 
     // Reset the message for the Dialog to empty to make it hide
-    const handleCloseConfirmDialog = () =>{
+    const handleCloseConfirmDialog = () => {
         setMessage("");
     }
     // Initialize teamData with en empty data-set
@@ -117,15 +117,16 @@ function EditTeamForm() {
                 <h1>Access denied!</h1>
             ) : (
                 <Form onSubmit={handleSubmit}>
-                    <h1 className={styles.Title}>Edit Team</h1>
+                    <h1 className={styles.Title}>Rename Team</h1>
                     <Row>
+                        <Col></Col>
                         <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
                             <Container
                                 className={`${appStyles.Content} ${styles.Container} d-flex flex-column justify-content-center`}
                             >
                                 <Form.Group className="text-center">
                                     <Form.Group>
-                                        <Form.Label>Name of Task</Form.Label>
+                                        <Form.Label>Name of Team</Form.Label>
                                         <Form.Control
                                             type="text"
                                             name="name"
@@ -141,11 +142,14 @@ function EditTeamForm() {
                                 </Form.Group>
                             </Container>
                         </Col>
+                        <Col></Col>
                     </Row>
                     <Row>
+                        <Col></Col>
                         <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
                             <Container className={appStyles.Content}>{buttonPanel}</Container>
                         </Col>
+                        <Col></Col>
                     </Row>
                     <Modal show={(message !== "")} onHide={handleCloseConfirmDialog} animation={false}>
                         <Modal.Header closeButton>

@@ -14,3 +14,8 @@
   h5 {
     margin: 0 0;
   }
+
+  .TeamButton {
+    width: 100%;   
+    font-size: large;
+  }

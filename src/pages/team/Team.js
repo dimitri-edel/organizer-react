@@ -87,23 +87,23 @@ const Team = (props) => {
                     {is_owner ? (<Container>
                         <Row>
                             <Col>
-                                <Button variant="primary" onClick={handleEdit} size="sm">
-                                    <i className="fas fa-edit"></i>Edit
+                                <Button variant="primary" onClick={handleEdit} size="sm" className={styles.TeamButton}>
+                                    <i className="fas fa-edit"></i>Rename
                                 </Button>
                             </Col>
                             <Col>
-                                <Button variant="danger" onClick={handleShowConfirmDialog} size="sm">
+                                <Button variant="danger" onClick={handleShowConfirmDialog} size="sm" className={styles.TeamButton}>
                                     <i className="fas fa-edit"></i>Delete
                                 </Button>
                             </Col>
                         </Row>
                     </Container>) : (
                         is_member ? (
-                            <Button variant="danger" onClick={handleLeaveTeam}>
+                            <Button variant="danger" onClick={handleLeaveTeam} className={styles.TeamButton}>
                                 Leave
                             </Button>
                         ) : (
-                            <Button variant="secondary" onClick={handleJoinTeam}>
+                            <Button variant="secondary" onClick={handleJoinTeam} className={styles.TeamButton}>
                                 Join
                             </Button>
                         )

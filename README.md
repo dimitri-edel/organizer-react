@@ -1,70 +1,164 @@
-# Getting Started with Create React App
+# Organizer 
+Organizer helps users to organize their tasks, such as chores, errands and work-related matters.
+It allows users to form teams and assign tasks to their teammates.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## UER SOTRIES
+---
+### Registration
+![registration image](images_readme/singnup.png)
 
-## Available Scripts
+If the registration was successful, then the user is forwarded to the login page.
+---
+#### Validation
+If one of the password fields is left empty
 
-In the project directory, you can run:
+![registration empty password image](images_readme/singnup_validation_blank.png)
 
-### `npm start`
+If the password is not valid
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+![registration invalid password](images_readme/singnup_validation_password.png)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+If the username is already exists
 
-### `npm test`
+![registration username taken image](images_readme/singnup_validation_username.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
+### Login
+![signin form image](images_readme/signin.png)
 
-### `npm run build`
+---
+### Logout
+Click or tap on Sign out in the navigation menu
+![signout image](images_readme/signout.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
+### Create Team
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![create team form image](images_readme/create_team_form.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+If the team was created successfully the user will be forwarded to the page with the list of teams.
 
-### `npm run eject`
+---
+### Rename Team
+Updating the team is just a renaming function. It allows users to rename their teams. 
+To rename the team click on **Teams** in the navigation menu. Once the List of teams
+appears on screen. Go to the search bar and type in the first sequence of letters in
+the name of the team, so it can be found more quickly. 
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+![updating team name image step#1](images_readme/rename_team_step1.png)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+As soon as you can see the team,
+you will also see that their is a button that reads **Rename**. Tap on that button and a
+window will open that allows you to rename it. When done, click on **Save**.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+![updateing team name image step#2](images_readme/rename_team_step2.png)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
+### Delete Team
+To delete the team click on **Teams** in the navigation menu. Once the List of teams
+appears on screen. Go to the search bar and type in the first sequence of letters in
+the name of the team, so it can be found more quickly. 
 
-## Learn More
+![deleting team name image step#1](images_readme/rename_team_step1.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Now simply click on the delete button on the team.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+---
+### View List of Teams
+To see a list of teams click on **Teams** in the navigation menu. Once the List of teams
+appears on screen. Go to the search bar and type in the first sequence of letters in
+the name of the team or the username whose teams you want to be listed, so it can be found more quickly. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
+### Joining or Leaving Teams
 
-### Analyzing the Bundle Size
+---
+#### Search Teams
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
+### Create Task
+assign task to teammates
 
-### Making a Progressive Web App
+---
+#### Validation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
+### Update Task
 
-### Advanced Configuration
+---
+#### Validation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
+### Delete Task
 
-### Deployment
+---
+### View List of Tasks
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Search field
+Filters
 
-### `npm run build` fails to minify
+---
+## Testing
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Test Registration
+
+---
+### Test Login
+
+---
+### Test Logout
+
+---
+### Test Creating Teams
+Validation
+
+---
+### Test Updating Teams
+Validation
+
+---
+### Test Deleting Teams
+
+---
+### Test Listing Teams
+
+---
+#### Test Searching Teams
+- Filters
+
+
+---
+### Test Joining Teams
+
+---
+### Test Leaving Teams
+
+---
+### Test Creating Tasks
+- assign task to teammates
+- Validation
+---
+### Test Updating Tasks
+- Validation
+
+---
+### Test Deleting Tasks
+
+---
+### Test Listing Tasks
+
+Search field
+Filters
+
+---
+
+### Deployment on heroku
+The repository already contains the Procfile, that is the only thing that heroku will need to build the application.
+All that is necessary to do is go to the dashboard and create a new app, that uses a github repository. Specify this 
+repository and go to Deploy tab. Then click on **Deploy branch**. 
+
+## BUGS
+## Signin Form
+Validation fields are not showing the response from API
