@@ -4,6 +4,7 @@ import { useCurrentUser } from "../../context/CurrentUserContext";
 import { Card, Modal, Button, Container, Row, Col, } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
 import { axiosReq, axiosRes } from "../../api/axiosDefaults";
+import TeamMessage from "./TeamMessage";
 
 const TeamMessageBoard = ({ team_id }) => {
     const currentUser = useCurrentUser();
@@ -40,8 +41,8 @@ const TeamMessageBoard = ({ team_id }) => {
 
     return (
         <div className={styles.MessageBoard}>
-            <h1>Message Board</h1>
-            <h2>Team ID = {team_id}</h2>
+            {/* <h1>Message Board</h1>
+            <h2>Team ID = {team_id}</h2> */}
             <div>
                 {
                     hasLoaded ? (
@@ -50,7 +51,7 @@ const TeamMessageBoard = ({ team_id }) => {
                                 messages.results.length ? (
                                     messages.results.map(message => {
                                         return (
-                                            <p>{message.message}</p>
+                                            <TeamMessage key={message.id} message={message} />
                                         )
                                     })
                                 ) : (
