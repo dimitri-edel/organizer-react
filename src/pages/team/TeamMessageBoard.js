@@ -5,11 +5,19 @@ import { Card, Modal, Button, Container, Row, Col, } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
 import { axiosReq, axiosRes } from "../../api/axiosDefaults";
 import TeamMessage from "./TeamMessage";
-
-const TeamMessageBoard = ({ team_id }) => {
+/**
+ * 
+ * @param team_id - The id of the team
+ * @param setReload - Function in TeamChat.js that sets the reload flag, which signifies
+ * whether or not the messages have been updated and should be reloaded
+ * @param - The Reload flag in TeamChat.js
+ * @returns 
+ */
+const TeamMessageBoard = ({ team_id, setReload, reload }) => {
     const currentUser = useCurrentUser();
     const [messages, setMessages] = useState([]);
     const [hasLoaded, setHasLoaded] = useState(false);
+
     // const is_owner = currentUser?.username === owner;
     const history = useHistory();
 
@@ -22,7 +30,7 @@ const TeamMessageBoard = ({ team_id }) => {
                 const { data } = await axiosReq.get(`/team-chat-list/?team_id=${team_id}&limit=7&offset=0`);
                 // const { data } = await axiosReq.get(`/Teams/?search=${query}`);            
                 setMessages(data);
-                console.log(data);
+                setReload(false);
                 setHasLoaded(true);
 
             } catch (err) {
@@ -36,7 +44,7 @@ const TeamMessageBoard = ({ team_id }) => {
         return () => {
             // clearTimeout(timer);
         };
-    }, [team_id]);
+    }, [team_id, reload]);
 
 
     return (
