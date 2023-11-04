@@ -11,12 +11,13 @@ import EditTaskForm from './pages/task/EditTaskForm';
 import TeamList from './pages/team/TeamList';
 import CreateTeamForm from './pages/team/CreateTeamForm';
 import EditTeamForm from './pages/team/EditTeamForm';
+import TeamChat from './pages/team/TeamChat';
 import { useCurrentUser } from './context/CurrentUserContext';
 import Home from "./pages/home";
 
 function App() {
   const currentUser = useCurrentUser();
-  
+
   return (
     <div className={styles.App}>
       <NavBar />
@@ -28,15 +29,16 @@ function App() {
             render={() => (
               <Home />
             )}
-          />   
+          />
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
           <Route exact path="/tasks/" render={() => <TaskList />} />
           <Route exact path="/teams/" render={() => <TeamList />} />
-          <Route exact path="/teams/create" render={() => <CreateTeamForm />}/>  
-          <Route exact path="/teams/:id/edit" render={() => <EditTeamForm />}/>
-          <Route exact path="/tasks/create" render={() => <CreateTaskForm />}/>      
-          <Route exact path="/tasks/:id/edit" render={() => <EditTaskForm />}/>
+          <Route exact path="/teams/create" render={() => <CreateTeamForm />} />
+          <Route exact path="/teams/:id/edit" render={() => <EditTeamForm />} />
+          <Route exact path="/tasks/create" render={() => <CreateTaskForm />} />
+          <Route exact path="/tasks/:id/edit" render={() => <EditTaskForm />} />
+          <Route exact path="/team-chat/:team_id/" render={() => <TeamChat />} />
           <Route render={() => <p>Page not found!</p>} />
         </Switch>
       </Container>

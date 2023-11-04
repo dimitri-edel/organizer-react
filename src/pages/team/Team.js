@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "../../styles/Team.module.css";
 import { useCurrentUser } from "../../context/CurrentUserContext";
 import { Card, Modal, Button, Container, Row, Col, } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { axiosReq, axiosRes } from "../../api/axiosDefaults";
 
 const Team = (props) => {
@@ -99,9 +99,14 @@ const Team = (props) => {
                         </Row>
                     </Container>) : (
                         is_member ? (
-                            <Button variant="danger" onClick={handleLeaveTeam} className={styles.TeamButton}>
-                                Leave
-                            </Button>
+                            <>
+                                <Button variant="danger" onClick={handleLeaveTeam} className={styles.TeamButton}>
+                                    Leave
+                                </Button>
+                                <Link to={"/team-chat/" + id + "/"}>
+                                    Team chat
+                                </Link>
+                            </>
                         ) : (
                             <Button variant="secondary" onClick={handleJoinTeam} className={styles.TeamButton}>
                                 Join
@@ -124,7 +129,7 @@ const Team = (props) => {
                     </Modal.Footer>
                 </Modal>
             </Card.Body>
-        </Card>
+        </Card >
 
     );
 };
