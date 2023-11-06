@@ -5,6 +5,7 @@ import { Card, Modal, Button, Container, Row, Col, } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
 import { axiosReq, axiosRes } from "../../api/axiosDefaults";
 import TeamMessage from "./TeamMessage";
+import TeamMessageEditForm from "./TeamMessageEditForm";
 /**
  * 
  * @param team_id - The id of the team
@@ -15,8 +16,15 @@ import TeamMessage from "./TeamMessage";
  */
 const TeamMessageBoard = ({ team_id, setReload, reload }) => {
     const currentUser = useCurrentUser();
+    // List of messages
     const [messages, setMessages] = useState([]);
+    // This state signifies if the messages have been loaded
     const [hasLoaded, setHasLoaded] = useState(false);
+    // This state signifies if the edit button on one of the
+    // messages has been clicked. If so, the id of the message
+    // will be stored in editMessageId, other wise it has to
+    // be set to null
+    const [editMessageId, setEditMessageId] = useState(null);
 
     // const is_owner = currentUser?.username === owner;
     const history = useHistory();
@@ -65,7 +73,14 @@ const TeamMessageBoard = ({ team_id, setReload, reload }) => {
                                 messages.results.length ? (
                                     messages.results.map(message => {
                                         return (
-                                            <TeamMessage key={message.id} message={message} />
+                                            <>
+                                                {
+                                                    (editMessageId && editMessageId === message.id) ? (
+                                                        <TeamMessageEditForm key={message.id} teamMessage={message} setReload={setReload} setEditMessageId={setEditMessageId} />) : (
+                                                        <TeamMessage key={message.id} message={message} setEditMessageId={setEditMessageId} setReload={setReload} />
+                                                    )
+                                                }
+                                            </>
                                         )
                                     })
                                 ) : (

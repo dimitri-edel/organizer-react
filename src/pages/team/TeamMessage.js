@@ -7,23 +7,53 @@ import { useHistory, useParams } from "react-router-dom";
 import { axiosReq, axiosRes } from "../../api/axiosDefaults";
 import TeamMessageBoard from "./TeamMessageBoard";
 
-const TeamMessage = ({ message }) => {
+const TeamMessage = ({ message, setEditMessageId, setReload }) => {
     const currentUser = useCurrentUser();
     const is_owner = currentUser?.username === message.owner;
     const history = useHistory();
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+
+    /**
+     * Show the Confirm Dialog for deleteing
+     */
+    const handleShowConfirmDialog = () => {
+        setShowConfirmDialog(true);
+    }
+    /**
+     * Close the Confirm Dialog for deleteing
+     */
+    const handleCloseConfirmDialog = () => {
+        setShowConfirmDialog(false);
+    }
+    /**
+     * Delete the message, because the user confirmed the delete
+     */
+    const handleConfirmDialogDeleteClicked = () => {
+        const handleDelete = async () => {
+            try {
+                await axiosRes.delete(`/team-chat-delete/${message.id}`);
+                // Set the flag to true for TeamChat.js, so the useEffectHook be executed
+                // and all the messages on the message board be reloaded
+                setReload(true);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        handleDelete();
+        // Close the confirm dialog
+        setShowConfirmDialog(false);
+    }
 
     const onEditClick = () => {
         console.log("Edit clicked!" + message.id);
+        setEditMessageId(message.id);
     }
 
     return (
         <div className={styles.ChatRoom}>
-            {/* <h1>message ID = {message.id}</h1>
-            <p>team ID = {message.team}</p> */}
             <Container>
                 <Row>
-                    {/* <Col xs={4} md={2} className={styles.LeftPanel}>
-                    </Col> */}
                     <Col>
                         <span>
                             <span className={is_owner ? styles.OwnerUserName : styles.UserName}>{message.owner}</span>
@@ -44,11 +74,25 @@ const TeamMessage = ({ message }) => {
                         <button className={styles.EditButton} onClick={onEditClick}>Edit</button>
                     </Col>
                     <Col>
-                        <button className={styles.DeleteButton}> Delete</button>
+                        <button className={styles.DeleteButton} onClick={handleShowConfirmDialog}> Delete</button>
                     </Col>
                 </Row>
                 }
             </Container>
+            <Modal show={showConfirmDialog} onHide={handleCloseConfirmDialog} animation={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Please confirm delete</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to delete this Message?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseConfirmDialog} >
+                        Cancel
+                    </Button>
+                    <Button variant="primary" onClick={handleConfirmDialogDeleteClicked} >
+                        Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }
