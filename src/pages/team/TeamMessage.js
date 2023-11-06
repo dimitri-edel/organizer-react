@@ -22,12 +22,14 @@ const TeamMessage = ({ message }) => {
             <p>team ID = {message.team}</p> */}
             <Container>
                 <Row>
-                    <Col xs={4} md={2} className={styles.LeftPanel}>
-                        <div className={is_owner ? styles.OwnerUserName : styles.UserName}>{message.owner}</div>
-                        <div className={styles.TimeStamp}>{message.created_at}</div>
-                    </Col>
+                    {/* <Col xs={4} md={2} className={styles.LeftPanel}>
+                    </Col> */}
                     <Col>
-                        <div className={styles.Message}>{message.message}</div>
+                        <span>
+                            <span className={is_owner ? styles.OwnerUserName : styles.UserName}>{message.owner}</span>
+                            <span className={styles.TimeStamp}>{message.created_at}</span>
+                        </span>
+                        <span className={styles.Message}>{message.message}</span>
                     </Col>
                 </Row>
                 <Row>
@@ -37,7 +39,7 @@ const TeamMessage = ({ message }) => {
                         </figure>}
                     </Col>
                 </Row>
-                <Row>
+                {is_owner && <Row>
                     <Col>
                         <button className={styles.EditButton} onClick={onEditClick}>Edit</button>
                     </Col>
@@ -45,6 +47,7 @@ const TeamMessage = ({ message }) => {
                         <button className={styles.DeleteButton}> Delete</button>
                     </Col>
                 </Row>
+                }
             </Container>
         </div>
     )

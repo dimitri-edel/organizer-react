@@ -20,14 +20,18 @@ const TeamMessageBoard = ({ team_id, setReload, reload }) => {
 
     // const is_owner = currentUser?.username === owner;
     const history = useHistory();
+    // Reload the messages at an interval, which is set in useEffect()
+    const checkForMessages = () => {
+        setReload(true);
+    }
 
     useEffect(() => {
-        document.title = "Teams";
+        document.title = "Team Chat";
         // Fetch all Teams objects corresponding to the query, if the query is empty
         // then all Teams belonging to the user will be fetched
         const fetchMessages = async () => {
             try {
-                const { data } = await axiosReq.get(`/team-chat-list/?team_id=${team_id}&limit=7&offset=0`);
+                const { data } = await axiosReq.get(`/team-chat-list/?team_id=${team_id}&limit=20&offset=0`);
                 // const { data } = await axiosReq.get(`/Teams/?search=${query}`);            
                 setMessages(data);
                 setReload(false);
@@ -39,10 +43,12 @@ const TeamMessageBoard = ({ team_id, setReload, reload }) => {
         };
 
         fetchMessages();
+        let checkMessages = setInterval(checkForMessages, 3000);
 
-        // clear the timer when unmounting
         return () => {
-            // clearTimeout(timer);
+            // Clean up
+            // clear the interval when unmounting
+            clearInterval(checkMessages);
         };
     }, [team_id, reload]);
 

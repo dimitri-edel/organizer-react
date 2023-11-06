@@ -15,10 +15,6 @@
     height: auto;
 }
 
-.UserName {
-    color: blue;
-    font-weight: bold;
-}
 
 .Message {
     color: black;
@@ -28,11 +24,19 @@
 }
 
 .TimeStamp {
+    padding-right: 5px;
     color: rgb(2, 81, 81);
     font-size: small;
 }
 
+.UserName {
+    padding-right: 5px;
+    color: blue;
+    font-weight: bold;
+}
+
 .OwnerUserName {
+    padding-right: 15px;
     color: green;
     font-weight: bold;
 }
@@ -54,4 +58,20 @@
 
 .PostMessageForm {
     background-color: lightcyan;
+}
+
+.Image {
+    width: 80%;
+}
+
+.UploadImage {
+    width: 80%;
+    float: left;
+}
+
+.ChangeImageButton {
+    width: 100%;
+    background-color: green;
+    border: 1px solid black;
+    border-radius: 15px;
 }
