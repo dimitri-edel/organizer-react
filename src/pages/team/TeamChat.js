@@ -19,7 +19,6 @@ const TeamChat = (props) => {
 
     return (
         <div className={styles.ChatRoom}>
-            <h1>Team ID = {team_id}</h1>
             <div>Filters</div>
             <TeamMessageBoard team_id={team_id} setReload={setReload} reload={reload} />
             <TeamMessagePostForm team_id={team_id} setReload={setReload} />

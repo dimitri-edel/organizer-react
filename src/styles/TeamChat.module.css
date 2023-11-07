@@ -5,8 +5,8 @@
 
 .MessageBoard {
     background-color: antiquewhite;
+    overflow-y: scroll;
     border: 1px solid black;
-    overflow-y: auto;
     height: 70dvh;
 }
 

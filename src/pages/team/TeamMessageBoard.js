@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import styles from "../../styles/TeamChat.module.css";
 import { useCurrentUser } from "../../context/CurrentUserContext";
 import { Card, Modal, Button, Container, Row, Col, } from "react-bootstrap";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useHistory, useParams } from "react-router-dom";
 import { axiosReq, axiosRes } from "../../api/axiosDefaults";
+import { fetchMoreData } from "../../utils/utils";
+import Asset from "../../components/Asset";
 import TeamMessage from "./TeamMessage";
 import TeamMessageEditForm from "./TeamMessageEditForm";
 /**
@@ -20,6 +23,9 @@ const TeamMessageBoard = ({ team_id, setReload, reload }) => {
     const [messages, setMessages] = useState([]);
     // This state signifies if the messages have been loaded
     const [hasLoaded, setHasLoaded] = useState(false);
+    // Counter for total number of messages 
+    const [messageCount, setMessageCount] = useState(0);
+
     // This state signifies if the edit button on one of the
     // messages has been clicked. If so, the id of the message
     // will be stored in editMessageId, other wise it has to
@@ -28,9 +34,24 @@ const TeamMessageBoard = ({ team_id, setReload, reload }) => {
 
     // const is_owner = currentUser?.username === owner;
     const history = useHistory();
+
     // Reload the messages at an interval, which is set in useEffect()
     const checkForMessages = () => {
-        setReload(true);
+        const fetchMessageCount = async () => {
+            try {
+                const { data } = await axiosReq.get(`/team-chat-message-count/${team_id}`);
+                // const { data } = await axiosReq.get(`/Teams/?search=${query}`);            
+                if (messageCount !== data.count) {
+                    setMessageCount(data.count);
+                    setReload(true);
+                }
+
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        fetchMessageCount();
     }
 
     useEffect(() => {
@@ -39,7 +60,7 @@ const TeamMessageBoard = ({ team_id, setReload, reload }) => {
         // then all Teams belonging to the user will be fetched
         const fetchMessages = async () => {
             try {
-                const { data } = await axiosReq.get(`/team-chat-list/?team_id=${team_id}&limit=20&offset=0`);
+                const { data } = await axiosReq.get(`/team-chat-list/?team_id=${team_id}&limit=7&offset=0`);
                 // const { data } = await axiosReq.get(`/Teams/?search=${query}`);            
                 setMessages(data);
                 setReload(false);
@@ -62,7 +83,7 @@ const TeamMessageBoard = ({ team_id, setReload, reload }) => {
 
 
     return (
-        <div className={styles.MessageBoard}>
+        <div id="message-board" className={styles.MessageBoard}>
             {/* <h1>Message Board</h1>
             <h2>Team ID = {team_id}</h2> */}
             <div>
@@ -71,22 +92,31 @@ const TeamMessageBoard = ({ team_id, setReload, reload }) => {
                         <>
                             {
                                 messages.results.length ? (
-                                    messages.results.map(message => {
-                                        return (
-                                            <>
-                                                {
-                                                    (editMessageId && editMessageId === message.id) ? (
-                                                        <TeamMessageEditForm key={message.id} teamMessage={message} setReload={setReload} setEditMessageId={setEditMessageId} />) : (
-                                                        <TeamMessage key={message.id} message={message} setEditMessageId={setEditMessageId} setReload={setReload} />
-                                                    )
-                                                }
-                                            </>
-                                        )
-                                    })
+                                    <InfiniteScroll
+                                        children={messages.results.map(message => {
+                                            return (
+                                                <>
+                                                    {
+                                                        (editMessageId && editMessageId === message.id) ? (
+                                                            <TeamMessageEditForm key={message.id} teamMessage={message} setReload={setReload} setEditMessageId={setEditMessageId} />) : (
+                                                            <TeamMessage key={message.id} message={message} setEditMessageId={setEditMessageId} setReload={setReload} />
+                                                        )
+                                                    }
+                                                </>
+                                            )
+                                        })}
+                                        dataLength={messages.results.length}
+                                        loader={<Asset spinner />}
+                                        hasMore={!!messages.next}
+                                        next={() => fetchMoreData(messages, setMessages)}
+                                        scrollableTarget="message-board"
+                                    />
+
                                 ) : (
                                     <p> No Results </p>
                                 )
                             }
+
                         </>
                     ) : (
                         <p>Loading ... </p>
