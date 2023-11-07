@@ -17,7 +17,7 @@ import TeamMessageEditForm from "./TeamMessageEditForm";
  * @param - The Reload flag in TeamChat.js
  * @returns 
  */
-const TeamMessageBoard = ({ team_id, setReload, reload }) => {
+const TeamMessageBoard = ({ team_id, setReload, reload, searchFilter, timeFilter }) => {
     const currentUser = useCurrentUser();
     // List of messages
     const [messages, setMessages] = useState([]);
@@ -60,7 +60,7 @@ const TeamMessageBoard = ({ team_id, setReload, reload }) => {
         // then all Teams belonging to the user will be fetched
         const fetchMessages = async () => {
             try {
-                const { data } = await axiosReq.get(`/team-chat-list/?team_id=${team_id}&limit=7&offset=0`);
+                const { data } = await axiosReq.get(`/team-chat-list/?team_id=${team_id}&limit=7&offset=0&search=${searchFilter}&minus_days=${timeFilter}`);
                 // const { data } = await axiosReq.get(`/Teams/?search=${query}`);            
                 setMessages(data);
                 setReload(false);
@@ -79,7 +79,7 @@ const TeamMessageBoard = ({ team_id, setReload, reload }) => {
             // clear the interval when unmounting
             clearInterval(checkMessages);
         };
-    }, [team_id, reload]);
+    }, [team_id, reload, searchFilter, timeFilter]);
 
 
     return (

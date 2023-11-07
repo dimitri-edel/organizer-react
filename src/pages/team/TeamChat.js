@@ -6,6 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { axiosReq, axiosRes } from "../../api/axiosDefaults";
 import TeamMessageBoard from "./TeamMessageBoard";
 import TeamMessagePostForm from "./TeamMessagePostForm";
+import TeamChatFilters from "./TeamChatFilters";
 
 const TeamChat = (props) => {
     const currentUser = useCurrentUser();
@@ -16,11 +17,26 @@ const TeamChat = (props) => {
     // Flag for reloading the message board, if new messages
     // have been added or removed from the board
     const [reload, setReload] = useState(false);
+    // Value for search filter
+    const [searchFilter, setSearchFilter] = useState("")
+    // Value for time filter (API expects a GET parameter &minus_days=? )
+    // This filter returns messages that were posted in the past ? days
+    const [timeFilter, setTimeFilter] = useState(0)
 
     return (
         <div className={styles.ChatRoom}>
-            <div>Filters</div>
-            <TeamMessageBoard team_id={team_id} setReload={setReload} reload={reload} />
+            <TeamChatFilters
+                setSearchFilter={setSearchFilter}
+                setTimeFilter={setTimeFilter}
+                searchFilter={searchFilter}
+                timeFilter={timeFilter}
+            />
+            <TeamMessageBoard
+                team_id={team_id}
+                setReload={setReload}
+                reload={reload}
+                searchFilter={searchFilter}
+                timeFilter={timeFilter} />
             <TeamMessagePostForm team_id={team_id} setReload={setReload} />
         </div>
     )
