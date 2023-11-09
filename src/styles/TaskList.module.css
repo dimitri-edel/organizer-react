@@ -1,1 +1,42 @@
-/* Add styles here */
+.MainPanel {
+    background-image: linear-gradient(to right, gray, lightgray, white, white, white, lightgray, gray);
+    border: 1px lightgray groove;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.FiltersPanel {
+    background-color: transparent;
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
+.TaskList {
+    background-color: white;
+    padding: 5px;
+
+}
+
+select.FilterSelector {
+    background-color: black;
+    color: white;
+    font-size: large;
+    font-style: italic;
+    width: 100%;
+    border-radius: 10px;
+}
+
+option.FilterSelector {
+    background-color: black;
+    color: white;
+    font-size: large;
+    font-style: italic;
+}
+
+.FilterColumn {
+    text-align: center;
+}

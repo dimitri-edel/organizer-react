@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import styles from "../styles/Calendar.module.css";
 import TaskListItem from "./TaskListItem";
 import { axiosReq } from "../api/axiosDefaults";
@@ -133,15 +133,23 @@ class Calendar extends React.Component {
         const right_icon = "fa-solid fa-angle-right";
         return (
             <>
-                <div className={styles.calendarControlPanel}>
-                    <button onClick={this.onClickPrevMonth}>
-                        <i className={left_icon}></i>
-                    </button>
-                    <button onClick={this.onClickSelectedMonthButton}>{this.state.selected_month_name} {this.state.selected_year}</button>
-                    <button onClick={this.onClickNextMonth}>
-                        <i className={right_icon}></i>
-                    </button>
-                </div>
+                <Container className={styles.calendarControlPanel}>
+                    <Row>
+                        <Col>
+                            <button onClick={this.onClickPrevMonth} className={styles.ControlButton}>
+                                <i className={left_icon}></i>
+                            </button>
+                        </Col>
+                        <Col className={styles.MonthColumn}>
+                            <button onClick={this.onClickSelectedMonthButton} className={styles.ControlButton}>{this.state.selected_month_name} {this.state.selected_year}</button>
+                        </Col>
+                        <Col>
+                            <button onClick={this.onClickNextMonth} className={styles.ControlButton}>
+                                <i className={right_icon}></i>
+                            </button>
+                        </Col>
+                    </Row>
+                </Container>
             </>
         )
     }
@@ -515,7 +523,7 @@ class Calendar extends React.Component {
                 <span className={styles.calendarRow}>
                     {
                         this.weekday_names.map(day => {
-                            return (<span key={generateKey(day)}>{day}</span>
+                            return (<span key={generateKey(day)} className={styles.weekDayName}>{day}</span>
                             )
                         })
                     }

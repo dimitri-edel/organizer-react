@@ -89,7 +89,7 @@ function TaskList() {
   }, [query, pathname, updateTaskList, filters]);
 
   return (
-    <>
+    <Container className={styles.MainPanel}>
       {
         currentUser === null ? (
           <h1>Please Log in first</h1>
@@ -98,98 +98,113 @@ function TaskList() {
             <Calendar setQuery={setQuery} />
           }
 
-
-          <Row className="h-100">
-            <Col xs={1}>
-              <i className={`fas fa-search ${styles.SearchIcon}`} />
-            </Col>
-            <Col xs={11}>
-              <Form
-                className={styles.SearchBar}
-                onSubmit={(event) => event.preventDefault()}
-              >
+          <Container className={styles.FiltersPanel}>
+            <Row className="h-100">
+              <Col xs={1}>
+                <i className={`fas fa-search ${styles.SearchIcon}`} />
+              </Col>
+              <Col xs={11}>
+                <Form
+                  className={styles.SearchBar}
+                  onSubmit={(event) => event.preventDefault()}
+                >
+                  <Form.Control
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    type="text"
+                    className="mr-sm-2"
+                    placeholder="Search tasks"
+                  />
+                </Form>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={1}>
+              </Col>
+              <Col className={styles.FilterColumn}>
+                <FormLabel>Category</FormLabel>
+              </Col>
+              <Col className={styles.FilterColumn}>
+                <FormLabel>Priority</FormLabel>
+              </Col>
+              <Col className={styles.FilterColumn}>
+                <FormLabel>Status</FormLabel>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={1}>
+                <i className="fa-solid fa-filter"></i>
+              </Col>
+              <Col>
                 <Form.Control
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  type="text"
-                  className="mr-sm-2"
-                  placeholder="Search tasks"
-                />
-              </Form>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={1}>
-              <i className="fa-solid fa-filter"></i>
-            </Col>
-            <Col>
-              <FormLabel>Category</FormLabel>
-              <Form.Control
-                as="select"
-                name="category"
-                onChange={filterSelected}>
-                <option value="">All</option>
-                <option value="0">Chore</option>
-                <option value="1">Errand</option>
-                <option value="2">Work</option>
-              </Form.Control>
-            </Col>
-            <Col>
-              <FormLabel>Priority</FormLabel>
-              <Form.Control
-                as="select"
-                name="priority"
-                onChange={filterSelected}>
-                <option value="">All</option>
-                <option value="0">High</option>
-                <option value="1">Middle</option>
-                <option value="2">Low</option>
-              </Form.Control>
-            </Col>
-            <Col>
-              <FormLabel>Status</FormLabel>
-              <Form.Control
-                as="select"
-                name="status"
-                onChange={filterSelected}>
-                <option value="">All</option>
-                <option value="0">Open</option>
-                <option value="1">Progressing</option>
-                <option value="2">Done</option>
-              </Form.Control>
-            </Col>
-          </Row>
-
-          <Row className="h-100">
-            <Col className="py-2 p-0 p-lg-2" xs={12}>
-              {hasLoaded ? (
-                <>
-                  {tasks.results.length ? (
-                    <InfiniteScroll
-                      children={tasks.results.map((task) => (
-                        <Task key={task.title} {...task} setUpdateTaskList={setUpdateTaskList} />
-                      ))}
-                      dataLength={tasks.results.length}
-                      loader={<Asset spinner />}
-                      hasMore={!!tasks.next}
-                      next={() => fetchMoreData(tasks, setTasks)}
-                    />
-                  ) : (
-                    <Container className={appStyles.Content}>
-                      <Asset src={NoResults} message={"no results found!e"} />
-                    </Container>
-                  )}
-                </>
-              ) : (
-                <Container className={appStyles.Content}>
-                  <Asset spinner />
-                </Container>
-              )}
-            </Col>
-          </Row >
+                  as="select"
+                  name="category"
+                  onChange={filterSelected}
+                  className={styles.FilterSelector}>
+                  <option className={styles.FilterSelector} value="">All</option>
+                  <option className={styles.FilterSelector} value="0">Chore</option>
+                  <option className={styles.FilterSelector} value="1">Errand</option>
+                  <option className={styles.FilterSelector} value="2">Work</option>
+                </Form.Control>
+              </Col>
+              <Col className={styles.FilterColumn}>
+                <Form.Control
+                  as="select"
+                  name="priority"
+                  onChange={filterSelected}
+                  className={styles.FilterSelector}>
+                  <option className={styles.FilterSelector} value="">All</option>
+                  <option className={styles.FilterSelector} value="0">High</option>
+                  <option className={styles.FilterSelector} value="1">Middle</option>
+                  <option className={styles.FilterSelector} value="2">Low</option>
+                </Form.Control>
+              </Col>
+              <Col className={styles.FilterColumn}>
+                <Form.Control
+                  as="select"
+                  name="status"
+                  onChange={filterSelected}
+                  className={styles.FilterSelector}>
+                  <option className={styles.FilterSelector} value="">All</option>
+                  <option className={styles.FilterSelector} value="0">Open</option>
+                  <option className={styles.FilterSelector} value="1">Progressing</option>
+                  <option className={styles.FilterSelector} value="2">Done</option>
+                </Form.Control>
+              </Col>
+            </Row>
+          </Container>
+          <Container className={styles.TaskList}>
+            <Row className="h-100">
+              <Col className="py-2 p-0 p-lg-2" xs={12}>
+                {hasLoaded ? (
+                  <>
+                    {tasks.results.length ? (
+                      <InfiniteScroll
+                        children={tasks.results.map((task) => (
+                          <Task key={task.title} {...task} setUpdateTaskList={setUpdateTaskList} />
+                        ))}
+                        dataLength={tasks.results.length}
+                        loader={<Asset spinner />}
+                        hasMore={!!tasks.next}
+                        next={() => fetchMoreData(tasks, setTasks)}
+                      />
+                    ) : (
+                      <Container className={appStyles.Content}>
+                        <Asset src={NoResults} message={"no results found!e"} />
+                      </Container>
+                    )}
+                  </>
+                ) : (
+                  <Container className={appStyles.Content}>
+                    <Asset spinner />
+                  </Container>
+                )}
+              </Col>
+            </Row >
+          </Container>
         </div >)
       }
-    </>);
+    </Container>);
 }
 
 export default TaskList;
