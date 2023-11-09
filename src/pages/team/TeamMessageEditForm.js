@@ -24,6 +24,11 @@ const TeamMessageEditForm = ({ teamMessage, setReload, setEditMessageId }) => {
     const { message, image } = messageData;
     // State attribute that will hold all validation errors
     const [errors, setErrors] = useState({});
+
+    const handleCancelClicked = () => {
+        setEditMessageId(null);
+    }
+
     /**
      * Event handler for user input fields 
      * @param {Event} event 
@@ -95,7 +100,7 @@ const TeamMessageEditForm = ({ teamMessage, setReload, setEditMessageId }) => {
             <Form onSubmit={handleSubmit}>
                 <Container>
                     <Row>
-                        <Col xs={8} md={9} lg={10}>
+                        <Col xs={8}>
                             <Form.Control
                                 as="textarea"
                                 rows={3}
@@ -104,27 +109,38 @@ const TeamMessageEditForm = ({ teamMessage, setReload, setEditMessageId }) => {
                                 onChange={handleChange}
                             />
                         </Col>
-                        <Col xs={2} md={2} lg={1}>
-                            <Button type="submit">
-                                Post
-                            </Button>
-                        </Col>
-                        <Col xs={2} md={2} lg={1}>
-                            {image ? (
-                                <Form.Label htmlFor="image-upload" className={styles.ChangeImageButton}>
-                                    Change Image
-                                </Form.Label>
-                            ) : (
-                                <Form.Label
-                                    className="d-flex justify-content-center"
-                                    htmlFor="image-upload"
-                                >
-                                    <Asset
-                                        src={Upload}
-                                        message="Uplaod an image"
-                                    />
-                                </Form.Label>
-                            )}
+                        <Col>
+                            <Container>
+                                <Row>
+                                    <Col>
+                                        <button type="submit" className={styles.SubmitButton}>
+                                            Update
+                                        </button>
+                                    </Col>
+                                    <Col>
+                                        <button className={styles.CancelButton} onClick={handleCancelClicked}>
+                                            <i className="fa-regular fa-rectangle-xmark"></i>
+                                        </button>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col></Col>
+                                    <Col>
+                                        {image ? (
+                                            <Form.Label htmlFor="image-upload" className={styles.ChangeImageButton}>
+                                                Change Image
+                                            </Form.Label>
+                                        ) : (
+                                            <Form.Label
+                                                className="d-flex justify-content-center"
+                                                htmlFor="image-upload"
+                                            >
+                                                <Image src={Upload} />
+                                            </Form.Label>
+                                        )}
+                                    </Col>
+                                </Row>
+                            </Container>
                         </Col>
                     </Row>
                     <Row>

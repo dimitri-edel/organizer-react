@@ -51,8 +51,8 @@ const TeamMessage = ({ message, setEditMessageId, setReload }) => {
     }
 
     return (
-        <div className={styles.ChatRoom}>
-            <Container>
+        <>
+            <Container className={styles.MessageBox}>
                 <Row>
                     <Col>
                         <span>
@@ -61,6 +61,17 @@ const TeamMessage = ({ message, setEditMessageId, setReload }) => {
                         </span>
                         <span className={styles.Message}>{message.message}</span>
                     </Col>
+                    {is_owner && <>
+                        <Col xs={1}>
+                            <button className={styles.EditButton} onClick={onEditClick}>
+                                <i className="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button className={styles.DeleteButton} onClick={handleShowConfirmDialog}>
+                                <i className="fa-solid fa-trash-can"></i>
+                            </button>
+                        </Col>
+                    </>
+                    }
                 </Row>
                 <Row>
                     <Col>
@@ -69,15 +80,7 @@ const TeamMessage = ({ message, setEditMessageId, setReload }) => {
                         </figure>}
                     </Col>
                 </Row>
-                {is_owner && <Row>
-                    <Col>
-                        <button className={styles.EditButton} onClick={onEditClick}>Edit</button>
-                    </Col>
-                    <Col>
-                        <button className={styles.DeleteButton} onClick={handleShowConfirmDialog}> Delete</button>
-                    </Col>
-                </Row>
-                }
+
             </Container>
             <Modal show={showConfirmDialog} onHide={handleCloseConfirmDialog} animation={false}>
                 <Modal.Header closeButton>
@@ -93,7 +96,7 @@ const TeamMessage = ({ message, setEditMessageId, setReload }) => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-        </div>
+        </>
     )
 }
 

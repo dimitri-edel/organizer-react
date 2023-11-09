@@ -73,6 +73,9 @@ const TeamMessagePostForm = ({ team_id, setReload }) => {
             formData.append("image", imageInput.current.files[0]);
         }
 
+        // Clear error messages
+        setErrors(null);
+
         try {
             // Send a POST Request to the API
             const { data } = await axiosReq.post("team-chat-post/" + team_id, formData);
@@ -102,28 +105,38 @@ const TeamMessagePostForm = ({ team_id, setReload }) => {
                                 value={message}
                                 onChange={handleChange}
                             />
+                            {errors?.message?.map((msg, idx) => (
+                                <Alert key={idx} variant="warning">
+                                    {msg}
+                                </Alert>
+                            ))}
                         </Col>
-                        <Col xs={2} md={2} lg={1}>
-                            <Button type="submit">
-                                Post
-                            </Button>
-                        </Col>
-                        <Col xs={2} md={2} lg={1}>
-                            {image ? (
-                                <Form.Label htmlFor="image-upload" className={styles.ChangeImageButton}>
-                                    Change Image
-                                </Form.Label>
-                            ) : (
-                                <Form.Label
-                                    className="d-flex justify-content-center"
-                                    htmlFor="image-upload"
-                                >
-                                    <Asset
-                                        src={Upload}
-                                        message="Uplaod an image"
-                                    />
-                                </Form.Label>
-                            )}
+                        <Col>
+                            <Container>
+                                <Row>
+                                    <Col>
+                                        <button type="submit" className={styles.SubmitButton}>
+                                            Post
+                                        </button>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        {image ? (
+                                            <Form.Label htmlFor="image-upload" className={styles.ChangeImageButton}>
+                                                Change Image
+                                            </Form.Label>
+                                        ) : (
+                                            <Form.Label
+                                                className="d-flex justify-content-center"
+                                                htmlFor="image-upload"
+                                            >
+                                                <Image src={Upload} className={styles.UploadIcon} />
+                                            </Form.Label>
+                                        )}
+                                    </Col>
+                                </Row>
+                            </Container>
                         </Col>
                     </Row>
                     <Row>

@@ -75,11 +75,11 @@ const Team = (props) => {
     return (
         <Card className={styles.Team}>
             <Card.Body>
-                <Card.Header>
+                <Card.Header className={styles.Title}>
                     {name}
                 </Card.Header>
                 <Card.Title>
-                    {owner}
+                    <i className={"fa-solid fa-user " + styles.UserIcon}></i>{owner}
                 </Card.Title>
 
                 {/* If the user is the owner of the task then provide edit and delete buttons*/}
@@ -87,30 +87,58 @@ const Team = (props) => {
                     {is_owner ? (<Container>
                         <Row>
                             <Col>
-                                <Button variant="primary" onClick={handleEdit} size="sm" className={styles.TeamButton}>
-                                    <i className="fas fa-edit"></i>Rename
-                                </Button>
+                                <Link to={"/team-chat/" + id + "/"}>
+                                    <button className={styles.ChatButton}>
+                                        <i className={"fa-regular fa-chart-bar " + styles.Icon}></i>
+                                        Team chat
+                                    </button>
+                                </Link>
                             </Col>
                             <Col>
-                                <Button variant="danger" onClick={handleShowConfirmDialog} size="sm" className={styles.TeamButton}>
-                                    <i className="fas fa-edit"></i>Delete
-                                </Button>
+                                <button onClick={handleEdit} size="sm" className={styles.RenameButton}>
+                                    <i className={"fas fa-edit " + styles.Icon}></i>Rename
+                                </button>
+                            </Col>
+                            <Col>
+                                <button onClick={handleShowConfirmDialog} size="sm" className={styles.DeleteButton}>
+                                    <i className={"fa-solid fa-trash-can " + styles.Icon}></i>Delete
+                                </button>
                             </Col>
                         </Row>
                     </Container>) : (
                         is_member ? (
-                            <>
-                                <Button variant="danger" onClick={handleLeaveTeam} className={styles.TeamButton}>
-                                    Leave
-                                </Button>
-                                <Link to={"/team-chat/" + id + "/"}>
-                                    Team chat
-                                </Link>
-                            </>
+                            <Container className={styles.ControlPanel}>
+                                <Row>
+                                    <Col>
+                                        <Link to={"/team-chat/" + id + "/"}>
+                                            <button className={styles.ChatButton}>
+                                                <i className={"fa-regular fa-chart-bar " + styles.Icon}></i>
+                                                Team chat
+                                            </button>
+                                        </Link>
+                                    </Col>
+                                    <Col>
+                                        <button onClick={handleLeaveTeam} className={styles.LeaveButton}>
+                                            <i className={"fa-solid fa-circle-xmark " + styles.Icon}></i>
+                                            Leave
+                                        </button>
+                                    </Col>
+                                </Row>
+                            </Container>
                         ) : (
-                            <Button variant="secondary" onClick={handleJoinTeam} className={styles.TeamButton}>
-                                Join
-                            </Button>
+                            <Container className={styles.ControlPanel}>
+                                <Row>
+                                    <Col sm={1} md={2} lg={3}>
+                                    </Col>
+                                    <Col>
+                                        <button onClick={handleJoinTeam} className={styles.JoinButton}>
+                                            Join
+                                        </button>
+                                    </Col>
+                                    <Col sm={1} md={2} lg={3}>
+                                    </Col>
+                                </Row>
+                            </Container>
                         )
                     )}
                 </Card.Footer>

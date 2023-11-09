@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 import { axiosReq } from "../../api/axiosDefaults";
 import appStyles from "../../App.module.css";
-import styles from "../../styles/TaskList.module.css";
+import styles from "../../styles/TeamList.module.css";
 import { useLocation } from "react-router-dom";
 import Asset from "../../components/Asset";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -59,38 +59,44 @@ function TeamList() {
                 (currentUser === null) ? (
                     <h1>Please log in first</h1>
                 ) : (
-                    <div>
-                        <Row className="h-100">
-                            <Col className="py-2 p-0 p-lg-2" lg={8}>
-                                <i className={`fas fa-search ${styles.SearchIcon}`} />
-                                <Form
-                                    className={styles.SearchBar}
-                                    onSubmit={(event) => event.preventDefault()}
-                                >
-                                    <Form.Control
-                                        value={query}
-                                        onChange={(event) => setQuery(event.target.value)}
-                                        type="text"
-                                        className="mr-sm-2"
-                                        placeholder="Search Teams"
-                                    />
-                                </Form>
-                            </Col>
-                        </Row>
+                    <>
+                        <Container className={styles.SearchBar}>
+                            <Row className="h-100">
+                                <Col xs={10}>
+                                    <Form
+                                        onSubmit={(event) => event.preventDefault()}
+                                    >
+                                        <Form.Control
+                                            value={query}
+                                            onChange={(event) => setQuery(event.target.value)}
+                                            type="text"
+                                            className="mr-sm-2"
+                                            placeholder="Search Teams"
+                                        />
+                                    </Form>
+                                </Col>
+                                <Col xs={1} className={styles.SearchIconColumn}>
+                                    <i className={`fas fa-search ${styles.SearchIcon}`} />
+                                </Col>
+                            </Row>
+                        </Container>
                         {hasLoaded ? (
                             <>
                                 {teams.results.length ? (
-                                    <InfiniteScroll
-                                        children={teams.results.map(team => {
-                                            return (
-                                                <Team key={team.name + "" + team.owner} {...team} setUpdateTeamList={setUpdateTeamList} />
-                                            )
-                                        })}
-                                        dataLength={teams.results.length}
-                                        loader={<Asset spinner />}
-                                        hasMore={!!teams.next}
-                                        next={() => fetchMoreData(teams, setTeams)}
-                                    />
+                                    <Container id="team-content-panel" className={appStyles.Content}>
+                                        <InfiniteScroll
+                                            children={teams.results.map(team => {
+                                                return (
+                                                    <Team key={team.name + "" + team.owner} {...team} setUpdateTeamList={setUpdateTeamList} />
+                                                )
+                                            })}
+                                            scrollableTarget="team-content-panel"
+                                            dataLength={teams.results.length}
+                                            loader={<Asset spinner />}
+                                            hasMore={!!teams.next}
+                                            next={() => fetchMoreData(teams, setTeams)}
+                                        />
+                                    </Container>
                                 ) : (
                                     <Container className={appStyles.Content}>
                                         <Asset src={NoResults} message="No results!" />
@@ -102,7 +108,7 @@ function TeamList() {
                                 <Asset spinner />
                             </Container>
                         )}
-                    </div>
+                    </>
                 )}
         </>
     )

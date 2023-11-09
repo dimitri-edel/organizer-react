@@ -1,10 +1,21 @@
 .ChatRoom {
-    background-color: aliceblue;
-    border: 1px solid blue;
+    background-image: linear-gradient(to right, gray, lightgray, white, white, white, lightgray, gray);
+    border: 1px lightgray groove;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.MessageBox {
+    background-image: linear-gradient(to right, lightgray, white, white, white, lightgray);
+    border: 1px lightgray groove;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .MessageBoard {
-    background-color: antiquewhite;
+    background-color: rgba(203, 224, 235, 0.575);
     overflow-y: scroll;
     border: 1px solid black;
     height: 70dvh;
@@ -17,6 +28,7 @@
 
 
 .Message {
+    background-color: white;
     color: black;
     font-size: large;
     font-style: italic;
@@ -47,17 +59,40 @@
 }
 
 .EditButton {
-    background-color: greenyellow;
+    background-color: rgba(1, 34, 133, 0.717);
+    color: rgba(239, 238, 250, 0.418);
+    border-radius: 5px;
     width: 100%;
 }
 
 .DeleteButton {
-    background-color: red;
+    background-color: rgba(167, 0, 0, 0.731);
+    color: rgba(249, 237, 244, 0.311);
+    border-radius: 5px;
     width: 100%;
 }
 
+.CancelButton {
+    background-color: darkgray;
+    color: white;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.SubmitButton {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(1, 34, 133, 0.717);
+    color: rgba(239, 238, 250, 0.418);
+    border-radius: 5px;
+}
+
 .PostMessageForm {
-    background-color: lightcyan;
+    background-color: rgba(188, 193, 193, 0.656);
+    border: 1px groove lightgray;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .Image {
@@ -69,9 +104,57 @@
     float: left;
 }
 
+.UploadIcon {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 100%;
+}
+
 .ChangeImageButton {
+    margin-top: 10px;
     width: 100%;
     background-color: green;
+    color: white;
+    text-align: center;
     border: 1px solid black;
-    border-radius: 15px;
+    border-radius: 6px;
+
+    ;
+}
+
+.FiltersPanel {
+    background-image: linear-gradient(to right, white, gray, gray, gray, white);
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+
+}
+
+.Icon {
+    color: black;
+    font-weight: bold;
+}
+
+.SearchField {
+    width: 80%;
+}
+
+select.FilterSelector {
+    background-color: black;
+    color: white;
+    font-size: large;
+    font-style: italic;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+option.FilterSelector {
+    background-color: black;
+    color: white;
+    font-size: large;
+    font-style: italic;
+    height: 100%;
 }

@@ -83,9 +83,7 @@ const TeamMessageBoard = ({ team_id, setReload, reload, searchFilter, timeFilter
 
 
     return (
-        <div id="message-board" className={styles.MessageBoard}>
-            {/* <h1>Message Board</h1>
-            <h2>Team ID = {team_id}</h2> */}
+        <div id="message-board" className={styles.MessageBoard}>            
             <div>
                 {
                     hasLoaded ? (

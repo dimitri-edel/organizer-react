@@ -99,11 +99,11 @@ function TaskList() {
           }
 
           <Container className={styles.FiltersPanel}>
-            <Row className="h-100">
-              <Col xs={1}>
+            <Row>
+              <Col xs={1} className={styles.IconColumn}>
                 <i className={`fas fa-search ${styles.SearchIcon}`} />
               </Col>
-              <Col xs={11}>
+              <Col>
                 <Form
                   className={styles.SearchBar}
                   onSubmit={(event) => event.preventDefault()}
@@ -119,7 +119,7 @@ function TaskList() {
               </Col>
             </Row>
             <Row>
-              <Col xs={1}>
+              <Col xs={1} className={styles.IconColumn}>
               </Col>
               <Col className={styles.FilterColumn}>
                 <FormLabel>Category</FormLabel>
@@ -132,7 +132,7 @@ function TaskList() {
               </Col>
             </Row>
             <Row>
-              <Col xs={1}>
+              <Col xs={1} className={styles.IconColumn}>
                 <i className="fa-solid fa-filter"></i>
               </Col>
               <Col>

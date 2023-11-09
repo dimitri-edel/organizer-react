@@ -1,21 +1,87 @@
 .Team {
-    background-color: #ffffff;
-    border: 1px solid #dadadf;
-    border-radius: 2px;
-    margin-bottom: 16px;
-    text-align: center;
-  }
-  
-  .Title {
-    font-size: large;
-    font-weight: bold;
-  }
-  
-  h5 {
-    margin: 0 0;
-  }
+  background-image: linear-gradient(to right, gray, lightgray, white, white, white, lightgray, gray);
+  border: 1px solid #dadadf;
+  border-radius: 2px;
+  margin-bottom: 16px;
+  text-align: center;
+}
 
-  .TeamButton {
-    width: 100%;   
-    font-size: large;
-  }
+.Title {
+  font-size: x-large;
+  font-weight: bold;
+}
+
+h5 {
+  margin: 0 0;
+}
+
+
+.ChatButton {
+  width: 100%;
+  height: 100%;
+  font-size: large;
+  font-weight: bold;
+  color: white;
+  background-color: rgba(0, 128, 0, 0.673);
+  border-radius: 10px;
+  margin: 5px;
+  border: 1px solid gray;
+}
+
+.LeaveButton {
+  width: 100%;
+  height: 100%;
+  font-size: large;
+  font-weight: bold;
+  background-color: rgba(255, 0, 0, 0.834);
+  color: white;
+  border-radius: 10px;
+  margin: 5px;
+  border: 1px solid gray;
+}
+
+.JoinButton {
+  width: 100%;
+  height: 100%;
+  font-size: large;
+  font-weight: bold;
+  color: white;
+  background-color: rgba(1, 34, 133, 0.717);
+  border-radius: 10px;
+  margin: 5px;
+  border: 1px solid gray;
+}
+
+.RenameButton {
+  width: 100%;
+  height: 100%;
+  font-size: large;
+  font-weight: bold;
+  color: white;
+  background-color: rgba(1, 34, 133, 0.717);
+  border-radius: 10px;
+  margin: 5px;
+  border: 1px solid gray;
+}
+
+.DeleteButton {
+  width: 100%;
+  height: 100%;
+  font-size: large;
+  font-weight: bold;
+  background-color: rgba(255, 0, 0, 0.834);
+  color: white;
+  border-radius: 10px;
+  margin: 5px;
+  border: 1px solid gray;
+}
+
+.Icon {
+  color: rgba(255, 255, 255, 0.837);
+  margin-right: 10px;
+}
+
+.UserIcon {
+  color: rgba(0, 0, 0, 0.86);
+  margin-right: 10px;
+}
