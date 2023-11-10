@@ -12,6 +12,7 @@ import Asset from "../../components/Asset";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchMoreData } from "../../utils/utils";
 import Team from "./Team";
+import TeamEditForm from "./TeamEditForm";
 import { useCurrentUser } from "../../context/CurrentUserContext";
 
 function TeamList() {
@@ -25,6 +26,7 @@ function TeamList() {
     const [hasLoaded, setHasLoaded] = useState(true);
     const { pathname } = useLocation();
     const [query, setQuery] = useState("");
+    const [editTeamId, setEditTeamId] = useState(null);
 
     useEffect(() => {
         document.title = "Teams";
@@ -33,7 +35,6 @@ function TeamList() {
         const fetchTeams = async () => {
             try {
                 const { data } = await axiosReq.get(`/team/?search=${query}&limit=7&offset=0`);
-                // const { data } = await axiosReq.get(`/Teams/?search=${query}`);            
                 setTeams(data);
                 setHasLoaded(true);
             } catch (err) {
@@ -45,11 +46,6 @@ function TeamList() {
         setUpdateTeamList(false);
 
         fetchTeams();
-
-        // clear the timer when unmounting
-        return () => {
-            // clearTimeout(timer);
-        };
     }, [query, pathname, updateTeamList]);
 
 
@@ -87,7 +83,14 @@ function TeamList() {
                                         <InfiniteScroll
                                             children={teams.results.map(team => {
                                                 return (
-                                                    <Team key={team.name + "" + team.owner} {...team} setUpdateTeamList={setUpdateTeamList} />
+                                                    <>
+                                                        {
+                                                            (editTeamId == team.id) ? (
+                                                                <TeamEditForm key={team.name + "" + team.owner} team={team} setUpdateTeamList={setUpdateTeamList} setEditTeamId={setEditTeamId} />
+                                                            ) : (
+                                                                <Team key={team.name + "" + team.owner} {...team} setUpdateTeamList={setUpdateTeamList} setEditTeamId={setEditTeamId} />)
+                                                        }
+                                                    </>
                                                 )
                                             })}
                                             scrollableTarget="team-content-panel"

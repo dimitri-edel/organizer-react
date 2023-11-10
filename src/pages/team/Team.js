@@ -13,6 +13,7 @@ const Team = (props) => {
         name,
         is_member,
         setUpdateTeamList,
+        setEditTeamId,
     } = props;
 
     const currentUser = useCurrentUser();
@@ -45,7 +46,9 @@ const Team = (props) => {
     }
 
     const handleEdit = () => {
-        history.push(`${id}/edit`);
+        // history.push(`${id}/edit`);
+        setEditTeamId(id);
+        // setUpdateTeamList(true);
     };
 
     const handleJoinTeam = async () => {
