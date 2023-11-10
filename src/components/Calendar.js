@@ -5,6 +5,8 @@ import TaskListItem from "./TaskListItem";
 import { axiosReq } from "../api/axiosDefaults";
 import Asset from "../components/Asset";
 import appStyles from "../App.module.css";
+import StaticContext from "../context/StaticContext";
+
 
 /**
  * Calendar allows the user to select a month or day, which will be used to display tasks
@@ -40,6 +42,8 @@ class Calendar extends React.Component {
     */
     static ITEM_LIST_INDEX = 2;
 
+
+
     constructor(props) {
         super(props);
         let current_date = new Date();
@@ -49,6 +53,8 @@ class Calendar extends React.Component {
         this.weekday_names = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         /**  Names of months that will be used in the control panel */
         this.month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+
         this.state = {
             // Set the current date
             current_date: current_date,
@@ -247,11 +253,12 @@ class Calendar extends React.Component {
         let year = this.state.selected_year;
         let month = getDateNumberRepresentaion(this.state.selected_month + 1);
         let day = cell[Calendar.DAY_NUMBER_INDEX];
-
         if (isNumeric(day)) {
             // Generate a query for this day and pass it to TaskList(parent element)
             let query = `${year}-${month}-${getDateNumberRepresentaion(day)}`;
             this.setQuery(query);
+            StaticContext.SELECTED_DATE = new Date(year, month, day);
+
             // Put the new copy of calendar_cells in the state object
             this.setState({
                 calendar_cells: new_cells,

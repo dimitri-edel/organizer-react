@@ -20,6 +20,8 @@ import { useHistory } from "react-router-dom";
 import { FormLabel } from "react-bootstrap";
 import { convertDateToReactString } from "../../utils/utils";
 import { useCurrentUser } from "../../context/CurrentUserContext";
+import StaticContext from "../../context/StaticContext";
+
 /**
  * React Component that allows users to create new Tasks
  * @returns JSX of a Form for creating a new Task
@@ -29,6 +31,7 @@ function CreateTaskForm() {
      * Reference to the current user object that is used in the Request headers
      */
     const currentUser = useCurrentUser();
+
     // State attribute that will hold all validation errors
     const [errors, setErrors] = useState({});
     // State attribute that holds all the task fields
@@ -38,12 +41,14 @@ function CreateTaskForm() {
         asigned_to: "",
         title: "",
         comment: "",
-        due_date: convertDateToReactString(new Date()),
+        // If a date has been picked in the calendar, then put that date as the intial value in the form
+        due_date: StaticContext.SELECTED_DATE != null ? convertDateToReactString(StaticContext.SELECTED_DATE) : convertDateToReactString(new Date()),
         category: "",
         priority: "",
         status: "",
         file: "",
     });
+
     // Destruct a single piece of taskData 
     const { id, asigned_to, title, comment, due_date, category, priority, status, file } = taskData;
     // State for holding the objects with teammates of the current user

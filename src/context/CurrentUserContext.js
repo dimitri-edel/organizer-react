@@ -11,6 +11,7 @@ export const useCurrentUser = () => useContext(CurrentUserContext);
 export const useSetCurrentUser = () => useContext(SetCurrentUserContext);
 
 export const CurrentUserProvider = ({ children }) => {
+  // Make currentUser globally available
   const [currentUser, setCurrentUser] = useState(null);
   const history = useHistory();
 
@@ -19,7 +20,7 @@ export const CurrentUserProvider = ({ children }) => {
    * and store it in the Context State. It provides children of this component
    * with access to the user data, by calling the useCurrentUser() function.
    */
-  const handleMount = async () => {    
+  const handleMount = async () => {
     try {
       const { data } = await axiosRes.get("dj-rest-auth/user/");
       setCurrentUser(data);
@@ -42,9 +43,9 @@ export const CurrentUserProvider = ({ children }) => {
     axiosReq.interceptors.request.use(
       async (config) => {
         try {
-          await axios.post("/dj-rest-auth/token/refresh/");          
+          await axios.post("/dj-rest-auth/token/refresh/");
         } catch (err) {
-            
+
           setCurrentUser((prevCurrentUser) => {
             if (prevCurrentUser) {
               history.push("/signin");

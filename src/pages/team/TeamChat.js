@@ -7,6 +7,7 @@ import { axiosReq, axiosRes } from "../../api/axiosDefaults";
 import TeamMessageBoard from "./TeamMessageBoard";
 import TeamMessagePostForm from "./TeamMessagePostForm";
 import TeamChatFilters from "./TeamChatFilters";
+import StaticContext from "../../context/StaticContext";
 
 const TeamChat = (props) => {
     const currentUser = useCurrentUser();
@@ -25,6 +26,7 @@ const TeamChat = (props) => {
 
     return (
         <div className={styles.ChatRoom}>
+            <h1 className={styles.TeamName}>{StaticContext.SELECTED_TEAM}</h1>
             <TeamChatFilters
                 setSearchFilter={setSearchFilter}
                 setTimeFilter={setTimeFilter}

@@ -4,6 +4,7 @@ import { useCurrentUser } from "../../context/CurrentUserContext";
 import { Card, Modal, Button, Container, Row, Col, } from "react-bootstrap";
 import { useHistory, Link } from "react-router-dom";
 import { axiosReq, axiosRes } from "../../api/axiosDefaults";
+import StaticContext from "../../context/StaticContext";
 
 const Team = (props) => {
     const {
@@ -88,7 +89,7 @@ const Team = (props) => {
                         <Row>
                             <Col>
                                 <Link to={"/team-chat/" + id + "/"}>
-                                    <button className={styles.ChatButton}>
+                                    <button className={styles.ChatButton} onClick={() => StaticContext.SELECTED_TEAM = `${name} by ${owner}`}>
                                         <i className={"fa-regular fa-chart-bar " + styles.Icon}></i>
                                         Team chat
                                     </button>
@@ -111,7 +112,7 @@ const Team = (props) => {
                                 <Row>
                                     <Col>
                                         <Link to={"/team-chat/" + id + "/"}>
-                                            <button className={styles.ChatButton}>
+                                            <button className={styles.ChatButton} onClick={() => StaticContext.SELECTED_TEAM = `${name} by ${owner}`}>
                                                 <i className={"fa-regular fa-chart-bar " + styles.Icon}></i>
                                                 Team chat
                                             </button>

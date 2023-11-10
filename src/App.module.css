@@ -43,6 +43,7 @@ a:hover {
 a:hover i {
   color: #2142b2;
   transition: color ease-in-out 0.3s;
+  text-decoration: none;
 }
 
 input[type="file"] {
@@ -87,4 +88,3 @@ figure {
 .right-margin {
   margin-right: 10px;
 }
-
