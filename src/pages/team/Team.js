@@ -59,7 +59,7 @@ const Team = (props) => {
 
         try {
             await axiosReq.post("membership/", formData);
-            history.goBack();
+            setUpdateTeamList(true);
         } catch (err) {
             console.log(err);
         }
@@ -70,7 +70,6 @@ const Team = (props) => {
             await axiosRes.delete(`leave/team/${id}`);
             // Set the flag to true for TaskList.js, so the useEffectHook is executed
             setUpdateTeamList(true);
-            history.goBack();
         } catch (err) {
             console.log(err);
         }

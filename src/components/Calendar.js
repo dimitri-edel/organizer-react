@@ -77,6 +77,8 @@ class Calendar extends React.Component {
         // Get the task list for the selected month. The miniature task list
         // that will be displayed underneath the day numbers in the calendar
         this.#fetchSelectedMonth();
+        // Select the current date for the context
+        StaticContext.SELECTED_DATE = new Date();
     }
     /**
      * Reflect the month selection in the Calendar

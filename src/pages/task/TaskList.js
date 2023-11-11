@@ -20,7 +20,7 @@ import { useCurrentUser } from "../../context/CurrentUserContext";
  * TaskList is a React Component that retrieves a list of tasks from the API and renders it
  * @returns JSX of the TaskList Component
  */
-function TaskList() {
+function TaskList({ setShowAddTaskMenuItem }) {
   /**
    * Reference to the current user object, that is used in the request header
    */
@@ -84,8 +84,13 @@ function TaskList() {
     setHasLoaded(false);
     // Do not update the Task list, this flag is used by the Task Component
     setUpdateTaskList(false);
-
+    // Show the Add Task Link in the navigation bar
+    setShowAddTaskMenuItem(true);
     fetchtasks();
+    return () => {
+      // Stop showing the Add Task Link in the navigation bar upon unmount
+      setShowAddTaskMenuItem(false);
+    }
   }, [query, pathname, updateTaskList, filters]);
 
   return (

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styles from './App.module.css';
 import { Container } from "react-bootstrap";
 import { Route, Switch } from "react-router-dom";
@@ -16,10 +17,12 @@ import Home from "./pages/home";
 
 function App() {
   const currentUser = useCurrentUser();
+  const [showAddTaskMenuItem, setShowAddTaskMenuItem] = useState(false);
+  const [showAddTeamMenuItem, setShowAddTeamMenuItem] = useState(false);
 
   return (
     <div className={styles.App}>
-      <NavBar />
+      <NavBar showAddTaskMenuItem={showAddTaskMenuItem} showAddTeamMenuItem={showAddTeamMenuItem} />
       <Container className={styles.Main}>
         <Switch>
           <Route
@@ -31,8 +34,8 @@ function App() {
           />
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
-          <Route exact path="/tasks/" render={() => <TaskList />} />
-          <Route exact path="/teams/" render={() => <TeamList />} />
+          <Route exact path="/tasks/" render={() => <TaskList setShowAddTaskMenuItem={setShowAddTaskMenuItem} />} />
+          <Route exact path="/teams/" render={() => <TeamList setShowAddTeamMenuItem={setShowAddTeamMenuItem} />} />
           <Route exact path="/teams/create" render={() => <CreateTeamForm />} />
           <Route exact path="/tasks/create" render={() => <CreateTaskForm />} />
           <Route exact path="/tasks/:id/edit" render={() => <EditTaskForm />} />

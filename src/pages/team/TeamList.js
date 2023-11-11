@@ -15,7 +15,7 @@ import Team from "./Team";
 import TeamEditForm from "./TeamEditForm";
 import { useCurrentUser } from "../../context/CurrentUserContext";
 
-function TeamList() {
+function TeamList({ setShowAddTeamMenuItem }) {
     // See if the user is logged in
     const currentUser = useCurrentUser();
     const [teams, setTeams] = useState({ results: [] });
@@ -44,8 +44,14 @@ function TeamList() {
 
         setHasLoaded(false);
         setUpdateTeamList(false);
-
+        // Show the Add Team Link in the navigation bar
+        setShowAddTeamMenuItem(true);
         fetchTeams();
+
+        return () => {
+            // Stop showing the Add Team Link in the navigation bar upon unmount
+            setShowAddTeamMenuItem(false);
+        }
     }, [query, pathname, updateTeamList]);
 
 

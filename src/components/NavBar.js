@@ -12,7 +12,7 @@ import {
 
 import axios from "axios";
 
-const NavBar = () => {
+const NavBar = ({ showAddTaskMenuItem, showAddTeamMenuItem }) => {
   const currentUser = useCurrentUser();
   const setCurrentUser = useSetCurrentUser();
   const { expanded, setExpanded, ref } = useClickOutsideToggle();
@@ -95,6 +95,8 @@ const NavBar = () => {
             <span className={styles.LogoText}>ORGANIZER</span>
           </Navbar.Brand>
         </NavLink>
+        {showAddTaskMenuItem && addTaskIcon}
+        {showAddTeamMenuItem && addTeamIcon}
 
         <Navbar.Toggle
           ref={ref}
@@ -111,8 +113,7 @@ const NavBar = () => {
             >
               <i className="fas fa-home"></i>Home
             </NavLink>
-            {currentUser && addTaskIcon}
-            {currentUser && addTeamIcon}
+
             {currentUser ? loggedInIcons : loggedOutIcons}
           </Nav>
         </Navbar.Collapse>
