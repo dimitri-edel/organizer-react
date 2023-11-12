@@ -5,14 +5,15 @@ import { Card, Modal, Button, Container, Row, Col, Nav, Navbar } from "react-boo
 import { useHistory, useParams } from "react-router-dom";
 import { axiosReq, axiosRes } from "../../api/axiosDefaults";
 
-const TeamChatSidbar = ({ team_id }) => {
+const TeamChatSidbar = ({ team_id, setPrivateMessageUserId }) => {
 
     // showUsers
     const [expanded, setExpanded] = useState(false);
     const [hasLoaded, setHasLoaded] = useState(false);
-    const userNameClick = (selected_key) => {
+    const userNameClick = (selectedUserId) => {
         setExpanded(false);
-        alert(selected_key);
+        alert(selectedUserId);
+        setPrivateMessageUserId(selectedUserId)
     }
 
     const [members, setMembers] = useState([]);
@@ -47,7 +48,7 @@ const TeamChatSidbar = ({ team_id }) => {
                 <i className="fa-solid fa-user"></i>
             </Navbar.Toggle>
             <Navbar.Collapse>
-                <Nav onSelect={selectedKey => userNameClick(selectedKey)}>
+                <Nav onSelect={selectedUserId => userNameClick(selectedUserId)}>
                     <Nav.Item>
                         {hasLoaded ? (
                             members.map(member => <Nav.Link key={member.user_id} eventKey={member.user_id}>{member.username} </Nav.Link>)
