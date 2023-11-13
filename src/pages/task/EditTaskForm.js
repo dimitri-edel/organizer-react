@@ -21,6 +21,8 @@ import { useHistory, useParams } from "react-router";
 import { FormLabel } from "react-bootstrap";
 import { convertDateFormat } from "../../utils/utils";
 import { useCurrentUser } from "../../context/CurrentUserContext";
+import { toast } from "react-toastify";
+
 /**
  * React Component that allows users to edit Tasks
  * @returns JSX of a Form for editting Tasks
@@ -154,8 +156,17 @@ function EditTaskForm() {
         try {
             // Send an update request to the API
             await axiosReq.put(`/task/${id}`, formData);
-            // Show the message in a Modal Dialog to the user
-            setMessage("The task has been saved!");
+            // Notify the user about the success
+            toast.success('The task has been saved!!', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         } catch (err) {
             console.log(err);
             // Copy the validation errors into the corresponding state attribute
@@ -345,17 +356,6 @@ function EditTaskForm() {
                             <Container className={appStyles.Content}>{buttonPanel}</Container>
                         </Col>
                     </Row>
-                    <Modal show={(message !== "")} onHide={handleCloseConfirmDialog} animation={false}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Task Editor</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>{message}</Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={handleCloseConfirmDialog}>
-                                OK
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
                 </Form>
             )}
         </>);

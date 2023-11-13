@@ -8,12 +8,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // In order for the Router to work you need to wrap the <App /> inside it
 import { BrowserRouter as Router } from "react-router-dom";
 import { CurrentUserProvider } from "./context/CurrentUserContext";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <CurrentUserProvider>
         <App />
+        <ToastContainer />
       </CurrentUserProvider>
     </Router>
   </React.StrictMode>,
