@@ -1,21 +1,16 @@
 import React, { useState } from "react";
 import styles from "../../styles/TeamChat.module.css";
 import { useCurrentUser } from "../../context/CurrentUserContext";
-import { Card, Modal, Button, Container, Row, Col, Nav, Navbar } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
-import { axiosReq, axiosRes } from "../../api/axiosDefaults";
 import TeamMessageBoard from "./TeamMessageBoard";
 import TeamMessagePostForm from "./TeamMessagePostForm";
 import TeamChatFilters from "./TeamChatFilters";
 import TeamChatSidbar from "./TeamChatSidebar";
-import StaticContext from "../../context/StaticContext";
 import PrivateMessageBoard from "./PrivateMessageBoard";
 import PrivateMessagePostForm from "./PrivateMessagePostForm";
 
 const TeamChat = ({ selectedTeamName }) => {
-    const currentUser = useCurrentUser();
-    // const is_owner = currentUser?.username === owner;
-    const history = useHistory();
     // Retrieve the parameter passed in the route name(URL)
     const { team_id } = useParams();
     // Flag for reloading the message board, if new messages

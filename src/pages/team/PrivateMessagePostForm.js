@@ -1,13 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import styles from "../../styles/TeamChat.module.css";
-import appStyles from "../../App.module.css";
 import Upload from "../../assets/upload.png";
 import { useCurrentUser } from "../../context/CurrentUserContext";
-import { Card, Modal, Button, Container, Row, Col, Form, Image, Alert } from "react-bootstrap";
-import { useHistory, useParams } from "react-router-dom";
-import { axiosReq, axiosRes } from "../../api/axiosDefaults";
-import Asset from "../../components/Asset";
-import TeamMessage from "./TeamMessage";
+import { Container, Row, Col, Form, Image, Alert } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+import { axiosReq } from "../../api/axiosDefaults";
 
 const PrivateMessagePostForm = ({ privateMessageUserId, team_id, setReload }) => {
     const currentUser = useCurrentUser();
@@ -151,32 +148,6 @@ const PrivateMessagePostForm = ({ privateMessageUserId, team_id, setReload }) =>
                                 <Image className={styles.UploadImage} src={image} rounded />
                             </figure>
                         </Col>}
-                        {/* {image ? (
-                            <>
-                                <Col>
-                                    <figure>
-                                        <Image className={styles.Image} src={image} rounded />
-                                    </figure>
-                                </Col>
-                                <Col xs={2} md={2} lg={1}>
-                                    <Form.Label htmlFor="image-upload" className={styles.ChangeImageButton}>
-                                        Change Image
-                                    </Form.Label>
-                                </Col>
-                            </>
-                        ) : (
-                            <Col xs={2} md={2} lg={1}>
-                                <Form.Label
-                                    className="d-flex justify-content-center"
-                                    htmlFor="image-upload"
-                                >
-                                    <Asset
-                                        src={Upload}
-                                        message="Click or tap to uplaod an image"
-                                    />
-                                </Form.Label>
-                            </Col>
-                        )} */}
                         {/* NOTE : the Lables above have the htmlFor attribute that is assigned
                     to the component below. Meaning, if those components get clicked on
                     the onChange - event handler of this compoenent will be executed.

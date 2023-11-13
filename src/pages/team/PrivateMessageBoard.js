@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/TeamChat.module.css";
-import { useCurrentUser } from "../../context/CurrentUserContext";
-import { Card, Modal, Button, Container, Row, Col, } from "react-bootstrap";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useHistory, useParams } from "react-router-dom";
-import { axiosReq, axiosRes } from "../../api/axiosDefaults";
+import { axiosReq } from "../../api/axiosDefaults";
 import { fetchMoreData } from "../../utils/utils";
 import Asset from "../../components/Asset";
-import TeamMessage from "./TeamMessage";
-import TeamMessageEditForm from "./TeamMessageEditForm";
 import PrivateMessage from "./PrivateMessage";
 import PrivateMessageEditForm from "./PrivateMessageEditForm";
 /**
@@ -20,7 +15,6 @@ import PrivateMessageEditForm from "./PrivateMessageEditForm";
  * @returns 
  */
 const PrivateMessageBoard = ({ privateMessageUserId, team_id, setReload, reload, searchFilter, timeFilter }) => {
-    const currentUser = useCurrentUser();
     // List of messages
     const [messages, setMessages] = useState([]);
     // This state signifies if the messages have been loaded
@@ -34,8 +28,6 @@ const PrivateMessageBoard = ({ privateMessageUserId, team_id, setReload, reload,
     // be set to null
     const [editMessageId, setEditMessageId] = useState(null);
 
-    // const is_owner = currentUser?.username === owner;
-    const history = useHistory();
 
     // Reload the messages at an interval, which is set in useEffect()
     const checkForMessages = () => {

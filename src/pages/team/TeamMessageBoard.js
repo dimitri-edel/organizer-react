@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/TeamChat.module.css";
-import { useCurrentUser } from "../../context/CurrentUserContext";
-import { Card, Modal, Button, Container, Row, Col, } from "react-bootstrap";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useHistory, useParams } from "react-router-dom";
-import { axiosReq, axiosRes } from "../../api/axiosDefaults";
+import { axiosReq } from "../../api/axiosDefaults";
 import { fetchMoreData } from "../../utils/utils";
 import Asset from "../../components/Asset";
 import TeamMessage from "./TeamMessage";
@@ -18,7 +15,6 @@ import TeamMessageEditForm from "./TeamMessageEditForm";
  * @returns 
  */
 const TeamMessageBoard = ({ team_id, setReload, reload, searchFilter, timeFilter }) => {
-    const currentUser = useCurrentUser();
     // List of messages
     const [messages, setMessages] = useState([]);
     // This state signifies if the messages have been loaded
@@ -32,15 +28,12 @@ const TeamMessageBoard = ({ team_id, setReload, reload, searchFilter, timeFilter
     // be set to null
     const [editMessageId, setEditMessageId] = useState(null);
 
-    // const is_owner = currentUser?.username === owner;
-    const history = useHistory();
 
     // Reload the messages at an interval, which is set in useEffect()
     const checkForMessages = () => {
         const fetchMessageCount = async () => {
             try {
                 const { data } = await axiosReq.get(`/team-chat-message-count/${team_id}`);
-                // const { data } = await axiosReq.get(`/Teams/?search=${query}`);            
                 if (messageCount !== data.count) {
                     setMessageCount(data.count);
                     setReload(true);
@@ -60,8 +53,7 @@ const TeamMessageBoard = ({ team_id, setReload, reload, searchFilter, timeFilter
         // then all Teams belonging to the user will be fetched
         const fetchMessages = async () => {
             try {
-                const { data } = await axiosReq.get(`/team-chat-list/?team_id=${team_id}&limit=7&offset=0&search=${searchFilter}&minus_days=${timeFilter}`);
-                // const { data } = await axiosReq.get(`/Teams/?search=${query}`);            
+                const { data } = await axiosReq.get(`/team-chat-list/?team_id=${team_id}&limit=20&offset=0&search=${searchFilter}&minus_days=${timeFilter}`);
                 setMessages(data);
                 setReload(false);
                 setHasLoaded(true);
@@ -83,7 +75,7 @@ const TeamMessageBoard = ({ team_id, setReload, reload, searchFilter, timeFilter
 
 
     return (
-        <div id="message-board" className={styles.MessageBoard}>            
+        <div id="message-board" className={styles.MessageBoard}>
             <div>
                 {
                     hasLoaded ? (
@@ -96,7 +88,7 @@ const TeamMessageBoard = ({ team_id, setReload, reload, searchFilter, timeFilter
                                                 <>
                                                     {
                                                         (editMessageId && editMessageId === message.id) ? (
-                                                            <TeamMessageEditForm key={message.id} teamMessage={message} setReload={setReload} setEditMessageId={setEditMessageId} />) : (
+                                                            <TeamMessageEditForm key={"edit" + message.id} teamMessage={message} setReload={setReload} setEditMessageId={setEditMessageId} />) : (
                                                             <TeamMessage key={message.id} message={message} setEditMessageId={setEditMessageId} setReload={setReload} />
                                                         )
                                                     }

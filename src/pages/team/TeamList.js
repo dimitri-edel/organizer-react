@@ -47,7 +47,6 @@ function TeamList({ setShowAddTeamMenuItem, setSelectedTeamName }) {
         // Show the Add Team Link in the navigation bar
         setShowAddTeamMenuItem(true);
         fetchTeams();
-
         return () => {
             // Stop showing the Add Team Link in the navigation bar upon unmount
             setShowAddTeamMenuItem(false);
@@ -91,10 +90,10 @@ function TeamList({ setShowAddTeamMenuItem, setSelectedTeamName }) {
                                                 return (
                                                     <>
                                                         {
-                                                            (editTeamId == team.id) ? (
-                                                                <TeamEditForm key={team.name + "" + team.owner} team={team} setUpdateTeamList={setUpdateTeamList} setEditTeamId={setEditTeamId} />
+                                                            (editTeamId === team.id) ? (
+                                                                <TeamEditForm key={team.id + "edit" + team.owner} team={team} setUpdateTeamList={setUpdateTeamList} setEditTeamId={setEditTeamId} />
                                                             ) : (
-                                                                <Team key={team.name + "" + team.owner} {...team} setUpdateTeamList={setUpdateTeamList} setEditTeamId={setEditTeamId} setSelectedTeamName={setSelectedTeamName} />)
+                                                                <Team key={team.id + "" + team.owner} {...team} setUpdateTeamList={setUpdateTeamList} setEditTeamId={setEditTeamId} setSelectedTeamName={setSelectedTeamName} />)
                                                         }
                                                     </>
                                                 )
