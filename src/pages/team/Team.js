@@ -92,7 +92,7 @@ const Team = (props) => {
                         <Row>
                             <Col>
                                 <Link to={"/team-chat/" + id + "/"}>
-                                    <button className={styles.ChatButton} onClick={() => StaticContext.SELECTED_TEAM = `${name} by ${owner}`}>
+                                    <button className={styles.ChatButton} onClick={() => setSelectedTeamName(name)} >
                                         <i className={"fa-regular fa-chart-bar " + styles.Icon}></i>
                                         Team chat
                                     </button>
