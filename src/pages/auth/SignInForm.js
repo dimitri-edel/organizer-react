@@ -32,6 +32,9 @@ function SignInForm() {
   const { username, password } = signInData;
 
   const [errors, setErrors] = useState({});
+  // If the user's credentials are not accepted
+  // the response status is going to be 400 (Bad Request)
+  const [badRequest, setBadRequest] = useState(false);
 
   const history = useHistory();
   const handleSubmit = async (event) => {
@@ -43,6 +46,9 @@ function SignInForm() {
       history.push("/");
     } catch (err) {
       setErrors(err.response?.data);
+      if (err.response?.status == 400) {
+        setBadRequest(true);
+      }
     }
   };
 
@@ -99,6 +105,7 @@ function SignInForm() {
             >
               Sign in
             </Button>
+            {badRequest && <Alert key="bad_request_message" variant="warning">No user with the provided credentials found. Please try again! </Alert>}
           </Form>
         </Container>
         <Container className={`mt-3 ${appStyles.Content}`}>
@@ -106,9 +113,9 @@ function SignInForm() {
             Don't have an account? <span>Sign up now!</span>
           </Link>
         </Container>
-      </Col>   
-      <Col></Col>   
-    </Row>
+      </Col>
+      <Col></Col>
+    </Row >
   );
 }
 

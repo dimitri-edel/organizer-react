@@ -19,6 +19,7 @@ function App() {
   const currentUser = useCurrentUser();
   const [showAddTaskMenuItem, setShowAddTaskMenuItem] = useState(false);
   const [showAddTeamMenuItem, setShowAddTeamMenuItem] = useState(false);
+  const [selectedTeamName, setSelectedTeamName] = useState("");
 
   return (
     <div className={styles.App}>
@@ -35,11 +36,11 @@ function App() {
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
           <Route exact path="/tasks/" render={() => <TaskList setShowAddTaskMenuItem={setShowAddTaskMenuItem} />} />
-          <Route exact path="/teams/" render={() => <TeamList setShowAddTeamMenuItem={setShowAddTeamMenuItem} />} />
+          <Route exact path="/teams/" render={() => <TeamList setShowAddTeamMenuItem={setShowAddTeamMenuItem} setSelectedTeamName={setSelectedTeamName} />} />
           <Route exact path="/teams/create" render={() => <CreateTeamForm />} />
           <Route exact path="/tasks/create" render={() => <CreateTaskForm />} />
           <Route exact path="/tasks/:id/edit" render={() => <EditTaskForm />} />
-          <Route exact path="/team-chat/:team_id/" render={() => <TeamChat />} />
+          <Route exact path="/team-chat/:team_id/" render={() => <TeamChat selectedTeamName={selectedTeamName} />} />
           <Route render={() => <p>Page not found!</p>} />
         </Switch>
       </Container>

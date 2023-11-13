@@ -12,7 +12,7 @@ import StaticContext from "../../context/StaticContext";
 import PrivateMessageBoard from "./PrivateMessageBoard";
 import PrivateMessagePostForm from "./PrivateMessagePostForm";
 
-const TeamChat = (props) => {
+const TeamChat = ({ selectedTeamName }) => {
     const currentUser = useCurrentUser();
     // const is_owner = currentUser?.username === owner;
     const history = useHistory();
@@ -36,11 +36,11 @@ const TeamChat = (props) => {
 
     return (
         <div className={styles.ChatRoom}>
-            <h1 className={styles.TeamName}>{StaticContext.SELECTED_TEAM}</h1>
+            <h1 className={styles.TeamName}>{selectedTeamName}</h1>
             <Container>
                 <Row>
                     <Col md={2}>
-                        <TeamChatSidbar team_id={team_id} setPrivateMessageUserId={setPrivateMessageUserId} />
+                        <TeamChatSidbar team_id={team_id} setPrivateMessageUserId={setPrivateMessageUserId} selectedTeamName={selectedTeamName} />
                     </Col>
                     <Col>
                         {(privateMessageUserId == null) ? (
@@ -61,6 +61,12 @@ const TeamChat = (props) => {
                             </>
                         ) : (
                             <>
+                                <TeamChatFilters
+                                    setSearchFilter={setSearchFilter}
+                                    setTimeFilter={setTimeFilter}
+                                    searchFilter={searchFilter}
+                                    timeFilter={timeFilter}
+                                />
                                 <PrivateMessageBoard
                                     privateMessageUserId={privateMessageUserId}
                                     team_id={team_id}

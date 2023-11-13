@@ -15,7 +15,7 @@ import Team from "./Team";
 import TeamEditForm from "./TeamEditForm";
 import { useCurrentUser } from "../../context/CurrentUserContext";
 
-function TeamList({ setShowAddTeamMenuItem }) {
+function TeamList({ setShowAddTeamMenuItem, setSelectedTeamName }) {
     // See if the user is logged in
     const currentUser = useCurrentUser();
     const [teams, setTeams] = useState({ results: [] });
@@ -94,7 +94,7 @@ function TeamList({ setShowAddTeamMenuItem }) {
                                                             (editTeamId == team.id) ? (
                                                                 <TeamEditForm key={team.name + "" + team.owner} team={team} setUpdateTeamList={setUpdateTeamList} setEditTeamId={setEditTeamId} />
                                                             ) : (
-                                                                <Team key={team.name + "" + team.owner} {...team} setUpdateTeamList={setUpdateTeamList} setEditTeamId={setEditTeamId} />)
+                                                                <Team key={team.name + "" + team.owner} {...team} setUpdateTeamList={setUpdateTeamList} setEditTeamId={setEditTeamId} setSelectedTeamName={setSelectedTeamName} />)
                                                         }
                                                     </>
                                                 )

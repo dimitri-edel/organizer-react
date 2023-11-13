@@ -14,11 +14,7 @@ class StaticContext extends React.Component {
     *    and is only used when creating a new task
     */
     static SELECTED_DATE = null;
-    /**
-     * SELECTED_TEAM is initialized in Team.js and is used as a headline
-     * in TeamChat.js
-     */
-    static SELECTED_TEAM = "";
+
 
     constructor(props) {
         super(props);
