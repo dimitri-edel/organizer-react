@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "../../styles/TeamChat.module.css";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { axiosReq } from "../../api/axiosDefaults";
+import { toast } from "react-toastify";
 
 const TeamEditForm = (props) => {
     const {
@@ -36,6 +37,17 @@ const TeamEditForm = (props) => {
             // setMessage("Team has been updated!");
             setUpdateTeamList(true);
             setEditTeamId(null);
+            // Notify the user about the success
+            toast.success('Team name updated!', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         } catch (err) {
             // Log error to the console
             console.log(err);

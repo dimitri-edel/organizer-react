@@ -21,6 +21,7 @@ import { FormLabel } from "react-bootstrap";
 import { convertDateToReactString } from "../../utils/utils";
 import { useCurrentUser } from "../../context/CurrentUserContext";
 import StaticContext from "../../context/StaticContext";
+import { toast } from "react-toastify";
 
 /**
  * React Component that allows users to create new Tasks
@@ -142,8 +143,19 @@ function CreateTaskForm() {
             const { data } = await axiosReq.post("tasks/", formData);
             // Only one parameter is necessary, but for some reason if I only leave the id it will not work
             const { id, asigned_to, title, comment, due_date, category, priority, status, file } = data;
+            toast.success('New Task created!', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
             // If the Request returned 200(Successful open the created Task in a edit page
-            history.replace(`/tasks/${id}/edit`);
+            history.goBack();
+
         } catch (err) {
             console.log(err);
             // Copy validation errors to the corresponding state object

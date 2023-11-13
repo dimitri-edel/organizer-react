@@ -17,6 +17,7 @@ import {
 } from "react-bootstrap";
 import axios from "axios";
 import { useSetCurrentUser } from "../../context/CurrentUserContext";
+import { toast } from "react-toastify";
 
 function SignInForm() {
   useEffect(() => {
@@ -43,6 +44,17 @@ function SignInForm() {
     try {
       const { data } = await axios.post("/dj-rest-auth/login/", signInData);
       setCurrentUser(data.user);
+      let toastMsg = "Welcome back " + data.user.username;
+      toast.success(toastMsg, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       history.push("/");
     } catch (err) {
       setErrors(err.response?.data);

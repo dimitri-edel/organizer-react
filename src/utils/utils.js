@@ -12,7 +12,7 @@ export const fetchMoreData = async (resource, setResource) => {
           : [...acc, cur];
       }, prevResource.results),
     }));
-  } catch (err) {}
+  } catch (err) { }
 };
 /* Convert date object that comes back from the API to fit the React Bootstrap components, which are
   basically HTML-Components wrapped in bootstrap CSS
@@ -23,20 +23,20 @@ export const fetchMoreData = async (resource, setResource) => {
 */
 export const convertDateFormat = (dateString) => {
   const split = dateString.split(" ");
-  const incomingMonths = ["Jan", "Feb", "Mar", "Apr","May", "Jun", "Jul",  "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const incomingMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const outgoingMonths = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
   const day = split[0];
   let month = split[1];
   const year = split[2];
   const time = split[3];
 
-  for(let i=0; i < incomingMonths.length; i++){
-    if(incomingMonths[i].toLowerCase() === month.toLowerCase()){
+  for (let i = 0; i < incomingMonths.length; i++) {
+    if (incomingMonths[i].toLowerCase() === month.toLowerCase()) {
       month = outgoingMonths[i];
     }
   }
 
-  return ""+year+"-"+month+"-"+day+" "+time;  
+  return "" + year + "-" + month + "-" + day + " " + time;
 }
 
 /*
@@ -45,13 +45,13 @@ export const convertDateFormat = (dateString) => {
 export const convertDateToReactString = (date) => {
   let day = date.getDate();
   // Since the months in Date are numbered 0-11, need to add 1
-  let month = date.getMonth()+1;
+  let month = date.getMonth();
   let year = date.getFullYear();
   let hours = date.getHours();
   let minutes = date.getMinutes();
   const getFormat = (num) => {
-    if(num < 10){
-      return "0"+num;
+    if (num < 10) {
+      return "0" + num;
     }
     return num;
   }
@@ -59,6 +59,6 @@ export const convertDateToReactString = (date) => {
   month = getFormat(month);
   hours = getFormat(hours);
   minutes = getFormat(minutes);
-  
-  return ""+year+"-"+month+"-"+day+" "+hours+":"+minutes;
+
+  return "" + year + "-" + month + "-" + day + " " + hours + ":" + minutes;
 }

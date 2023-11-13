@@ -24,7 +24,7 @@
     background-color: rgba(203, 224, 235, 0.575);
     overflow-y: scroll;
     border: 1px solid black;
-    height: 70dvh;
+    height: 60dvh;
 }
 
 .Image {
@@ -163,4 +163,26 @@ option.FilterSelector {
     font-size: large;
     font-style: italic;
     height: 100%;
+}
+
+.SideBar {
+    height: 50px;
+}
+
+.SideBar i {
+    color: rgba(0, 74, 139, 0.59);
+}
+
+
+.SideBarTeamName a {
+    color: rgba(0, 74, 139, 0.59);
+    font-weight: bold;
+    font-size: larger;
+}
+
+.SideBarItem a {
+    font-weight: bold;
+    font-size: large;
+    border: 1px solid gray;
+    border-radius: 5px;
 }

@@ -31,7 +31,7 @@ const TeamChat = ({ selectedTeamName }) => {
 
     return (
         <div className={styles.ChatRoom}>
-            <h1 className={styles.TeamName}>{selectedTeamName}</h1>
+            <h3 className={styles.TeamName}>{selectedTeamName}</h3>
             <Container>
                 <Row>
                     <Col md={2}>

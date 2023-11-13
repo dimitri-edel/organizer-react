@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import { axiosReq } from "../../api/axiosDefaults";
+import styles from "../../styles/TeamChat.module.css";
 
 const TeamChatSidbar = ({ team_id, setPrivateMessageUserId, selectedTeamName }) => {
 
@@ -43,13 +44,14 @@ const TeamChatSidbar = ({ team_id, setPrivateMessageUserId, selectedTeamName }) 
             <Navbar.Toggle
                 onClick={() => setExpanded(!expanded)}
                 aria-controls="basic-navbar-nav"
+                className={styles.SideBar}
             >
                 <i className="fa-solid fa-user"></i>
             </Navbar.Toggle>
             <Navbar.Collapse>
                 <Nav onSelect={selectedUserId => userNameClick(selectedUserId)}>
-                    <Nav.Item>
-                        <Nav.Link eventKey="team">{selectedTeamName}</Nav.Link>
+                    <Nav.Item className={styles.SideBarItem}>
+                        <Nav.Link eventKey="team" >{selectedTeamName}</Nav.Link>
                         {hasLoaded ? (
                             members.map(member => <Nav.Link key={member.user_id} eventKey={member.user_id}>{member.username} </Nav.Link>)
 

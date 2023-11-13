@@ -12,13 +12,13 @@ import appStyles from "../../App.module.css";
 import {
   Form,
   Button,
-  Image,
   Col,
   Row,
   Container,
   Alert,
 } from "react-bootstrap";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const SignUpForm = () => {
   // Initialize when mounted 
@@ -52,6 +52,17 @@ const SignUpForm = () => {
     try {
       // POST the data to the API
       await axios.post("/dj-rest-auth/registration/", signUpData);
+      // Notify the user about successful signup
+      toast.success('Thanks for signing up. Your registration was successful!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       // If successful redirect the user to the sign-in page
       history.push("/signin");
     } catch (err) {

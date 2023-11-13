@@ -6,10 +6,7 @@ const TeamChatFilters = ({ setSearchFilter, setTimeFilter, searchFilter, timeFil
         <>
             <Container className={styles.FiltersPanel}>
                 <Row>
-                    <Col xs={1}>
-                        <i className={"fa-solid fa-filter " + styles.Icon}></i>
-                    </Col>
-                    <Col >
+                    <Col xs={7} >
                         <input
                             value={searchFilter}
                             onChange={e => setSearchFilter(e.target.value)}

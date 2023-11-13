@@ -12,6 +12,7 @@ import btnStyles from "../../styles/Button.module.css";
 import { axiosReq } from "../../api/axiosDefaults";
 import { useHistory } from "react-router";
 import { useCurrentUser } from "../../context/CurrentUserContext";
+import { toast } from "react-toastify";
 
 function CreateTaskForm() {
     useEffect(() => {
@@ -47,6 +48,18 @@ function CreateTaskForm() {
         try {
             await axiosReq.post("team/", formData);
             history.replace("/teams/");
+            let toastMsg = "The team " + name + " has been created!";
+
+            toast.success(toastMsg, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         } catch (err) {
             console.log(err);
             if (err.response?.status !== 401) {
