@@ -2,6 +2,63 @@
 Organizer helps users to organize their tasks, such as chores, errands and work-related matters.
 It allows users to form teams and assign tasks to their teammates.
 
+# User Stories
+
+## Registration
+An unregistered user can register with the website, so they can use the services provided by the application.
+
+## Login
+A registered user can sign in and use the application.
+
+## List Tasks of any given day
+An authenticated user can list tasks for any day in the calendar, so they can view what needs to be done on that day.
+
+## List Tasks of an entire month
+An authenticated user can list tasks for an entire month, so they can get an overview of the work load of the month.
+
+## Create Tasks
+An authenticated user can create new tasks. 
+A task must have the following attributes:
+- selectable date and time
+- selectable category (chore, errand, work)
+- selectable priority (high, middle, low)
+- selectable status (open, progressing, done)
+- possibility to attach an image file
+- possibility to assign the task to a teammate
+
+## Filter Tasks
+An authenticated user can filter tasks by title, date, category, priority and status, so they can sort them out in an efficient way.
+
+## Edit Tasks
+Owners of tasks can edit their tasks, so they can make changes if necessary.
+
+## List Teams
+An authenticated user can see the list of teams, so they can find and join any team.
+
+## Create Teams
+An authenticated user can create his or her own team, so other members can join them. Own teams allow the user to assign tasks to other team members, so they can delegate task as a team leader.
+
+## Rename Teams
+Owners of teams (team leaders) can delegate tasks to other members of their teams, so they can divvy up the work among the team.
+
+## Join Teams
+An authenticated user can join teams, so they can collaborate with other people a project. 
+
+## Leave Teams
+A member of a team can leave a team, so no more tasks of the team in question can be assigned to them anymore.
+
+## Team Chat
+Members of a team can engage in a team chat, so they can exchange information. An image file can be attached to a message.
+
+## Private Chat
+Members of a team can exchange private messages, if they can discuss issues that only concern the two of them. An image file can be attached to a message.
+
+## Editable Messages
+Owners of messages can edit their messages, so they can change them retrospectively.
+
+## Deletable Messages
+Owners of messages can delete their messages, if they become irrelevant or contain false information.
+
 ## Libraries 
 - **react-bootstrap** is was used, because it offers a quick way to create responsive layout and styling of the components
 - **react-bootstrap-datetimepicker** was used because I used bootstrap in this project and I needed a date-picker. However, any other date-picker would have done it.
@@ -99,63 +156,6 @@ The name of the component is **PrivateMessagePostForm** in pages.team.PrivateMes
 
 #### User notifications
 The name of the component is **ToastContainer**, which is provided by the library **react-toastify**. It is embedded in index.js right next to the **App** container. The messages can be displayed at any point by using the **toast** function from the library, that needs to be imported into the js file that intends to use it. The function takes a set of parameters such as the message itself. The list of parameters also includes many other features that control the look and behavior of the component. This page provides a great way to do this [react-toastify-page](https://fkhadra.github.io/react-toastify/introduction). One can choose all the options on the page and will see what it is going to look like and will also see a code snippet of the function call that corresponds to all the settings that one provided. Just copy, paste, change the message and Bob's your uncle.
-
-# User Stories
-
-## Registration
-An unregistered user can register with the website, so they can use the services provided by the application.
-
-## Login
-A registered user can sign in and use the application.
-
-## List Tasks of any given day
-An authenticated user can list tasks for any day in the calendar, so they can view what needs to be done on that day.
-
-## List Tasks of an entire month
-An authenticated user can list tasks for an entire month, so they can get an overview of the work load of the month.
-
-## Create Tasks
-An authenticated user can create new tasks. 
-A task must have the following attributes:
-- selectable date and time
-- selectable category (chore, errand, work)
-- selectable priority (high, middle, low)
-- selectable status (open, progressing, done)
-- possibility to attach an image file
-- possibility to assign the task to a teammate
-
-## Filter Tasks
-An authenticated user can filter tasks by title, date, category, priority and status, so they can sort them out in an efficient way.
-
-## Edit Tasks
-Owners of tasks can edit their tasks, so they can make changes if necessary.
-
-## List Teams
-An authenticated user can see the list of teams, so they can find and join any team.
-
-## Create Teams
-An authenticated user can create his or her own team, so other members can join them. Own teams allow the user to assign tasks to other team members, so they can delegate task as a team leader.
-
-## Rename Teams
-Owners of teams (team leaders) can delegate tasks to other members of their teams, so they can divvy up the work among the team.
-
-## Join Teams
-An authenticated user can join teams, so they can collaborate with other people a project. 
-
-## Leave Teams
-A member of a team can leave a team, so no more tasks of the team in question can be assigned to them anymore.
-
-## Team Chat
-Members of a team can engage in a team chat, so they can exchange information. An image file can be attached to a message.
-
-## Private Chat
-Members of a team can exchange private messages, if they can discuss issues that only concern the two of them. An image file can be attached to a message.
-
-## Editable Messages
-Owners of messages can edit their messages, so they can change them retrospectively.
-
-## Deletable Messages
-Owners of messages can delete their messages, if they become irrelevant or contain false information.
 
 # Manual Tests
 ## List Tasks Test
