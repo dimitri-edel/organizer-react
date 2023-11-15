@@ -80,6 +80,7 @@ class Calendar extends React.Component {
         // Select the current date for the context
         StaticContext.SELECTED_DATE = new Date();
     }
+
     /**
      * Reflect the month selection in the Calendar
      */
@@ -259,7 +260,9 @@ class Calendar extends React.Component {
             // Generate a query for this day and pass it to TaskList(parent element)
             let query = `${year}-${month}-${getDateNumberRepresentaion(day)}`;
             this.setQuery(query);
-            StaticContext.SELECTED_DATE = new Date(year, month, day);
+            // Month holds the natural number and needs to be turned back
+            // to the month-index
+            StaticContext.SELECTED_DATE = new Date(year, month - 1, day);
 
             // Put the new copy of calendar_cells in the state object
             this.setState({

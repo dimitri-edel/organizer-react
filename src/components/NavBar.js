@@ -49,7 +49,7 @@ const NavBar = ({ showAddTaskMenuItem, showAddTeamMenuItem }) => {
 
   const userNameIcon = (
     <span className={styles.UserNameIcon}>
-      <i class="fa-solid fa-user"></i>
+      <i className="fa-solid fa-user"></i>
       {currentUser && currentUser.username}
     </span>
   );

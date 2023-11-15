@@ -7,8 +7,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
-import { Modal } from "react-bootstrap";
-
 import Upload from "../../assets/upload.png";
 
 import styles from "../../styles/TaskCreateEditForm..module.css";
@@ -19,7 +17,7 @@ import { axiosReq } from "../../api/axiosDefaults";
 import { useHistory, useParams } from "react-router";
 // import { useCurrentUser } from "../../context/CurrentUserContext";
 import { FormLabel } from "react-bootstrap";
-import { convertDateFormat } from "../../utils/utils";
+import { convertDateFormat, convertDatePickerDate } from "../../utils/utils";
 import { useCurrentUser } from "../../context/CurrentUserContext";
 import { toast } from "react-toastify";
 
@@ -36,21 +34,14 @@ function EditTaskForm() {
      * State attribute that will hold validation errrors
      */
     const [errors, setErrors] = useState({});
-    // The messages for the Task Editor
-    const [message, setMessage] = useState("");
-    /**
-     * Close the Dialog that informs the user if the Task has been updated
-     */
-    const handleCloseConfirmDialog = () => {
-        setMessage("");
-    }
+
     const [taskData, setTaskData] = useState({
         owner: "",
         asigned_to: "",
         asigned_to_username: "",
         title: "",
         comment: "",
-        due_date: new Date().toJSON(),
+        due_date: "",
         category: "",
         priority: "",
         status: "",
@@ -60,6 +51,7 @@ function EditTaskForm() {
     const [teamMembers, setTeamMembers] = useState({ results: [], });
     // Destruct the taskData
     const { asigned_to, asigned_to_username, title, due_date, comment, category, priority, status, file } = taskData;
+
     /**
      * Apply user's input to the corresponding state attributes
      * @param {Event} event 
@@ -130,6 +122,7 @@ function EditTaskForm() {
     const handleSubmit = async (event) => {
         // Prevent the browser from following through with the default submit
         event.preventDefault();
+
         // Create a form data element, for the request
         const formData = new FormData();
 
@@ -142,7 +135,8 @@ function EditTaskForm() {
         }
         formData.append("title", title);
         formData.append("comment", comment);
-        formData.append("due_date", convertDateFormat(due_date));
+
+        formData.append("due_date", convertDatePickerDate(due_date));
         // If there is a file in the buffer it means that a new file
         // has been submitted. If there is a new file, then append it to the form
         // otherwise do not
@@ -167,6 +161,7 @@ function EditTaskForm() {
                 progress: undefined,
                 theme: "light",
             });
+            history.goBack();
         } catch (err) {
             console.log(err);
             // Copy the validation errors into the corresponding state attribute

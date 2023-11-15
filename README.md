@@ -68,6 +68,14 @@ Owners of messages can delete their messages, if they become irrelevant or conta
 
 ## Patterns
 
+### Calendar
+The name of the component is **Calendar** in components.Calendar.js. It renders a calendar on the tasks page (TaskList.js). It sole purpose is to let the user pick a date or month, for which a list of tasks will be displayed in the list below. It only takes one state hook **setQuery** as a property.when the user clicks on a particular day or clicks on one of the month buttons(previous month, current month, next month), this hook function is executed and the selected query is passed to the parent component **TaskList**. It also renders an abbriviated list of tasks in each box with the day number.
+
+The styling classes are defined in styles.Calendar.module.css.
+
+The Calendar is organized in ControlPanel with three buttons (previous month, current month, next month) and a grid with day numbers. The grid with day numbers is organized in rows and cells. The three dimensional array named **calendar_cells** holds the day numbers and a list of tasks for the respective day - **calenndar_cells[row][column][attachments]**. 
+It was the first and only react class component I ever wrote. Which made me appreciate the function components all the more The best solution would be to write it over as a function component. It works fine, but I consider it the problem child. The code looks convoluted and inflexible.  I chose to write my own calendar, because I did not like **react-calendar** and I was eager to find out if I could write one of my own. However, I was just beginning to learn about react at the time I wrote it.
+
 ### Tasks (Listing)
 The name of the component is **TaskList** in pages.task.TaskList.js. It harbors the main Component for displaying the task management interface. It is rendered in the **App** component and is mapped to the **route /tasks/**.
 
@@ -174,5 +182,11 @@ The name of the component is **ToastContainer**, which is provided by the librar
 ## Post Message in Private Chat Test
 ## Edit Message in Private Chat Test
 ## Delete Message from Private Chat Test
+
+# BUGS
+## Bug-Fix 1
+**File pages/task/EditTaskForm.js** inside the **handleSubmit** function.
+Before the form gets submitted, due_date is appended to an instance of FormaData. The date needs converting from the format that is used in the DatePicker to the format that is used by the API.
+I created a function named **convertDatePickerDate** in utils/**utils.js**
 
 # Deployment on Heroku

@@ -56,9 +56,22 @@ export const convertDateToReactString = (date) => {
     return num;
   }
   day = getFormat(day);
-  month = getFormat(month);
+  month = getFormat(month + 1);
   hours = getFormat(hours);
   minutes = getFormat(minutes);
 
   return "" + year + "-" + month + "-" + day + " " + hours + ":" + minutes;
+}
+
+export const convertDatePickerDate = (datePickerDateString) => {
+  // if the string contains a T between date and time replace it with a blank space
+  if (datePickerDateString.includes('T')) {
+    return datePickerDateString.replace("T", " ");
+  }
+  // If the string contains blank spaces, then it is a string received from the API
+  if (datePickerDateString.includes(" ")) {
+    return convertDateFormat(datePickerDateString);
+  }
+  // Otherwise the string is fine so give it right back
+  return datePickerDateString;
 }

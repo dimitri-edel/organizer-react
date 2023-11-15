@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "../../styles/Task.module.css";
 import { useCurrentUser } from "../../context/CurrentUserContext";
-import { Card, Modal, Button, Container, Row, Col, ListGroup } from "react-bootstrap";
+import { Card, Modal, Button, Container, Row, Col, } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { axiosRes } from "../../api/axiosDefaults";
 
@@ -58,9 +58,8 @@ const Task = (props) => {
         const handleDelete = async () => {
             try {
                 await axiosRes.delete(`/task/${id}`);
-                // Set the flag to true for TaskList.js, so the useEffectHook is executed
-                setUpdateTaskList(true);
-                history.push("/");
+                // Reload the window
+                window.location.reload();
             } catch (err) {
                 console.log(err);
             }
@@ -88,6 +87,8 @@ const Task = (props) => {
                 return "Errand";
             case 2:
                 return "Work";
+            default:
+                return "Work";
         }
     }
 
@@ -101,6 +102,8 @@ const Task = (props) => {
                 return "Middle-Priority";
             case 2:
                 return "Low-Priority";
+            default:
+                return "High-Priority";
         }
     }
 
@@ -113,6 +116,8 @@ const Task = (props) => {
                 return styles.MiddlePriority;
             case 2:
                 return styles.LowPriority;
+            default:
+                return styles.HighPriority;
         }
     }
     // Status comes in as an integer 0 - 2 (open, progressing, done)
@@ -125,6 +130,8 @@ const Task = (props) => {
                 return "Progressing";
             case 2:
                 return "Done";
+            default:
+                return "Open";
         }
     }
 
@@ -137,6 +144,8 @@ const Task = (props) => {
                 return styles.StatusProgressing;
             case 2:
                 return styles.StatusDone;
+            default:
+                return styles.StatusOpen;
         }
     }
 
