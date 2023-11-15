@@ -47,6 +47,13 @@ const NavBar = ({ showAddTaskMenuItem, showAddTeamMenuItem }) => {
     </NavLink>
   );
 
+  const userNameIcon = (
+    <span className={styles.UserNameIcon}>
+      <i class="fa-solid fa-user"></i>
+      {currentUser && currentUser.username}
+    </span>
+  );
+
   const loggedInIcons = (
     <>
       <NavLink
@@ -62,8 +69,9 @@ const NavBar = ({ showAddTaskMenuItem, showAddTeamMenuItem }) => {
         <i className="fa-solid fa-list"></i>Teams
       </NavLink>
       <NavLink className={styles.NavLink} to="/" onClick={handleSignOut}>
-        <i className="fas fa-sign-out-alt"></i>{currentUser && currentUser.username}
+        <i className="fas fa-sign-out-alt"></i>Sign Out
       </NavLink>
+      {currentUser && userNameIcon}
     </>
   );
 

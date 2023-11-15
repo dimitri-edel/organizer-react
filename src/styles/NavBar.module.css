@@ -37,8 +37,14 @@
     box-shadow: 10px 10px 5px rgba(193, 225, 253, 0.501);
 }
 
-.UserName {
+.UserNameIcon {
     font-size: large;
     color: darkblue;
     font-style: italic;
+    padding: 10px;
+}
+
+.UserNameIcon i {
+    font-size: large;
+    color: darkblue;
 }
