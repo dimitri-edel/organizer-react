@@ -1,9 +1,6 @@
 import React, { useState, useRef } from "react";
 import styles from "../../styles/TeamChat.module.css";
-import Upload from "../../assets/upload.png";
-import { useCurrentUser } from "../../context/CurrentUserContext";
 import { Container, Row, Col, Form, Image, Alert } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
 import { axiosReq } from "../../api/axiosDefaults";
 
 const TeamMessagePostForm = ({ team_id, setReload }) => {
@@ -122,10 +119,10 @@ const TeamMessagePostForm = ({ team_id, setReload }) => {
                                             </Form.Label>
                                         ) : (
                                             <Form.Label
-                                                className="d-flex justify-content-center"
                                                 htmlFor="image-upload"
+                                                className={styles.ChangeImageButton}
                                             >
-                                                <Image src={Upload} className={styles.UploadIcon} />
+                                                <i className="fa-solid fa-arrow-up-from-bracket"></i>
                                             </Form.Label>
                                         )}
                                     </Col>
