@@ -1,18 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import styles from "../../styles/TeamChat.module.css";
-import appStyles from "../../App.module.css";
 import Upload from "../../assets/upload.png";
 import { useCurrentUser } from "../../context/CurrentUserContext";
-import { Card, Modal, Button, Container, Row, Col, Form, Image, Alert } from "react-bootstrap";
-import { useHistory, useParams } from "react-router-dom";
-import { axiosReq, axiosRes } from "../../api/axiosDefaults";
-import Asset from "../../components/Asset";
-import TeamMessage from "./TeamMessage";
+import { Container, Row, Col, Form, Image, Alert } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+import { axiosReq } from "../../api/axiosDefaults";
 
 const TeamMessagePostForm = ({ team_id, setReload }) => {
-    const currentUser = useCurrentUser();
-    // const is_owner = currentUser?.username === owner;
-    const history = useHistory();
     const [messageData, setMessageData] = useState({
         message: "",
     });
@@ -62,10 +56,10 @@ const TeamMessagePostForm = ({ team_id, setReload }) => {
         formData.append("message", message);
         // This is just a dummy owner, because the API's serializer expects some value
         // The API will extract the user from the request
-        formData.append("owner", "");
+        // formData.append("owner", "");
         // This is just a dummy team, because the API's serializer expects some value
         // The API will extract the team-id from the requested URL route
-        formData.append("team", 1);
+        formData.append("team", team_id);
         // If there is a file in the buffer it means that a new file
         // has been submitted. If there is a new file, then append it to the form
         // otherwise do not
@@ -151,32 +145,7 @@ const TeamMessagePostForm = ({ team_id, setReload }) => {
                                 <Image className={styles.UploadImage} src={image} rounded />
                             </figure>
                         </Col>}
-                        {/* {image ? (
-                            <>
-                                <Col>
-                                    <figure>
-                                        <Image className={styles.Image} src={image} rounded />
-                                    </figure>
-                                </Col>
-                                <Col xs={2} md={2} lg={1}>
-                                    <Form.Label htmlFor="image-upload" className={styles.ChangeImageButton}>
-                                        Change Image
-                                    </Form.Label>
-                                </Col>
-                            </>
-                        ) : (
-                            <Col xs={2} md={2} lg={1}>
-                                <Form.Label
-                                    className="d-flex justify-content-center"
-                                    htmlFor="image-upload"
-                                >
-                                    <Asset
-                                        src={Upload}
-                                        message="Click or tap to uplaod an image"
-                                    />
-                                </Form.Label>
-                            </Col>
-                        )} */}
+
                         {/* NOTE : the Lables above have the htmlFor attribute that is assigned
                     to the component below. Meaning, if those components get clicked on
                     the onChange - event handler of this compoenent will be executed.

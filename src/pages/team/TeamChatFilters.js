@@ -22,10 +22,6 @@ const TeamChatFilters = ({ setSearchFilter, setTimeFilter, searchFilter, timeFil
                             className={styles.FilterSelector}
                         >
                             <option
-                                value={0}
-                                className={styles.FilterSelector}
-                            >All</option>
-                            <option
                                 value={1}
                                 className={styles.FilterSelector}
                             >Since yesterday</option>
@@ -39,6 +35,10 @@ const TeamChatFilters = ({ setSearchFilter, setTimeFilter, searchFilter, timeFil
                                 value={21}
                                 className={styles.FilterSelector}
                             >3 Weeks</option>
+                            <option
+                                value={0}
+                                className={styles.FilterSelector}
+                            >All</option>
                         </select>
                     </Col>
                 </Row>

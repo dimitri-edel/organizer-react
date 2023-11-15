@@ -20,7 +20,7 @@ const TeamChat = ({ selectedTeamName }) => {
     const [searchFilter, setSearchFilter] = useState("");
     // Value for time filter (API expects a GET parameter &minus_days=? )
     // This filter returns messages that were posted in the past ? days
-    const [timeFilter, setTimeFilter] = useState(0);
+    const [timeFilter, setTimeFilter] = useState(1);
     // This is the id of a team member who was picked for a private chat
     // If it is null then the TeamMessageBoard will be displayed
     // If the state holds a valid value, then the PrivateMessageBoard

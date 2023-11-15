@@ -7,9 +7,6 @@ import { useHistory } from "react-router-dom";
 import { axiosReq } from "../../api/axiosDefaults";
 
 const PrivateMessagePostForm = ({ privateMessageUserId, team_id, setReload }) => {
-    const currentUser = useCurrentUser();
-    // const is_owner = currentUser?.username === owner;
-    const history = useHistory();
     const [messageData, setMessageData] = useState({
         message: "",
     });
@@ -62,7 +59,7 @@ const PrivateMessagePostForm = ({ privateMessageUserId, team_id, setReload }) =>
         formData.append("owner", "");
         // This is just a dummy team, because the API's serializer expects some value
         // The API will extract the team-id from the requested URL route
-        formData.append("team", 1);
+        formData.append("team", team_id);
         // If there is a file in the buffer it means that a new file
         // has been submitted. If there is a new file, then append it to the form
         // otherwise do not
