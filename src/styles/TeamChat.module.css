@@ -69,6 +69,12 @@
     color: rgba(239, 238, 250, 0.418);
     border-radius: 5px;
     width: 100%;
+    padding: 0;
+}
+
+.EditButton i {
+    font-weight: 300;
+    font-size: medium;
 }
 
 .DeleteButton {
@@ -76,6 +82,12 @@
     color: rgba(249, 237, 244, 0.311);
     border-radius: 5px;
     width: 100%;
+    padding: 0;
+}
+
+.DeleteButton i {
+    font-weight: 300;
+    font-size: medium;
 }
 
 .CancelButton {

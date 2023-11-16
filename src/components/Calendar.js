@@ -59,10 +59,12 @@ class Calendar extends React.Component {
             // Set the current date
             current_date: current_date,
             // Set the selected date, year and month to the current date
-            selected_date: current_date.getDate(),
-            selected_month: current_date.getMonth(),
-            selected_year: current_date.getFullYear(),
-            selected_month_name: this.month_names[current_date.getMonth()],
+            selected_date: (StaticContext.SELECTED_DATE != null) ? StaticContext.SELECTED_DATE.getDate() : current_date.getDate(),
+            // If a month has been previously selected copy it from the context
+            selected_month: (StaticContext.SELECTED_MONTH != null) ? StaticContext.SELECTED_MONTH : current_date.getMonth(),
+            // If a year has been previously selected copy it from the context
+            selected_year: (StaticContext.SELECTED_YEAR) ? StaticContext.SELECTED_YEAR : current_date.getFullYear(),
+            selected_month_name: (StaticContext.SELECTED_MONTH != null) ? this.month_names[StaticContext.SELECTED_MONTH] : this.month_names[current_date.getMonth()],
             calendar_cells: [], // contain calendar_cells[row][column][attachments]
             selectedMonthTaskList: { results: [] },
             selectedMonthQuery: "",
@@ -277,8 +279,7 @@ class Calendar extends React.Component {
      */
     #calculatePrevMonth = () => {
         let current_month = this.state.selected_month;
-        let current_year = this.state.selected_year;
-        console.log("prev year calc " + current_year);
+
         if (current_month === 0) {
             this.setState((prevState, props) => ({
                 selected_month: 11,
@@ -299,7 +300,7 @@ class Calendar extends React.Component {
     */
     #calculateNextMonth = () => {
         let current_month = this.state.selected_month;
-        let current_year = this.state.selected_year;
+
         if (current_month === 11) {
             this.setState((prevState, props) => ({
                 selected_month: 0,
@@ -317,6 +318,11 @@ class Calendar extends React.Component {
      * Update all elements that depend on the value of this.state.selectedMonthQuery
      */
     #updateSelectedMonthQueryDependantElements = () => {
+        // Set the relevant data in the context
+        StaticContext.SELECTED_MONTH = this.state.selected_month;
+        StaticContext.SELECTED_YEAR = this.state.selected_year;
+
+        // Update the query
         this.setState({
             selectedMonthQuery: this.getSelectedMonthQuery(),
         }, this.#fetchSelectedMonth);

@@ -59,7 +59,7 @@ const PrivateMessage = ({ message, setEditMessageId, setReload }) => {
                         <span className={styles.Message}>{message.message}</span>
                     </Col>
                     {is_owner && <>
-                        <Col xs={1}>
+                        <Col xs={3} md={1}>
                             <button className={styles.EditButton} onClick={onEditClick}>
                                 <i className="fa-solid fa-pen-to-square"></i>
                             </button>

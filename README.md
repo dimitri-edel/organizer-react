@@ -169,6 +169,10 @@ The name of the component is **TeamMessagePostForm** in pages.team.TeamMessagePo
 
 
 #### Private Message Board
+---
+**NOTE** that for the time being, both users who wish to exchange private messages must have picked the respective user in the side-bar to engage in a private chat. In order to prompt a user to a private session, an additional model must be implemented in the backend. That model would represent an event and the TeamChat component can check for that event asynchronously, just like I did with the message counter. This could be done in the next iteration.
+---
+
 PrivateMessageBoard is a function that renders a list of messages within a team.
 To load the messages a **request** to the **API** is issued and the data gets extracted from the response.I used the **useEffect** hook with a closure (nested function) named **fetchMessages**.
 Each **Message** is a component of type **PrivateMessage**. 
