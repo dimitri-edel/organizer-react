@@ -314,15 +314,36 @@ axios interceptors
 ## Open Team Chat Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
+**Open page** | User clicks on the **chat** button in one of the teams in the list | The team chat for the selected team opens. Team name and team members are listed in the Side Bar. All messages that were posted in the past two days are displayed(Default filter setting). A form for posting is displayed underneath the message board | **SUCCESS** |
+**Search bar** | User enters a sequence of characters in the search bar | The messages are filtered by username and message text | **SUCCESS** |
+**Date Filter** | User selects one of the options in the filter (All, Since yesterday, 1 Week, 2 Weeks, 3 Weeks) | The messages are filtered by date on which they were posted | **presumably SUCCESS** . The chat option does not exists long enough to test them all. However, up to two weeks works fine |
+**Message reception** | Another team member posts a message | The message appears on the message board within 3 seconds | **SUCCESS** |
+
 ## Post Message in Team Chat Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
+**Post** | User enters a message and clicks on **post** | The message is displayed on the message board and is commited to the database of the API | **SUCCESS** |
+**Validation** | User leaves the text-field **blank** and clicks on **post** | A message is displayed underneath the text area informing the user that the field may not be blank | **SUCCESS** |
+**Invalid file** | User selects an unsupported file format and clicks on **post** | A message is diplayed informing them about which types of files are supported | **SUCCESS** |
+**Select image** | User enters a message and clicks on the upload button | A window opens that allows them to select a file from the device | **SUCCESS** |
+**Post image** | User has entered a message and selected an image to upload, then clicked on the **post** button | The message appears on the message board with the image underneath it | **SUCCESS** |
+
 ## Edit Message in Team Chat Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
+**Open Edit Form** | User clicks on the **edit** icon next to a message | A Form for editing messages shows up in place of the message. The form looks exactly like the form for posting messages | **SUCCESS** |
+**Validation** | User leaves the text-field **blank** and clicks on **post** | A message is displayed underneath the text area informing the user that the field may not be blank | **SUCCESS** |
+**Invalid file** | User selects an unsupported file format and clicks on **post** | A message is diplayed informing them about which types of files are supported | **SUCCESS** |
+**Select image** | User enters a message and clicks on the upload button | A window opens that allows them to select a file from the device | **SUCCESS** |
+**Post image** | User has entered a message and selected an image to upload, then clicked on the **post** button | The message appears on the message board with the image underneath it | **SUCCESS** |
+
 ## Delete Message from Team Chat Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
+**Confirm deletion** | User clicks on the **delete icon** next to the message | A confirm dialog appears prompting user to confirm the delete | **SUCCESS** |
+**Cancel deletion** | User aborts the deletion by clicking on **Cancel** in the confirm dialog | The dialog closes and the message remains untouched | **SUCCESS** |
+**Deletion confirmed** | User confirms by clicking on the **delete** button in the confirm dialog | The message is deleted and dissapears from the list on the message board | **SUCCESS** |
+
 ## Open Private Chat Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
