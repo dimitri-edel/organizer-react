@@ -4,6 +4,7 @@ import logo from "../assets/logo.png";
 import styles from "../styles/NavBar.module.css";
 import { NavLink } from "react-router-dom";
 import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
+import { toast } from "react-toastify";
 
 import {
   useCurrentUser,
@@ -20,6 +21,18 @@ const NavBar = ({ showAddTaskMenuItem, showAddTeamMenuItem }) => {
   const handleSignOut = async () => {
     try {
       await axios.post("dj-rest-auth/logout/");
+      let msg = "" + currentUser.username + " has logged out!";
+      // Notify user about the sign out
+      toast.info(msg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       setCurrentUser(null);
     } catch (err) {
       console.log(err);

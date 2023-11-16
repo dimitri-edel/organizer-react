@@ -3,7 +3,7 @@ Organizer helps users to organize their tasks, such as chores, errands and work-
 It allows users to form teams and assign tasks to their teammates.
 
 ## Backend repository
-![Open Backend Repository](https://github.com/dimitri-edel/organizer-api)
+[Open Backend Repository](https://github.com/dimitri-edel/organizer-api)
 
 ---
 # User Stories
@@ -221,8 +221,39 @@ The last two lines instantiate two instances of axios, one for sending requests 
 axios interceptors
 
 # Manual Tests
-## List Tasks Tests
+## Registration
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+**Sign Up** Link | User clicks on the **Sign Up** link in the **Navigation Bar** | The registration page opens | **SUCCESS** |
+**Validation messages** | User leaves a field blank | A message is rendered next to the field that notifies the user that the field is required | **SUCCESS** |
+**Username already exists** | User enters a name that already exists | A message appears **A user with that username already exists.** | **SUCCESS** |
+**Password validation** | User enters a password that is either too short or too simple | Up too several messages appear underneath the password field that inform the user about the problem with the chosen password | **SUCCESS** |
+**Successful registration** | User clicks on **Sign up** upon entering valid information | A notification message appears about the successful registration and the user is redirected to the sign-in page | **SUCCESS** |
+---
+## Login
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+**Sign In** Link | User clicks on the **Sign In** Link in the **Navigation Bar** | The Login page opens | **SUCCESS** |
+**Validation messages** | User leaves a field blank | A message is rendered next to the field that notifies the user that the field is required | **SUCCESS** |
+**Password validation** | User enters the wrong password | A message informs the user that no user with the provided credentials exists | **SUCCESS** |
+**Successful Sign In** | User entered valid credentials and clicked on the **Sign In** button | User is redirected to the home page and a welcome message is displayed. Username appears in the right corner of the navigation bar and previous navigation buttons are replaced with navigation links for authenticated users | **SUCCESS** |
+
+## Logout
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+**Logout** | User clicks on the **Sign Out** link in the **Navigation Bar** | The navigation buttons are replaced with **home, signin and signup** buttons and a message is displayed that informs the user about the logout | **SUCCESS** |
+
+
+## List Tasks Tests
+
+### Task List Component
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+**Preselect current date** | User clicks on the **Tasks** link in the **navigation bar** | When the page is loaded the **current date** is **selected** in the **calendar** and the **tasks** for the current date are **listed** bellow. A button with a **plus** sign, for adding **new tasks** appears in the **Navigationo Bar** |  **SUCCESS** |
+**Select entire month** | User clicks on the **middle button on the control panel of the calendar** with the name of the month and year. | The query is set to include all the tasks for the given month. The tasks for the selected month appear below. | **SUCCESS** |
+**Select next month** | Usr clicks on the **next month button on the control panel of the calendar**. | The calendar shows the next month and the query is set to include tasks for the selected month. Tasks for the selected month appear below | **SUCCESS** |
+**Select previous month** | User clicks on the **previous month button on the control panel of the calendar**. The calendar shows the next month and the query is set to include tasks for the selected month. Tasks for the selected month appear below | **SUCCESS** |
+
+
 ----------|----------|----------|----------
 ## Create Tasks Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
@@ -277,5 +308,7 @@ Before the form gets submitted, due_date is appended to an instance of FormaData
 I created a function named **convertDatePickerDate** in utils/**utils.js**
 ## Bug-Fix 2
 **utils/utils.js** inside **convertDateToReactString**. The month was off by one, because Date.getMonth() returns a month-index and not the month number. So the number had to be incremented by one to fit the bill.
+## Bug-Fix 3
+**components/calendar.js** calendar was not keeping its selected day, month, year when it was rerendering. I keep the settings in context/StaticContext. Becuase calendar is a class component, one cannot use state hooks or context hooks, so static variables seemed like the way to go.
 
 # Deployment on Heroku
