@@ -55,12 +55,12 @@ export const convertDateToReactString = (date) => {
     }
     return num;
   }
-  day = getFormat(day);
-  month = getFormat(month + 1);
-  hours = getFormat(hours);
-  minutes = getFormat(minutes);
+  let str_day = getFormat(day);
+  let str_month = getFormat((month + 1));
+  let str_hours = getFormat(hours);
+  let str_minutes = getFormat(minutes);
 
-  return "" + year + "-" + month + "-" + day + " " + hours + ":" + minutes;
+  return "" + year + "-" + str_month + "-" + str_day + " " + str_hours + ":" + str_minutes;
 }
 
 export const convertDatePickerDate = (datePickerDateString) => {

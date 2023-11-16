@@ -2,6 +2,10 @@
 Organizer helps users to organize their tasks, such as chores, errands and work-related matters.
 It allows users to form teams and assign tasks to their teammates.
 
+## Backend repository
+![Open Backend Repository](https://github.com/dimitri-edel/organizer-api)
+
+---
 # User Stories
 
 ## Registration
@@ -148,6 +152,7 @@ The **checkForMessages** function is triggered at three second intervals to make
 
 #### Team Message Post Form
 The name of the component is **TeamMessagePostForm** in pages.team.TeamMessagePostForm.js. It provides an interface for posting new messages. The post request is sent to the API URL **"team-chat-post/?team_id?**. It attaches a form to the request. The request is handled inside the **handleSubmit** function.
+
 
 #### Private Message Board
 PrivateMessageBoard is a function that renders a list of messages within a team.

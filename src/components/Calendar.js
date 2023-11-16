@@ -277,6 +277,8 @@ class Calendar extends React.Component {
      */
     #calculatePrevMonth = () => {
         let current_month = this.state.selected_month;
+        let current_year = this.state.selected_year;
+        console.log("prev year calc " + current_year);
         if (current_month === 0) {
             this.setState((prevState, props) => ({
                 selected_month: 11,
@@ -288,6 +290,7 @@ class Calendar extends React.Component {
                 selected_month: prevState.selected_month - 1,
                 selected_month_name: this.month_names[prevState.selected_month - 1]
             }), this.#updateSelectedMonthQueryDependantElements);
+
         }
     }
     /**
@@ -296,6 +299,7 @@ class Calendar extends React.Component {
     */
     #calculateNextMonth = () => {
         let current_month = this.state.selected_month;
+        let current_year = this.state.selected_year;
         if (current_month === 11) {
             this.setState((prevState, props) => ({
                 selected_month: 0,

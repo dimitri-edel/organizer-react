@@ -77,9 +77,7 @@ const PrivateMessageEditForm = ({ privateMessage, setReload, setEditMessageId })
 
         try {
             // Send a POST Request to the API
-            const { data } = await axiosReq.put("team-chat-put/" + privateMessage.id, formData);
-            // Only one parameter is necessary, but for some reason if I only leave the id it will not work
-            // const { id, asigned_to, title, comment, due_date, category, priority, status, file } = data; 
+            const { data } = await axiosReq.put("private-chat-put/" + privateMessage.id, formData);
             setReload(true);
             setMessageData({ message: "" });
             setEditMessageId(null);
