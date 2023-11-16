@@ -270,17 +270,19 @@ axios interceptors
 **Combining priority and category filters** | User selects a priority and a category as a filter, whereas status remains set to all | Tasks are filtered accordingly and only those that correspond to the selected filters and month or day show up in the list below | **SUCCESS** |
 
 
-
-
 ## Create Tasks Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
-## Filter Tasks Test
-**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
-----------|----------|----------|----------
+**Open Page** | User clicks on the **Plus** icon (Add Tasks Link) in the **Navigation Bar**| The **page** for creating tasks **opens** and the **date** selected in the calendar is **preselected** in the form's date-picker | **SUCCESS** |
+**Validation** | User leaves the **name** of the task **blank** and clicks on **create**.| A message appears underneath the name field that informs the user that the field may not be blank | **SUCCESS** |
+**Attaching Image** | User clicks on the **link for uploading images** | A Window opens that allows the user to select an image | **SUCCESS** |
+**Successful create** | Upon filling out the form user clicks on **create** | User gets redirected back to the taks page and a notification appears. The task appears in the list and the calendar. The data in the task reflects user's entries. | **SUCCESS** |
+
 ## List Teams Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
+
+
 ## Create Teams Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
@@ -327,5 +329,7 @@ I created a function named **convertDatePickerDate** in utils/**utils.js**
 **utils/utils.js** inside **convertDateToReactString**. The month was off by one, because Date.getMonth() returns a month-index and not the month number. So the number had to be incremented by one to fit the bill.
 ## Bug-Fix 3
 **components/calendar.js** calendar was not keeping its selected day, month, year when it was rerendering. I keep the settings in context/StaticContext. Becuase calendar is a class component, one cannot use state hooks or context hooks, so static variables seemed like the way to go.
+## BUG: (unfixed) 
+Upon creating or editing the tasks, the selected date in the calendar gets cleared. Even though I know how to fix it, but I only have a few hours left till submission, I am not sure if I will have the time to do it. However, this bug does not impact the overall functionality of the project. So, the user will probably select a different day anyhow. 
 
 # Deployment on Heroku
