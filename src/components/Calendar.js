@@ -99,7 +99,7 @@ class Calendar extends React.Component {
      */
     #fetchSelectedMonth = async () => {
         try {
-            const { data } = await axiosReq.get(`/tasks/?search=${this.state.selectedMonthQuery}&limit=100&offset=0`);
+            const { data } = await axiosReq.get(`/tasks/?search=${this.state.selectedMonthQuery}&limit=200&offset=0`);
             this.setState({
                 selectedMonthTaskList: data,
                 hasLoaded: true,

@@ -245,16 +245,33 @@ axios interceptors
 
 
 ## List Tasks Tests
-
-### Task List Component
+### Calendar as a Filter
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
 **Preselect current date** | User clicks on the **Tasks** link in the **navigation bar** | When the page is loaded the **current date** is **selected** in the **calendar** and the **tasks** for the current date are **listed** bellow. A button with a **plus** sign, for adding **new tasks** appears in the **Navigationo Bar** |  **SUCCESS** |
 **Select entire month** | User clicks on the **middle button on the control panel of the calendar** with the name of the month and year. | The query is set to include all the tasks for the given month. The tasks for the selected month appear below. | **SUCCESS** |
 **Select next month** | Usr clicks on the **next month button on the control panel of the calendar**. | The calendar shows the next month and the query is set to include tasks for the selected month. Tasks for the selected month appear below | **SUCCESS** |
 **Select previous month** | User clicks on the **previous month button on the control panel of the calendar**. The calendar shows the next month and the query is set to include tasks for the selected month. Tasks for the selected month appear below | **SUCCESS** |
+**Select a day** | User clicks on one of the days in the calendar | The day is marked as selected, the query is set to include tasks for the selected day. Tasks for the selected day appear below | **SUCCESS** |
 
-
+### Searchbar as a filter
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
+**Search by title** | User enters a sequence of characers in the search bar | Tasks are filtered by title | **SUCCESS** |
+
+### Filters (Category, Priority, Status)
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+**Category** | User selects a category filter ('errand', 'chore', 'work') | Tasks that are in the selected category and selected month or date appear below | **SUCCESS** |
+**Priority** | User slects a priority filter ('high', 'middle', 'low') | Tasks that are of the selected priorty and selected month or date appear below | **SUCCESS** |
+**Status** | User slects a status filter ('open', 'progressing', 'done') | Tasks that are with the selected status and selected month or date appear below | **SUCCESS** | 
+**Combining category and status filters** | User selects a category and a status as a filter, whereas priority remains set to all | Tasks are filtered accordingly and only those that correspond to the selected filters and month or day show up in the list below | **SUCCESS** |
+**Combining priority and status filters** | User selects a priority and a status as a filter, whereas category remains set to all | Tasks are filtered accordingly and only those that correspond to the selected filters and month or day show up in the list below | **SUCCESS** |
+**Combining priority and category filters** | User selects a priority and a category as a filter, whereas status remains set to all | Tasks are filtered accordingly and only those that correspond to the selected filters and month or day show up in the list below | **SUCCESS** |
+
+
+
+
 ## Create Tasks Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
