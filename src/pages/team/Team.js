@@ -4,7 +4,7 @@ import { useCurrentUser } from "../../context/CurrentUserContext";
 import { Card, Modal, Button, Container, Row, Col, } from "react-bootstrap";
 import { useHistory, Link } from "react-router-dom";
 import { axiosReq, axiosRes } from "../../api/axiosDefaults";
-import StaticContext from "../../context/StaticContext";
+import { toast } from "react-toastify";
 
 const Team = (props) => {
     const {
@@ -34,6 +34,18 @@ const Team = (props) => {
         const handleDelete = async () => {
             try {
                 await axiosRes.delete(`/team/${id}`);
+                // Notify user
+                let msg = "You have removed " + name + "!"
+                toast.warn(msg, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
                 // Set the flag to true for TeamList.js, so the useEffectHook is executed
                 setUpdateTeamList(true);
                 history.replace("/teams/");
@@ -47,9 +59,7 @@ const Team = (props) => {
     }
 
     const handleEdit = () => {
-        // history.push(`${id}/edit`);
         setEditTeamId(id);
-        // setUpdateTeamList(true);
     };
 
     const handleJoinTeam = async () => {
@@ -60,6 +70,18 @@ const Team = (props) => {
 
         try {
             await axiosReq.post("membership/", formData);
+            // Notify user
+            let msg = "You have joined " + name + "!"
+            toast.success(msg, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
             setUpdateTeamList(true);
         } catch (err) {
             console.log(err);
@@ -69,6 +91,18 @@ const Team = (props) => {
     const handleLeaveTeam = async () => {
         try {
             await axiosRes.delete(`leave/team/${id}`);
+            // Notify user
+            let msg = "You have left " + name + "!"
+            toast.success(msg, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
             // Set the flag to true for TaskList.js, so the useEffectHook is executed
             setUpdateTeamList(true);
         } catch (err) {

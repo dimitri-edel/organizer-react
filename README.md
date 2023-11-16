@@ -281,20 +281,36 @@ axios interceptors
 ## List Teams Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
+**Open Page** | User clicks on the **Teams** link in the **Navigation Bar**| The **page** with a list of teams opens. A **Plus** icon for creating new teams appears in the **Navigation Bar**. The teams created by the user have **chat, rename and delete** buttons. The | **SUCCESS** |
+**Search Bar** | User enters a sequence of characters in the search bar | The list of teams is filtered by username and team-name | **SUCCESS** |
 
 
 ## Create Teams Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
+**Open Page** | User clicks on the **Plus** icon (Add Teams Link) in the **Navigation Bar**| The **page** for creating teams **opens**| **SUCCESS** |
+**Validation** | User leaves the **name** of the team **blank** and clicks on **create**.| A message appears underneath the name field that informs the user that the field may not be blank | **SUCCESS** |
+**Successful create** | Upon naming the team user clicks on **create** | User gets redirected back to the teams page and a notification appears. The team appears in the list of teams. The name of team reflects user's entry. And the username on the team leader is the same as the name of the user who created it| **SUCCESS** |
+
 ## Rename Teams Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
+**Open Form** | User clicks on the **Rename** button on one of their own teams | A form with the editable name of the team, cancel and rename buttons appears in place of the team | **SUCCESS** |
+**Validation** | User leaves the **name** of the team **blank** and clicks on **create**.| A message appears underneath the name field that informs the user that the field may not be blank | **SUCCESS** |
+**Successful rename** | Upon naming the team user clicks on **rename** in the form | User gets redirected back to the teams page and a notification appears. The team appears in the list of teams. The name of team reflects user's entry. A notification appears showing the user what the team has been renamed to.| **SUCCESS** |
+**Cancel** | User clicks on the **cancel** button in the form | The list of teams reopens and the team remains untouched | **SUCCESS** |
+
+
 ## Join Teams Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
+**Join team** | User clicks on **Join** in one of the teams that they are not a member of | A notification appears informing the user that they have joined the team and the team list is rerendered. The respective team now has a **leave** button on it | **SUCCESS**|
+
 ## Leave Teams Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
+**Leave team** | User clicks on **Leave** in one of the teams that they are a member of | A notification appears informing the user that they have left the team and the team list is rerendered. The respective team now has a **join** button on it | **SUCCESS**|
+
 ## Open Team Chat Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
