@@ -63,6 +63,20 @@ Owners of messages can edit their messages, so they can change them retrospectiv
 ## Deletable Messages
 Owners of messages can delete their messages, if they become irrelevant or contain false information.
 
+## Wireframes
+
+### Page for displaying tasks
+
+![Page with task display and control elements](images_readme/wireframes/tasks.png)
+
+---
+### Page for displaying teams
+
+![Page with team display and control elements](images_readme/wireframes/teams.png)
+
+---
+
+
 ## Libraries 
 - **react-bootstrap** is was used, because it offers a quick way to create responsive layout and styling of the components
 - **react-bootstrap-datetimepicker** was used because I used bootstrap in this project and I needed a date-picker. However, any other date-picker would have done it.
@@ -170,28 +184,94 @@ The name of the component is **PrivateMessagePostForm** in pages.team.PrivateMes
 #### User notifications
 The name of the component is **ToastContainer**, which is provided by the library **react-toastify**. It is embedded in index.js right next to the **App** container. The messages can be displayed at any point by using the **toast** function from the library, that needs to be imported into the js file that intends to use it. The function takes a set of parameters such as the message itself. The list of parameters also includes many other features that control the look and behavior of the component. This page provides a great way to do this [react-toastify-page](https://fkhadra.github.io/react-toastify/introduction). One can choose all the options on the page and will see what it is going to look like and will also see a code snippet of the function call that corresponds to all the settings that one provided. Just copy, paste, change the message and Bob's your uncle.
 
+## Converting Dates
+The API is set to return date-time fields in the following format: 24 Aug 2023 21:14
+The React DOM components expect a string that looks like this : 2023-08-24 21:14
+I have written a function that converts the former to the ladder so it can be used to initialize the Date-Pickers.
+The function's name is **convertDateFormat**. It expects a string representation of the date-time, as it comes from the API, as a parameter. And it returns the string representation of the date-time as React's Date-Picker expects it. The function is defined in utils.js, which is located in the **utils** folder.
+
+The same file **utils.js** contains another function that converts a Java-Script Date object into the string representation as it is expected by the Date-Picker. The name of this function is **convertDateToReactString** and it expects a Date object as a parameter. 
+
+## Communication with the API
+The application uses the **axios** library to communicate with the Backend. 
+The default settings for the application are declared in **api/axiosDefaults.js**.
+
+Here is what the content of the file looks like:
+
+<code>
+axios.defaults.baseURL = "https://organizer-api-f1f640e8d82c.herokuapp.com/";
+axios.defaults.headers.post['Content-Type'] = "multipart/form-data";
+axios.defaults.withCredentials= true;
+
+export const axiosReq = axios.create();
+export const axiosRes = axios.create();
+</code>
+
+The baseURL is the URL at which the API has been deployed
+The Content-Type in the headers of the POST-Requests will be set to form-data
+And the credentials will be used for the connection.
+
+The last two lines instantiate two instances of axios, one for sending requests and one for receiving responses. They must be imported in every file that intends to use them. This approach allows us to separate response and request management, making it easier to read. 
+
+## Updating user tokens
+axios interceptors
+
 # Manual Tests
-## List Tasks Test
-## Create Tasks Test
+## List Tasks Tests
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+## Create Tasks Tests
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
 ## Filter Tasks Test
-## List Teams Test
-## Create Teams Test
-## Rename Teams Test
-## Join Teams Test
-## Leave Teams Test
-## Open Team Chat Test
-## Post Message in Team Chat Test
-## Edit Message in Team Chat Test
-## Delete Message from Team Chat Test
-## Open Private Chat Test
-## Post Message in Private Chat Test
-## Edit Message in Private Chat Test
-## Delete Message from Private Chat Test
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+## List Teams Tests
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+## Create Teams Tests
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+## Rename Teams Tests
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+## Join Teams Tests
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+## Leave Teams Tests
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+## Open Team Chat Tests
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+## Post Message in Team Chat Tests
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+## Edit Message in Team Chat Tests
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+## Delete Message from Team Chat Tests
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+## Open Private Chat Tests
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+## Post Message in Private Chat Tests
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+## Edit Message in Private Chat Tests
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
+## Delete Message from Private Chat Tests
+**TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
+----------|----------|----------|----------
 
 # BUGS
 ## Bug-Fix 1
 **File pages/task/EditTaskForm.js** inside the **handleSubmit** function.
 Before the form gets submitted, due_date is appended to an instance of FormaData. The date needs converting from the format that is used in the DatePicker to the format that is used by the API.
 I created a function named **convertDatePickerDate** in utils/**utils.js**
+## Bug-Fix 2
+**utils/utils.js** inside **convertDateToReactString**. The month was off by one, because Date.getMonth() returns a month-index and not the month number. So the number had to be incremented by one to fit the bill.
 
 # Deployment on Heroku

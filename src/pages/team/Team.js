@@ -94,7 +94,7 @@ const Team = (props) => {
                                 <Link to={"/team-chat/" + id + "/"}>
                                     <button className={styles.ChatButton} onClick={() => setSelectedTeamName(name)} >
                                         <i className={"fa-regular fa-chart-bar " + styles.Icon}></i>
-                                        Team chat
+                                        Chat
                                     </button>
                                 </Link>
                             </Col>
@@ -117,7 +117,7 @@ const Team = (props) => {
                                         <Link to={"/team-chat/" + id + "/"}>
                                             <button className={styles.ChatButton} onClick={() => setSelectedTeamName(name)}>
                                                 <i className={"fa-regular fa-chart-bar " + styles.Icon}></i>
-                                                Team chat
+                                                Chat
                                             </button>
                                         </Link>
                                     </Col>
