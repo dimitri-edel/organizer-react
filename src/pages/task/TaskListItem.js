@@ -1,6 +1,10 @@
 import React from "react";
-import styles from "../styles/TaskListItem.module.css";
+import styles from "../../styles/TaskListItem.module.css";
 
+/***
+ * An item that represents a task inside the Calendar component
+ * 
+ */
 const TaskListItem = ({ title, priority, status }) => {
     let classNames = [];
     const getClassNames = () => {
@@ -15,6 +19,9 @@ const TaskListItem = ({ title, priority, status }) => {
                 case 2:
                     classNames[0] = styles.LowPriorityItem;
                     break;
+                default:
+                    classNames[0] = styles.HighPriorityItem;
+                    break;
             }
 
             switch (status) {
@@ -26,6 +33,9 @@ const TaskListItem = ({ title, priority, status }) => {
                     break;
                 case 2:
                     classNames[1] = styles.StatusDone;
+                    break;
+                default:
+                    classNames[0] = styles.HighPriorityItem;
                     break;
             }
         }

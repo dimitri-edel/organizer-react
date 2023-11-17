@@ -1,11 +1,11 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import styles from "../styles/Calendar.module.css";
+import styles from "../../styles/Calendar.module.css";
 import TaskListItem from "./TaskListItem";
-import { axiosReq } from "../api/axiosDefaults";
-import Asset from "../components/Asset";
-import appStyles from "../App.module.css";
-import StaticContext from "../context/StaticContext";
+import { axiosReq } from "../../api/axiosDefaults";
+import Asset from "../../components/Asset";
+import appStyles from "../../App.module.css";
+import StaticContext from "../../context/StaticContext";
 
 
 /**

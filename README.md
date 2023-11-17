@@ -74,6 +74,9 @@ Owners of messages can delete their messages, if they become irrelevant or conta
 
 ![Page with team display and control elements](images_readme/wireframes/teams.png)
 
+### Page for the Team Chat
+![Page for the team chat](images_readme/wireframes/chat.png)
+
 ---
 
 
@@ -218,7 +221,11 @@ And the credentials will be used for the connection.
 The last two lines instantiate two instances of axios, one for sending requests and one for receiving responses. They must be imported in every file that intends to use them. This approach allows us to separate response and request management, making it easier to read. 
 
 ## Updating user tokens
-axios interceptors
+In the file **context/CurrentUserContext.js** lives the code that handles refreshing the tokens. 
+The code refreshes the user tokens every time a request is about to be sent. If they are expired then the user is redirected to the login page.
+Also, if the response comes back with the status code 401 (Unauthorized), then the same procedure entails. First attempt to refresh token. If tokesn are expired redirect the user to the login page.
+
+Interceptors from the axios object are used to do this. Interceptors are an observer pattern. They handle each outgoing request or incoming respoonse as an event. That way code can be executed every time a request is being sent or every time a response comes back from the server. The code will be triggered before sending a request or after receiving a respoonse. The triggered function is passed as a Promise to axios.request.use() or axios.response.use(). 
 
 # Manual Tests
 ## Registration
@@ -396,6 +403,35 @@ The application must be built for deployment. The command to do that must be inc
 web: serve -s build
 </code>
 
+---
+ Go to the dashboard on heroku and click on new -> Create new app
+---
+![Deployment step 1](images_readme/heroku/new.png)
+
+---
+Name your app
+---
+- Enter app name
+ Choose region
+- Click on Create app
+
+![Deployment step 2](images_readme/heroku/new_1.png)
+
+---
+Connect to GitHub
+---
+- Choose GitHub for Deployment Method
+- Enter name of repository in the Connect to GitHub section
+- Click on Connect
+
+![Deployment step 3](images_readme/heroku/new_2.png)
+
+---
+Deploy app
+---
+Go to Deploy and scroll down to the Manual Deploy section and click on Deploy branch
+
+![Deployment step 4](images_readme/heroku/deploy_1.png)
 
 
 # TEECHNOLOGIES & TOOLS

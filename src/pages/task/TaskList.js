@@ -13,7 +13,8 @@ import Asset from "../../components/Asset";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchMoreData } from "../../utils/utils";
 import Task from "./Task";
-import Calendar from "../../components/Calendar";
+import Calendar from "./Calendar";
+
 import { useCurrentUser } from "../../context/CurrentUserContext";
 
 /**
