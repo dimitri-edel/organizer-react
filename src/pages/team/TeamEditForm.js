@@ -34,8 +34,6 @@ const TeamEditForm = (props) => {
         try {
             // Submit the form to the API
             await axiosReq.put(`team/${team.id}`, formData);
-            // If successful inform the user
-            // setMessage("Team has been updated!");
             setUpdateTeamList(true);
             setEditTeamId(null);
             // Notify the user about the success

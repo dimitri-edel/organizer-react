@@ -48,8 +48,8 @@ function CreateTaskForm() {
         try {
             await axiosReq.post("team/", formData);
             history.replace("/teams/");
+            // Notify user
             let toastMsg = "The team " + name + " has been created!";
-
             toast.success(toastMsg, {
                 position: "top-center",
                 autoClose: 5000,

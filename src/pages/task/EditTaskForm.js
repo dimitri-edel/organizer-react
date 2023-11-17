@@ -15,7 +15,6 @@ import btnStyles from "../../styles/Button.module.css";
 import Asset from "../../components/Asset";
 import { axiosReq } from "../../api/axiosDefaults";
 import { useHistory, useParams } from "react-router";
-// import { useCurrentUser } from "../../context/CurrentUserContext";
 import { FormLabel } from "react-bootstrap";
 import { convertDateFormat, convertDatePickerDate } from "../../utils/utils";
 import { useCurrentUser } from "../../context/CurrentUserContext";

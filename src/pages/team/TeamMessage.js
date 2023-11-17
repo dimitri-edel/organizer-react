@@ -2,15 +2,14 @@ import React, { useState } from "react";
 import Image from "react-bootstrap/Image";
 import styles from "../../styles/TeamChat.module.css";
 import { useCurrentUser } from "../../context/CurrentUserContext";
-import { Card, Modal, Button, Container, Row, Col, } from "react-bootstrap";
-import { useHistory, useParams } from "react-router-dom";
-import { axiosReq, axiosRes } from "../../api/axiosDefaults";
-import TeamMessageBoard from "./TeamMessageBoard";
+import { Modal, Button, Container, Row, Col, } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+import { axiosRes } from "../../api/axiosDefaults";
+
 
 const TeamMessage = ({ message, setEditMessageId, setReload }) => {
     const currentUser = useCurrentUser();
     const is_owner = currentUser?.username === message.owner;
-    const history = useHistory();
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
     /**
@@ -46,7 +45,6 @@ const TeamMessage = ({ message, setEditMessageId, setReload }) => {
     }
 
     const onEditClick = () => {
-        console.log("Edit clicked!" + message.id);
         setEditMessageId(message.id);
     }
 

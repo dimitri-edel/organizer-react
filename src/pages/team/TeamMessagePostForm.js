@@ -70,8 +70,7 @@ const TeamMessagePostForm = ({ team_id, setReload }) => {
         try {
             // Send a POST Request to the API
             const { data } = await axiosReq.post("team-chat-post/" + team_id, formData);
-            // Only one parameter is necessary, but for some reason if I only leave the id it will not work
-            // const { id, asigned_to, title, comment, due_date, category, priority, status, file } = data; 
+            // Only one parameter is necessary, but for some reason if I only leave the id it will not work            
             setReload(true);
             setMessageData({ message: "" });
         } catch (err) {

@@ -1,18 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import styles from "../../styles/TeamChat.module.css";
-import appStyles from "../../App.module.css";
 import Upload from "../../assets/upload.png";
-import { useCurrentUser } from "../../context/CurrentUserContext";
-import { Card, Modal, Button, Container, Row, Col, Form, Image, Alert } from "react-bootstrap";
-import { useHistory, useParams } from "react-router-dom";
-import { axiosReq, axiosRes } from "../../api/axiosDefaults";
-import Asset from "../../components/Asset";
-import TeamMessage from "./TeamMessage";
+import { Container, Row, Col, Form, Image, Alert } from "react-bootstrap";
+import { axiosReq } from "../../api/axiosDefaults";
 
 const TeamMessageEditForm = ({ teamMessage, setReload, setEditMessageId }) => {
-    const currentUser = useCurrentUser();
-    // const is_owner = currentUser?.username === owner;
-    const history = useHistory();
     const [messageData, setMessageData] = useState({
         ...teamMessage
     });
@@ -81,8 +73,7 @@ const TeamMessageEditForm = ({ teamMessage, setReload, setEditMessageId }) => {
         try {
             // Send a POST Request to the API
             const { data } = await axiosReq.put("team-chat-put/" + teamMessage.id, formData);
-            // Only one parameter is necessary, but for some reason if I only leave the id it will not work
-            // const { id, asigned_to, title, comment, due_date, category, priority, status, file } = data; 
+            // Only one parameter is necessary, but for some reason if I only leave the id it will not work            
             setReload(true);
             setMessageData({ message: "" });
             setEditMessageId(null);
