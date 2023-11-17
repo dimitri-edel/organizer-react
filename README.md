@@ -2,6 +2,15 @@
 Organizer helps users to organize their tasks, such as chores, errands and work-related matters.
 It allows users to form teams and assign tasks to their teammates.
 
+## Target audience
+- The app is intended to target working individuals in their 20s-50s looking to stay on top of their tasks.
+- The clean & simple approach helps avoid unnecessary clutter & distraction, allowing individuals to get straight to the point
+- The application is intended to appeal to organised minds, most likely those within the tech industry.
+- With the option to form teams, team leaders can assign & delegate tasks,
+- They are able to adjust the priority level of such tasks to give their team members guidance on where their focus needs to lie
+- And the chat feature allows them to keep open communication with team members & the team as a whole.
+
+
 ## Backend repository
 [Open Backend Repository](https://github.com/dimitri-edel/organizer-api)
 
@@ -87,14 +96,14 @@ Owners of messages can delete their messages, if they become irrelevant or conta
 - **react-toastify** is used to deliver notifications to the user. It is very easy to use and has many features right out of the box.
 - **axios** is an easy to use library for processing HTML-requests and HTML-responses.
 
-## Patterns
+## Reusable Components and Patterns
 
 ### Calendar
-The name of the component is **Calendar** in components.Calendar.js. It renders a calendar on the tasks page (TaskList.js). It sole purpose is to let the user pick a date or month, for which a list of tasks will be displayed in the list below. It only takes one state hook **setQuery** as a property.when the user clicks on a particular day or clicks on one of the month buttons(previous month, current month, next month), this hook function is executed and the selected query is passed to the parent component **TaskList**. It also renders an abbriviated list of tasks in each box with the day number.
+The name of the component is **Calendar** in components.Calendar.js. It renders a calendar on the tasks page (TaskList.js). It sole purpose is to let the user pick a date or month, for which a list of tasks will be displayed in the list below. It only takes one state hook **setQuery** as a property.when the user clicks on a particular day or clicks on one of the month buttons(previous month, current month, next month), this hook function is executed and the selected query is passed to the parent component **TaskList**. It also renders an abbreviated list of tasks in each box with the day number.
 
 The styling classes are defined in styles.Calendar.module.css.
 
-The Calendar is organized in ControlPanel with three buttons (previous month, current month, next month) and a grid with day numbers. The grid with day numbers is organized in rows and cells. The three dimensional array named **calendar_cells** holds the day numbers and a list of tasks for the respective day - **calenndar_cells[row][column][attachments]**. 
+The Calendar is organized in ControlPanel with three buttons (previous month, current month, next month) and a grid with day numbers. The grid with day numbers is organized in rows and cells. The three dimensional array named **calendar_cells** holds the day numbers and a list of tasks for the respective day - **calendar_cells[row][column][attachments]**. 
 It was the first and only react class component I ever wrote. Which made me appreciate the function components all the more The best solution would be to write it over as a function component. It works fine, but I consider it the problem child. The code looks convoluted and inflexible.  I chose to write my own calendar, because I did not like **react-calendar** and I was eager to find out if I could write one of my own. However, I was just beginning to learn about react at the time I wrote it.
 
 ### Tasks (Listing)
@@ -158,6 +167,7 @@ The Name of the component is **TeamChatSideBar** in pages.team.TeamChatSideBar.j
 The Name of the component is **TeamChatFilters** in pages.team.TeamChatFilters.js. The purpose of this component is to search the messages by username or keywords in a message. It also allows to filter the messages by how long ago they were posted. Current possibilities are (All, Since yesterday, 1 Week, 2 Weeks, 3 Weeks).  More filters can be easily added by changing the **value** of an **option** to the number of days that the messages should go back.
 
 #### Team Message Board
+
 The Name of the component is TeamMessageBoard in pages.team.TeamMessageBoard.js. It renders a list of messages within a team.
 To load the messages a **request** to the **API** is issued and the data gets extracted from the response.I used the **useEffect** hook with a closure (nested function) named **fetchMessages**.
 Each **Message** is a component of type **TeamMessage**. 
@@ -172,9 +182,7 @@ The name of the component is **TeamMessagePostForm** in pages.team.TeamMessagePo
 
 
 #### Private Message Board
----
-**NOTE** that for the time being, both users who wish to exchange private messages must have picked the respective user in the side-bar to engage in a private chat. In order to prompt a user to a private session, an additional model must be implemented in the backend. That model would represent an event and the TeamChat component can check for that event asynchronously, just like I did with the message counter. This could be done in the next iteration.
----
+**NOTE** that for the time being, both users who wish to exchange private messages must have picked the respective user in the side-bar to engage in a private chat. In order to prompt a user to a private session, an additional model must be implemented in the backend. That model would represent an event and the TeamChat component can check for that event asynchronously, just like with the message counter. This could be done in the next iteration.
 
 PrivateMessageBoard is a function that renders a list of messages within a team.
 To load the messages a **request** to the **API** is issued and the data gets extracted from the response.I used the **useEffect** hook with a closure (nested function) named **fetchMessages**.
@@ -223,9 +231,9 @@ The last two lines instantiate two instances of axios, one for sending requests 
 ## Updating user tokens
 In the file **context/CurrentUserContext.js** lives the code that handles refreshing the tokens. 
 The code refreshes the user tokens every time a request is about to be sent. If they are expired then the user is redirected to the login page.
-Also, if the response comes back with the status code 401 (Unauthorized), then the same procedure entails. First attempt to refresh token. If tokesn are expired redirect the user to the login page.
+Also, if the response comes back with the status code 401 (Unauthorized), then the same procedure entails. First attempt to refresh token. If tokens are expired redirect the user to the login page.
 
-Interceptors from the axios object are used to do this. Interceptors are an observer pattern. They handle each outgoing request or incoming respoonse as an event. That way code can be executed every time a request is being sent or every time a response comes back from the server. The code will be triggered before sending a request or after receiving a respoonse. The triggered function is passed as a Promise to axios.request.use() or axios.response.use(). 
+Interceptors from the axios object are used to do this. Interceptors are an observer pattern. They handle each outgoing request or incoming response as an event. That way code can be executed every time a request is being sent or every time a response comes back from the server. The code will be triggered before sending a request or after receiving a response. The triggered function is passed as a Promise to axios.request.use() or axios.response.use(). 
 
 # Manual Tests
 ## Registration
@@ -248,30 +256,30 @@ Interceptors from the axios object are used to do this. Interceptors are an obse
 ## Logout
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
-**Logout** | User clicks on the **Sign Out** link in the **Navigation Bar** | The navigation buttons are replaced with **home, signin and signup** buttons and a message is displayed that informs the user about the logout | **SUCCESS** |
+**Logout** | User clicks on the **Sign Out** link in the **Navigation Bar** | The navigation buttons are replaced with **home, sign-in and sign-up** buttons and a message is displayed that informs the user about the logout | **SUCCESS** |
 
 
 ## List Tasks Tests
 ### Calendar as a Filter
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
-**Preselect current date** | User clicks on the **Tasks** link in the **navigation bar** | When the page is loaded the **current date** is **selected** in the **calendar** and the **tasks** for the current date are **listed** bellow. A button with a **plus** sign, for adding **new tasks** appears in the **Navigationo Bar** |  **SUCCESS** |
+**Preselect current date** | User clicks on the **Tasks** link in the **navigation bar** | When the page is loaded the **current date** is **selected** in the **calendar** and the **tasks** for the current date are **listed** bellow. A button with a **plus** sign, for adding **new tasks** appears in the **Navigation Bar** |  **SUCCESS** |
 **Select entire month** | User clicks on the **middle button on the control panel of the calendar** with the name of the month and year. | The query is set to include all the tasks for the given month. The tasks for the selected month appear below. | **SUCCESS** |
 **Select next month** | Usr clicks on the **next month button on the control panel of the calendar**. | The calendar shows the next month and the query is set to include tasks for the selected month. Tasks for the selected month appear below | **SUCCESS** |
 **Select previous month** | User clicks on the **previous month button on the control panel of the calendar**. The calendar shows the next month and the query is set to include tasks for the selected month. Tasks for the selected month appear below | **SUCCESS** |
 **Select a day** | User clicks on one of the days in the calendar | The day is marked as selected, the query is set to include tasks for the selected day. Tasks for the selected day appear below | **SUCCESS** |
 
-### Searchbar as a filter
+### Search-bar as a filter
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
-**Search by title** | User enters a sequence of characers in the search bar | Tasks are filtered by title | **SUCCESS** |
+**Search by title** | User enters a sequence of characters in the search bar | Tasks are filtered by title | **SUCCESS** |
 
 ### Filters (Category, Priority, Status)
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
 **Category** | User selects a category filter ('errand', 'chore', 'work') | Tasks that are in the selected category and selected month or date appear below | **SUCCESS** |
-**Priority** | User slects a priority filter ('high', 'middle', 'low') | Tasks that are of the selected priorty and selected month or date appear below | **SUCCESS** |
-**Status** | User slects a status filter ('open', 'progressing', 'done') | Tasks that are with the selected status and selected month or date appear below | **SUCCESS** | 
+**Priority** | User selects a priority filter ('high', 'middle', 'low') | Tasks that are of the selected priority and selected month or date appear below | **SUCCESS** |
+**Status** | User selects a status filter ('open', 'progressing', 'done') | Tasks that are with the selected status and selected month or date appear below | **SUCCESS** | 
 **Combining category and status filters** | User selects a category and a status as a filter, whereas priority remains set to all | Tasks are filtered accordingly and only those that correspond to the selected filters and month or day show up in the list below | **SUCCESS** |
 **Combining priority and status filters** | User selects a priority and a status as a filter, whereas category remains set to all | Tasks are filtered accordingly and only those that correspond to the selected filters and month or day show up in the list below | **SUCCESS** |
 **Combining priority and category filters** | User selects a priority and a category as a filter, whereas status remains set to all | Tasks are filtered accordingly and only those that correspond to the selected filters and month or day show up in the list below | **SUCCESS** |
@@ -283,7 +291,7 @@ Interceptors from the axios object are used to do this. Interceptors are an obse
 **Open Page** | User clicks on the **Plus** icon (Add Tasks Link) in the **Navigation Bar**| The **page** for creating tasks **opens** and the **date** selected in the calendar is **preselected** in the form's date-picker | **SUCCESS** |
 **Validation** | User leaves the **name** of the task **blank** and clicks on **create**.| A message appears underneath the name field that informs the user that the field may not be blank | **SUCCESS** |
 **Attaching Image** | User clicks on the **link for uploading images** | A Window opens that allows the user to select an image | **SUCCESS** |
-**Successful create** | Upon filling out the form user clicks on **create** | User gets redirected back to the taks page and a notification appears. The task appears in the list and the calendar. The data in the task reflects user's entries. | **SUCCESS** |
+**Successful create** | Upon filling out the form user clicks on **create** | User gets redirected back to the task page and a notification appears. The task appears in the list and the calendar. The data in the task reflects user's entries. | **SUCCESS** |
 
 ## List Teams Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
@@ -324,14 +332,14 @@ Interceptors from the axios object are used to do this. Interceptors are an obse
 **Open page** | User clicks on the **chat** button in one of the teams in the list | The team chat for the selected team opens. Team name and team members are listed in the Side Bar. All messages that were posted in the past two days are displayed(Default filter setting). A form for posting is displayed underneath the message board | **SUCCESS** |
 **Search bar** | User enters a sequence of characters in the search bar | The messages are filtered by username and message text | **SUCCESS** |
 **Date Filter** | User selects one of the options in the filter (All, Since yesterday, 1 Week, 2 Weeks, 3 Weeks) | The messages are filtered by date on which they were posted | **presumably SUCCESS** . The chat option does not exists long enough to test them all. However, up to two weeks works fine |
-**Message reception** | Another team member posts, updates or deletes a message | The message appears on the message board or is removed from the message board within 3 seconds | **SUCCESS** |
+**Message reception** | Another team member posts or deletes a message | The message appears on the message board or is removed from the message board within 3 seconds | **SUCCESS** |
 
 ## Post Message in Team Chat Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
-**Post** | User enters a message and clicks on **post** | The message is displayed on the message board and is commited to the database of the API | **SUCCESS** |
+**Post** | User enters a message and clicks on **post** | The message is displayed on the message board and is committed to the database of the API | **SUCCESS** |
 **Validation** | User leaves the text-field **blank** and clicks on **post** | A message is displayed underneath the text area informing the user that the field may not be blank | **SUCCESS** |
-**Invalid file** | User selects an unsupported file format and clicks on **post** | A message is diplayed informing them about which types of files are supported | **SUCCESS** |
+**Invalid file** | User selects an unsupported file format and clicks on **post** | A message is displayed informing them about which types of files are supported | **SUCCESS** |
 **Select image** | User enters a message and clicks on the upload button | A window opens that allows them to select a file from the device | **SUCCESS** |
 **Post image** | User has entered a message and selected an image to upload, then clicked on the **post** button | The message appears on the message board with the image underneath it | **SUCCESS** |
 
@@ -340,7 +348,7 @@ Interceptors from the axios object are used to do this. Interceptors are an obse
 ----------|----------|----------|----------
 **Open Edit Form** | User clicks on the **edit** icon next to a message | A Form for editing messages shows up in place of the message. The form looks exactly like the form for posting messages | **SUCCESS** |
 **Validation** | User leaves the text-field **blank** and clicks on **post** | A message is displayed underneath the text area informing the user that the field may not be blank | **SUCCESS** |
-**Invalid file** | User selects an unsupported file format and clicks on **post** | A message is diplayed informing them about which types of files are supported | **SUCCESS** |
+**Invalid file** | User selects an unsupported file format and clicks on **post** | A message is displayed informing them about which types of files are supported | **SUCCESS** |
 **Select image** | User enters a message and clicks on the upload button | A window opens that allows them to select a file from the device | **SUCCESS** |
 **Post image** | User has entered a message and selected an image to upload, then clicked on the **post** button | The message appears on the message board with the image underneath it | **SUCCESS** |
 
@@ -350,22 +358,22 @@ Interceptors from the axios object are used to do this. Interceptors are an obse
 ----------|----------|----------|----------
 **Confirm deletion** | User clicks on the **delete icon** next to the message | A confirm dialog appears prompting user to confirm the delete | **SUCCESS** |
 **Cancel deletion** | User aborts the deletion by clicking on **Cancel** in the confirm dialog | The dialog closes and the message remains untouched | **SUCCESS** |
-**Deletion confirmed** | User confirms by clicking on the **delete** button in the confirm dialog | The message is deleted and dissapears from the list on the message board | **SUCCESS** |
+**Deletion confirmed** | User confirms by clicking on the **delete** button in the confirm dialog | The message is deleted and disappears from the list on the message board | **SUCCESS** |
 
 ## Open Private Chat Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
-**Open page** | User clicks on a **username** of a team member in the **Side-Bar**| The private chat for the selected user opens. Team name and team members are listed in the Side Bar. All messages that were exchaned between the active user and the selected team member in the past two days are displayed(Default filter setting). A form for posting is displayed underneath the message board | **SUCCESS** |
+**Open page** | User clicks on a **username** of a team member in the **Side-Bar**| The private chat for the selected user opens. Team name and team members are listed in the Side Bar. All messages that were exchanged between the active user and the selected team member in the past two days are displayed(Default filter setting). A form for posting is displayed underneath the message board | **SUCCESS** |
 **Search bar** | User enters a sequence of characters in the search bar | The messages are filtered by message text | **SUCCESS** |
 **Date Filter** | User selects one of the options in the filter (All, Since yesterday, 1 Week, 2 Weeks, 3 Weeks) | The messages are filtered by date on which they were posted | **presumably SUCCESS** . The chat option does not exists long enough to test them all. However, up to two weeks works fine |
-**Message reception** | Another team member posts, updates or deletes a message | The message appears on the message board or is removed from the message board within 3 seconds | **SUCCESS** |
+**Message reception** | Another team member posts or deletes a message | The message appears on the message board or is removed from the message board within 3 seconds | **SUCCESS** |
 
 ## Post Message in Private Chat Tests
 **TEST** | **ACTION** | **EXPECTATION** | **RESULT** 
 ----------|----------|----------|----------
-**Post** | User enters a message and clicks on **post** | The message is displayed on the message board and is commited to the database of the API | **SUCCESS** |
+**Post** | User enters a message and clicks on **post** | The message is displayed on the message board and is committed to the database of the API | **SUCCESS** |
 **Validation** | User leaves the text-field **blank** and clicks on **post** | A message is displayed underneath the text area informing the user that the field may not be blank | **SUCCESS** |
-**Invalid file** | User selects an unsupported file format and clicks on **post** | A message is diplayed informing them about which types of files are supported | **SUCCESS** |
+**Invalid file** | User selects an unsupported file format and clicks on **post** | A message is displayed informing them about which types of files are supported | **SUCCESS** |
 **Select image** | User enters a message and clicks on the upload button | A window opens that allows them to select a file from the device | **SUCCESS** |
 **Post image** | User has entered a message and selected an image to upload, then clicked on the **post** button | The message appears on the message board with the image underneath it | **SUCCESS** |
 
@@ -374,7 +382,7 @@ Interceptors from the axios object are used to do this. Interceptors are an obse
 ----------|----------|----------|----------
 **Open Edit Form** | User clicks on the **edit** icon next to a message | A Form for editing messages shows up in place of the message. The form looks exactly like the form for posting messages | **SUCCESS** |
 **Validation** | User leaves the text-field **blank** and clicks on **post** | A message is displayed underneath the text area informing the user that the field may not be blank | **SUCCESS** |
-**Invalid file** | User selects an unsupported file format and clicks on **post** | A message is diplayed informing them about which types of files are supported | **SUCCESS** |
+**Invalid file** | User selects an unsupported file format and clicks on **post** | A message is displayed informing them about which types of files are supported | **SUCCESS** |
 **Select image** | User enters a message and clicks on the upload button | A window opens that allows them to select a file from the device | **SUCCESS** |
 **Post image** | User has entered a message and selected an image to upload, then clicked on the **post** button | The message appears on the message board with the image underneath it | **SUCCESS** |
 
@@ -383,7 +391,7 @@ Interceptors from the axios object are used to do this. Interceptors are an obse
 ----------|----------|----------|----------
 **Confirm deletion** | User clicks on the **delete icon** next to the message | A confirm dialog appears prompting user to confirm the delete | **SUCCESS** |
 **Cancel deletion** | User aborts the deletion by clicking on **Cancel** in the confirm dialog | The dialog closes and the message remains untouched | **SUCCESS** |
-**Deletion confirmed** | User confirms by clicking on the **delete** button in the confirm dialog | The message is deleted and dissapears from the list on the message board | **SUCCESS** |
+**Deletion confirmed** | User confirms by clicking on the **delete** button in the confirm dialog | The message is deleted and disappears from the list on the message board | **SUCCESS** |
 
 # BUGS
 ## Bug-Fix 1
@@ -393,7 +401,7 @@ I created a function named **convertDatePickerDate** in utils/**utils.js**
 ## Bug-Fix 2
 **utils/utils.js** inside **convertDateToReactString**. The month was off by one, because Date.getMonth() returns a month-index and not the month number. So the number had to be incremented by one to fit the bill.
 ## Bug-Fix 3
-**components/calendar.js** calendar was not keeping its selected day, month, year when it was rerendering. I keep the settings in context/StaticContext. Becuase calendar is a class component, one cannot use state hooks or context hooks, so static variables seemed like the way to go.
+**components/calendar.js** calendar was not keeping its selected day, month, year when it was rerendering. I keep the settings in context/StaticContext. Because calendar is a class component, one cannot use state hooks or context hooks, so static variables seemed like the way to go.
 ## BUG: (unfixed) 
 Upon creating or editing the tasks, the selected date in the calendar gets cleared. Even though I know how to fix it, but I only have a few hours left till submission, I am not sure if I will have the time to do it. However, this bug does not impact the overall functionality of the project. So, the user will probably select a different day anyhow. 
 
@@ -434,7 +442,7 @@ Go to Deploy and scroll down to the Manual Deploy section and click on Deploy br
 ![Deployment step 4](images_readme/heroku/deploy_1.png)
 
 
-# TEECHNOLOGIES & TOOLS
+# TECHNOLOGIES & TOOLS
 - Django Rest Framework
 - React-Bootstrap
 - PostgresSQL
