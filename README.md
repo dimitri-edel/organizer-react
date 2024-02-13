@@ -10,6 +10,7 @@ It allows users to form teams and assign tasks to their teammates.
 - They are able to adjust the priority level of such tasks to give their team members guidance on where their focus needs to lie
 - And the chat feature allows them to keep open communication with team members & the team as a whole.
 
+[Open Deployed URL](https://organizer-react-2b812aa23e9f.herokuapp.com)
 
 ## Backend repository
 [Open Backend Repository](https://github.com/dimitri-edel/organizer-api)
